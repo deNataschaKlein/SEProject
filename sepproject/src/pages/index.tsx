@@ -1,12 +1,11 @@
 import { supabase } from '../../lib/supabaseClient'
+import StudyPrograms from "@/pages/studyPrograms/studyPrograms";
 
-function Home({ study_programs }) {
+function Home() {
   return (
-      <ul>
-        {study_programs.map((studyprogram) => (
-            <li key={studyprogram.id}>{studyprogram.name}</li>
-        ))}
-      </ul>
+      <>
+        <StudyPrograms/>
+      </>
   );
 }
 
