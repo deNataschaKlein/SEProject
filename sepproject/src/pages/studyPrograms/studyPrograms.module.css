@@ -1,0 +1,26 @@
+.studyProgram {
+    display: grid;
+    grid-template-columns: minmax(20px, 2fr) 1fr;
+    grid-gap: var(--spacing-sm);
+}
+
+.studyProgram__swiper{
+    background-color: grey;
+}
+
+
+@media (min-width: 760px) {
+    .studyProgram {
+        flex-direction: row;
+    }
+
+    .studyProgram__swipersection {
+        flex-grow: 3;
+    }
+
+    .studyProgram__filter {
+        flex-grow: 1;
+    }
+
+}
+
