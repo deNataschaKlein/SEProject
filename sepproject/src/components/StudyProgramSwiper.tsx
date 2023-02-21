@@ -54,11 +54,7 @@ export default function StudyProgramSwiper() {
             }}
             className={styles.study_swiper}
           >
-            {program(() => (
-              <SwiperSlide className={styles.swiper__slide}>
-                Slide 1
-              </SwiperSlide>
-            ))}
+            <SwiperSlide className={styles.swiper__slide}>Slide 1</SwiperSlide>
           </Swiper>
         </div>
       ))}
