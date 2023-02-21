@@ -23,6 +23,7 @@
 
     --color-light: rgb(255,255,255);
     --color-dark: rgb(71,71,71);
+    --color-dark-40: rgb(236, 236, 236);
 
     --spacing-xxs: 2px;
     --spacing-xs: 4px;
@@ -45,13 +46,14 @@ body {
     max-height: 100vh;
     position: sticky;
     overflow: hidden;
+    font-family: sans-serif;
 }
 
 #__next {
     display: flex;
 }
 
-h1 {
+h1, h2 {
     color: var(--color-dark);
 }
 

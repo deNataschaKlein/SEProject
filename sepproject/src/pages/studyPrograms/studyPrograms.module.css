@@ -1,7 +1,7 @@
 .studyProgram {
     display: grid;
     grid-template-columns: minmax(20px, 2fr) 1fr;
-    grid-gap: var(--spacing-sm);
+    grid-gap: var(--spacing-lg);
 }
 
 .studyProgram__swiper{
@@ -20,6 +20,9 @@
 
     .studyProgram__filter {
         flex-grow: 1;
+        background-color: var(--color-dark-40);
+        border-radius: var(--spacing-md);
+        padding: var(--spacing-md);
     }
 
 }

@@ -29,7 +29,7 @@ export default function StudyProgramSwiper() {
     <>
       {programs.map((program) => (
         <div className={styles.swiperbox} key={program.name}>
-          <h2>{program.name}</h2>
+          <h2 className="primary">{program.name}</h2>
           <Swiper
             breakpoints={{
               490: {

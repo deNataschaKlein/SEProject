@@ -29,20 +29,12 @@ function StudyPrograms() {
 
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
-            hier kommen die Studiengänge rein
             <StudyProgramSwiper props={programs} />
           </div>
           <div className={styles.studyProgram__filter}>
             Hier die Filterfunktion
           </div>
         </div>
-
-        {/*<Swiper>
-          <SwiperSlide>test</SwiperSlide>
-          <SwiperSlide>test</SwiperSlide>
-          <SwiperSlide>test</SwiperSlide>
-          <SwiperSlide>test</SwiperSlide>
-        </Swiper>*/}
       </>
     );
   }

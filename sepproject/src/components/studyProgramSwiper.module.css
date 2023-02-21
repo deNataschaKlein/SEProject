@@ -4,6 +4,11 @@
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-base);
     min-height: 100px;
+    margin-bottom: var(--spacing-md);
+}
+
+.swiperbox:last-child{
+    margin-bottom: unset;
 }
 
 .study_swiper {
