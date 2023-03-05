@@ -70,16 +70,12 @@ export default function StudyProgramSwiper({ setStudyModal }) {
             }}
             className={styles.study_swiper}
           >
-<<<<<<< Updated upstream
             <SwiperSlide
               className={styles.swiper__slide}
               onClick={clickHandler}
             >
               Slide 1
             </SwiperSlide>
-=======
-            <SwiperSlide className={styles.swiper__slide}>{program.study_degree}</SwiperSlide>
->>>>>>> Stashed changes
           </Swiper>
         </div>
       ))}

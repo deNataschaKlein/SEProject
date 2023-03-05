@@ -7,11 +7,8 @@ import formStudyProgram from "../../forms/studyProgram";
 
 function StudyPrograms() {
   const [programs, setPrograms] = useState<any[]>([]);
-<<<<<<< Updated upstream
   const [studyModal, setStudyModal] = useState(false);
-=======
   const [name, setName] = useState('');
->>>>>>> Stashed changes
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -41,7 +38,6 @@ function StudyPrograms() {
             <li key={program.id}>{program.name}</li>
           ))}
         </ul>
-<<<<<<< Updated upstream
         {studyModal && (
           <ModalOffCanvas
             button="yes"
@@ -49,7 +45,6 @@ function StudyPrograms() {
             setModal={setStudyModal}
           />
         )}
-=======
 
         <form onSubmit={handleSubmit}>
           <label>
@@ -58,7 +53,6 @@ function StudyPrograms() {
           <button className={styles.submitButton}>Anlegen</button>
         </form>
 
->>>>>>> Stashed changes
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
             <StudyProgramSwiper
