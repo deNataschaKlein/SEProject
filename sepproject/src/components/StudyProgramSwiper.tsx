@@ -14,6 +14,8 @@ import { supabase } from "../../lib/supabaseClient";
 
 export default function StudyProgramSwiper({ setStudyModal }) {
   const [programs, setPrograms] = useState<any[]>([]);
+  const [specializations, setSpecializations] = useState<any[]>([]);
+
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
       .from("study_programs")
@@ -21,8 +23,18 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     setPrograms(study_programs);
   }
 
+  async function getSpecializations() {
+    let { data: study_programs } = await supabase
+      .from("study_programs")
+      .select("*")
+      .eq('id', "1")
+   
+      setSpecializations(study_programs);
+  }
+
   useEffect(() => {
     getStudyPrograms();
+    getSpecializations();
   }, []);
 
   function clickHandler() {
@@ -58,12 +70,16 @@ export default function StudyProgramSwiper({ setStudyModal }) {
             }}
             className={styles.study_swiper}
           >
+<<<<<<< Updated upstream
             <SwiperSlide
               className={styles.swiper__slide}
               onClick={clickHandler}
             >
               Slide 1
             </SwiperSlide>
+=======
+            <SwiperSlide className={styles.swiper__slide}>{program.study_degree}</SwiperSlide>
+>>>>>>> Stashed changes
           </Swiper>
         </div>
       ))}

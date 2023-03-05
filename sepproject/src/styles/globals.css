@@ -45,7 +45,6 @@ body {
     margin: 0;
     max-height: 100vh;
     position: sticky;
-    overflow: hidden;
     font-family: sans-serif;
 }
 

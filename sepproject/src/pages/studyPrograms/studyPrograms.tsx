@@ -7,7 +7,11 @@ import formStudyProgram from "../../forms/studyProgram";
 
 function StudyPrograms() {
   const [programs, setPrograms] = useState<any[]>([]);
+<<<<<<< Updated upstream
   const [studyModal, setStudyModal] = useState(false);
+=======
+  const [name, setName] = useState('');
+>>>>>>> Stashed changes
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -15,6 +19,14 @@ function StudyPrograms() {
       .select("*");
     setPrograms(study_programs);
   }
+
+  const handleSubmit = async (e) => {
+    let { data: study_programs } = await supabase
+    .from("study_programs")
+    .insert([{ name }])
+    setName(study_programs)
+  }
+  
 
   useEffect(() => {
     getStudyPrograms();
@@ -29,6 +41,7 @@ function StudyPrograms() {
             <li key={program.id}>{program.name}</li>
           ))}
         </ul>
+<<<<<<< Updated upstream
         {studyModal && (
           <ModalOffCanvas
             button="yes"
@@ -36,6 +49,16 @@ function StudyPrograms() {
             setModal={setStudyModal}
           />
         )}
+=======
+
+        <form onSubmit={handleSubmit}>
+          <label>
+            <input className={styles.submitInput} type="text" name="name" placeholder="Studiengang hinzufügen" value={name} onChange={(e) => setName(e.target.value)}/>
+          </label>
+          <button className={styles.submitButton}>Anlegen</button>
+        </form>
+
+>>>>>>> Stashed changes
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
             <StudyProgramSwiper
