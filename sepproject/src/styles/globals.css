@@ -61,3 +61,16 @@ h1, h2 {
     color: var(--color-primary--100);
 }
 
+button {
+    padding: var(--spacing-sm);
+    border-radius: var(--spacing-xs);
+    border: none;
+    background-color: var(--color-secondary--50);
+    color: var(--color-dark);
+}
+
+.button--primary {
+    background-color: var(--color-primary--100);
+    color: var(--color-light);
+}
+

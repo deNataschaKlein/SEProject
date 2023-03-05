@@ -2,9 +2,12 @@ import { supabase } from "../../../lib/supabaseClient";
 import { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
+import ModalOffCanvas from "@/components/ModalOffCanvas";
+import formStudyProgram from "../../forms/studyProgram";
 
 function StudyPrograms() {
   const [programs, setPrograms] = useState<any[]>([]);
+  const [studyModal, setStudyModal] = useState(false);
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -26,10 +29,19 @@ function StudyPrograms() {
             <li key={program.id}>{program.name}</li>
           ))}
         </ul>
-
+        {studyModal && (
+          <ModalOffCanvas
+            button="yes"
+            content={<formStudyProgram />}
+            setModal={setStudyModal}
+          />
+        )}
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
-            <StudyProgramSwiper props={programs} />
+            <StudyProgramSwiper
+              programs={programs}
+              setStudyModal={setStudyModal}
+            />
           </div>
           <div className={styles.studyProgram__filter}>
             Hier die Filterfunktion

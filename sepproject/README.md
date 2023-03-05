@@ -21,6 +21,16 @@ Integration-Branch: Deployment aufs integrations-System
 
 Develop-Branch: Von hier werden neue Features abgezweigt. Es landen nur fertige Features in den Develop Branch, wenn sie die DoD erfüllen.
 
+### Nützliche Terminal Befehle
+neuen Feature Branch anlegen `git flow feature start TICKET-NUMMER_Name`
+
+## CSS
+ Globale Variabeln werden in `src > styles > globals.css` angelegt.
+
+CSS Klassen werden nach [BEM](https://getbem.com/introduction/) geschrieben 
+
+CSS wird in Separaten Dateien als [CSS Modules](https://css-tricks.com/css-modules-part-1-need/) beschrieben
+
 ## Definition of Done
 
 

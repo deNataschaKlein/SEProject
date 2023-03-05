@@ -12,7 +12,7 @@ import styles from "./studyProgramSwiper.module.css";
 import { Mousewheel, Navigation, Pagination } from "swiper";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function StudyProgramSwiper() {
+export default function StudyProgramSwiper({ setStudyModal }) {
   const [programs, setPrograms] = useState<any[]>([]);
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -24,6 +24,10 @@ export default function StudyProgramSwiper() {
   useEffect(() => {
     getStudyPrograms();
   }, []);
+
+  function clickHandler() {
+    setStudyModal(true);
+  }
 
   return (
     <>
@@ -54,7 +58,12 @@ export default function StudyProgramSwiper() {
             }}
             className={styles.study_swiper}
           >
-            <SwiperSlide className={styles.swiper__slide}>Slide 1</SwiperSlide>
+            <SwiperSlide
+              className={styles.swiper__slide}
+              onClick={clickHandler}
+            >
+              Slide 1
+            </SwiperSlide>
           </Swiper>
         </div>
       ))}
