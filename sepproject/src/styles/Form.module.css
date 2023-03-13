@@ -1,0 +1,11 @@
+.item {
+    display: grid;
+    grid-gap: var(--spacing-sm);
+}
+
+@media (min-width: 760px) {
+    .col__two {
+        grid-template-columns: repeat(2, 50%);
+        grid-gap: var(--spacing-md);
+    }
+}

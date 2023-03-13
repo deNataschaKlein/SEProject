@@ -20,10 +20,10 @@ function ModalOffCanvas(props) {
                   <AiIcons.AiOutlineClose size={36} />
                 </button>
                 <span>
-                  <h2>Hello World</h2>
+                  <h2>{props.headline}</h2>
                 </span>
               </div>
-              <div>{props.content}</div>
+              <div>{props.children}</div>
             </div>
             {props.button && (
               <div className={styles.modalOffCanvas__footer}>

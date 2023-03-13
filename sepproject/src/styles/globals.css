@@ -34,6 +34,8 @@
     --spacing-xxl: 40px;
 
     --shadow-base: -4px 0px 16px 0px rgba(0,0,0,0.2);
+    --shadow-input: 0px px 8px 1px rgba(0,0,0,0.1);
+    --shadow-input--inset: inset 0px 1px 4px 1px rgba(0,0,0,0.1);
 
     --swiper-theme-color: rgb(255, 153, 0) !important;
 }
@@ -72,4 +74,30 @@ button {
     background-color: var(--color-primary--100);
     color: var(--color-light);
 }
+
+form {
+    display: grid;
+    grid-gap: var(--spacing-sm);
+}
+
+label {
+    color: var(--color-dark);
+    font-size: 0.7rem;
+    display: grid;
+    grid-gap: 2px;
+}
+
+input, select {
+    display: block;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-secondary--50);
+    border-radius: var(--spacing-xs);
+    box-shadow: var(--shadow-input);
+}
+
+input:focus , select:focus {
+    box-shadow: var(--shadow-input--inset);
+    outline: 1px solid var(--color-primary--100);
+}
+
 

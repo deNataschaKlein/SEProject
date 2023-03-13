@@ -1,14 +1,15 @@
 import { supabase } from "../../../lib/supabaseClient";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
-import formStudyProgram from "../../forms/studyProgram";
+import FormStudyProgram from "../../forms/formStudyProgram";
 
-function StudyPrograms() {
+function StudyPrograms(this: any) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
+  const [studies, setStudies] = useState([]);
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -19,36 +20,43 @@ function StudyPrograms() {
 
   const handleSubmit = async (e) => {
     let { data: study_programs } = await supabase
-    .from("study_programs")
-    .insert([{ name }])
-    setName(study_programs)
-  }
-  
+      .from("study_programs")
+      .insert([{ name }]);
+    setName(study_programs);
+  };
 
   useEffect(() => {
     getStudyPrograms();
   }, []);
 
+  const addStudy = (study) => {
+    let studyProgram = [...studies, study];
+    setStudies(studyProgram);
+  };
+
   if (programs) {
     return (
       <>
         <h1>Studiengänge</h1>
-        <ul>
-          {programs.map((program) => (
-            <li key={program.id}>{program.name}</li>
-          ))}
-        </ul>
         {studyModal && (
           <ModalOffCanvas
             button="yes"
-            content={<formStudyProgram />}
+            headline={"Neuen Studiengang hinzufügen"}
             setModal={setStudyModal}
-          />
+          >
+            <FormStudyProgram addStudy={addStudy} />
+          </ModalOffCanvas>
         )}
-
         <form onSubmit={handleSubmit}>
           <label>
-            <input className={styles.submitInput} type="text" name="name" placeholder="Studiengang hinzufügen" value={name} onChange={(e) => setName(e.target.value)}/>
+            <input
+              className={styles.submitInput}
+              type="text"
+              name="name"
+              placeholder="Studiengang hinzufügen"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </label>
           <button className={styles.submitButton}>Anlegen</button>
         </form>
