@@ -1,0 +1,103 @@
+:root {
+    --color-primary--100: rgb(255, 153, 0);
+    --color-primary--90: rgb(255, 174, 26);
+    --color-primary--80: rgb(255, 183, 51);
+    --color-primary--70: rgb(255, 192, 77);
+    --color-primary--60: rgb(255, 201, 102);
+    --color-primary--50: rgb(255, 210, 128);
+    --color-primary--40: rgb(255, 219, 153);
+    --color-primary--30: rgb(255, 228, 179);
+    --color-primary--20: rgb(255, 237, 204);
+    --color-primary--10: rgb(255, 246, 230);
+
+    --color-secondary--100: rgb(217, 217, 217);
+    --color-secondary--90: rgb(221, 221, 221);
+    --color-secondary--80: rgb(225, 225, 225);
+    --color-secondary--70: rgb(228, 228, 228);
+    --color-secondary--60: rgb(232, 232, 232);
+    --color-secondary--50: rgb(236, 236, 236);
+    --color-secondary--40: rgb(240, 240, 240);
+    --color-secondary--30: rgb(244, 244, 244);
+    --color-secondary--20: rgb(247, 247, 247);
+    --color-secondary--10: rgb(251, 251, 251);
+
+    --color-light: rgb(255,255,255);
+    --color-dark: rgb(71,71,71);
+    --color-dark-40: rgb(236, 236, 236);
+
+    --spacing-xxs: 2px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
+
+    --shadow-base: -4px 0px 16px 0px rgba(0,0,0,0.2);
+    --shadow-input: 0px px 8px 1px rgba(0,0,0,0.1);
+    --shadow-input--inset: inset 0px 1px 4px 1px rgba(0,0,0,0.1);
+
+    --swiper-theme-color: rgb(255, 153, 0) !important;
+}
+
+html,
+body {
+    background-color: var(--color-primary--100);
+    padding: 0;
+    margin: 0;
+    max-height: 100vh;
+    position: sticky;
+    font-family: sans-serif;
+}
+
+#__next {
+    display: flex;
+}
+
+h1, h2 {
+    color: var(--color-dark);
+}
+
+.primary {
+    color: var(--color-primary--100);
+}
+
+button {
+    padding: var(--spacing-sm);
+    border-radius: var(--spacing-xs);
+    border: none;
+    background-color: var(--color-secondary--50);
+    color: var(--color-dark);
+}
+
+.button--primary {
+    background-color: var(--color-primary--100);
+    color: var(--color-light);
+}
+
+form {
+    display: grid;
+    grid-gap: var(--spacing-sm);
+}
+
+label {
+    color: var(--color-dark);
+    font-size: 0.7rem;
+    display: grid;
+    grid-gap: 2px;
+}
+
+input, select {
+    display: block;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-secondary--50);
+    border-radius: var(--spacing-xs);
+    box-shadow: var(--shadow-input);
+}
+
+input:focus , select:focus {
+    box-shadow: var(--shadow-input--inset);
+    outline: 1px solid var(--color-primary--100);
+}
+
+
