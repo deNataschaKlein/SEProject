@@ -1,0 +1,48 @@
+.studyProgram {
+    display: grid;
+    grid-template-columns: minmax(20px, 1fr) 1fr;
+    grid-gap: var(--spacing-lg);
+}
+
+.studyProgram__swiper{
+    background-color: grey;
+}
+
+.submitInput {
+    padding: var(--spacing-md);
+    margin-right: var(--spacing-md);
+    margin-bottom: 10px;
+    width: 300px;
+    border: none;
+    border-radius: var(--spacing-md);
+    font-size: 1em;
+}
+
+.submitButton {
+    background: var(--color-primary--100);
+    border: none;
+    border-radius: var(--spacing-md);
+    padding: var(--spacing-md);
+    font-size: 1em;
+    color: var(--color-light);
+}
+
+
+@media (min-width: 760px) {
+    .studyProgram {
+        flex-direction: row;
+    }
+
+    .studyProgram__swipersection {
+        flex-grow: 3;
+    }
+
+    .studyProgram__filter {
+        flex-grow: 1;
+        background-color: var(--color-dark-40);
+        border-radius: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+
+}
+
