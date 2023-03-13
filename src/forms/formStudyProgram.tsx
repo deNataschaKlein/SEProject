@@ -7,7 +7,7 @@ export default function FormStudyProgram({ addStudy }) {
   const [studyType, setStudyType] = useState("");
 
   const handleSubmit = (e) => {
-    addStudy([studyProgram, specialization, studyType]);
+    addStudy([{ studyProgram, specialization, studyType }]);
     e.preventDefault();
   };
 

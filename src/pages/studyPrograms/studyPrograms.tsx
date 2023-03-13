@@ -10,7 +10,7 @@ function StudyPrograms(this: any) {
   const [studyModal, setStudyModal] = useState(false);
   const [name, setName] = useState("");
   const [studies, setStudies] = useState([]);
-  const [specialization, setSpecialization] = useState('');
+  const [specialization, setSpecialization] = useState("");
   const [programWI, setProgramWI] = useState<any[]>([]);
   const [programBWL, setProgramBWL] = useState<any[]>([]);
   const [programAI, setProgramAI] = useState<any[]>([]);
@@ -26,52 +26,52 @@ function StudyPrograms(this: any) {
 
   async function getStudyProgramWI() {
     let { data: study_programs } = await supabase
-      .from('study_programs')
+      .from("study_programs")
       .select("*")
-      .in('name', ['Wirtschaftsinformatik'])
-      .eq('id', 1)
+      .in("name", ["Wirtschaftsinformatik"])
+      .eq("id", 1);
     setProgramWI(study_programs);
   }
 
   async function getStudyProgramBWL() {
     let { data: study_programs } = await supabase
-      .from('study_programs')
+      .from("study_programs")
       .select("*")
-      .in('name', ['Betriebswirtschaftslehre'])
-      .eq('id', 2)
+      .in("name", ["Betriebswirtschaftslehre"])
+      .eq("id", 2);
     setProgramBWL(study_programs);
   }
 
   async function getStudyProgramAI() {
     let { data: study_programs } = await supabase
-      .from('study_programs')
+      .from("study_programs")
       .select("*")
-      .in('name', ['Angewandte Informatik'])
-      .eq('id', 3)
+      .in("name", ["Angewandte Informatik"])
+      .eq("id", 3);
     setProgramAI(study_programs);
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!specialization || !name) {
-      setFormError('❌ Bitte gebe einen Studiengang an!')
-      return
+      setFormError("❌ Bitte gebe einen Studiengang an!");
+      return;
     }
 
     let { data: study_programs, error } = await supabase
-    .from("study_programs")
-    .insert([{ name, specialization }])
+      .from("study_programs")
+      .insert([studies]);
 
     if (error) {
-      console.log(error)
-      setFormError('❌ Bitte gebe einen Studiengang an!')
+      console.log(error);
+      setFormError("❌ Bitte gebe einen Studiengang an!");
     }
     if (specialization && name) {
-      console.log(study_programs)
-      setFormSuccess('✅ Studiengang angelegt')
+      console.log(study_programs);
+      setFormSuccess("✅ Studiengang angelegt");
     }
-  }
-  
+  };
+
   useEffect(() => {
     getStudyPrograms();
     getStudyProgramWI();
@@ -82,12 +82,20 @@ function StudyPrograms(this: any) {
   const addStudy = (study) => {
     let studyProgram = [...studies, study];
     setStudies(studyProgram);
+    console.log(studies);
   };
+
+  function ModalclickHandler() {
+    setStudyModal(true);
+  }
 
   if (programs) {
     return (
       <>
         <h1>Studiengänge</h1>
+        <button className="button--primary" onClick={ModalclickHandler}>
+          Neuen Studiengang hinzufügen
+        </button>
         {studyModal && (
           <ModalOffCanvas
             button="yes"
@@ -99,13 +107,26 @@ function StudyPrograms(this: any) {
         )}
         <form onSubmit={handleSubmit}>
           <label>
-            <input className={styles.submitInput} type="text" id="specialization" placeholder="Spezialisierung Studiengang hinzufügen" value={specialization} onChange={(e) => setSpecialization(e.target.value)}/>
+            <input
+              className={styles.submitInput}
+              type="text"
+              id="specialization"
+              placeholder="Spezialisierung Studiengang hinzufügen"
+              value={specialization}
+              onChange={(e) => setSpecialization(e.target.value)}
+            />
           </label>
           <label>
             {programWI.map((program) => (
               <>
                 <p>{program.name}</p>
-                <input type="radio" id="2" name="options" value={program.name} onChange={(e) => setName(e.target.value)}></input>
+                <input
+                  type="radio"
+                  id="2"
+                  name="options"
+                  value={program.name}
+                  onChange={(e) => setName(e.target.value)}
+                ></input>
               </>
             ))}
           </label>
@@ -113,7 +134,14 @@ function StudyPrograms(this: any) {
             {programBWL.map((program, index) => (
               <>
                 <p>{program.name}</p>
-                <input type="radio" id="2" name="options" key={index} value={program.name} onChange={(e) => setName(e.target.value)}></input>
+                <input
+                  type="radio"
+                  id="2"
+                  name="options"
+                  key={index}
+                  value={program.name}
+                  onChange={(e) => setName(e.target.value)}
+                ></input>
               </>
             ))}
           </label>
@@ -121,7 +149,14 @@ function StudyPrograms(this: any) {
             {programAI.map((program, index) => (
               <>
                 <p>{program.name}</p>
-                <input type="radio" id="3" name="options" key={index} value={program.name} onChange={(e) => setName(e.target.value)}></input>
+                <input
+                  type="radio"
+                  id="3"
+                  name="options"
+                  key={index}
+                  value={program.name}
+                  onChange={(e) => setName(e.target.value)}
+                ></input>
               </>
             ))}
           </label>
@@ -136,7 +171,6 @@ function StudyPrograms(this: any) {
               programs={programs}
               setStudyModal={setStudyModal}
             />
-            
           </div>
           <div className={styles.studyProgram__filter}>
             Hier die Filterfunktion
