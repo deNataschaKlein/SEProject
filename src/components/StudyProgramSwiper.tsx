@@ -19,6 +19,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
   const [specializationsAi, setSpecializationsAi] = useState<any[]>([]);
   const [specializationsBwl, setSpecializationsBwl] = useState<any[]>([]);
 
+  
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
       .from("study_programs")
@@ -26,6 +27,22 @@ export default function StudyProgramSwiper({ setStudyModal }) {
       
     setPrograms(study_programs);
   }
+
+
+  let deg: number = 1;
+  
+  async function getFilteredStudyPrograms() {
+    let { data: study_programs, error} = await supabase
+      .from("study_programs")
+      .select("*")
+      .filter("study_degree", "in", deg);
+
+    console.log(error);
+    setPrograms(study_programs);
+  }
+
+
+
 
 
 
@@ -58,6 +75,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     getSpecializationsWi();
     getSpecializationsAi();
     getSpecializationBwl();
+    getFilteredStudyPrograms();
   }, []);
 
   function clickHandler() {

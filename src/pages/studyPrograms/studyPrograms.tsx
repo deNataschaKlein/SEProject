@@ -19,7 +19,7 @@ function StudyPrograms(this: any) {
   const [formSuccess, setFormSuccess] = useState(null);
 /*  const degree = ["bachelor", "master"]*/
 
-  async function getStudyPrograms() {
+  async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*");
@@ -75,7 +75,7 @@ function StudyPrograms(this: any) {
   };
 
   useEffect(() => {
-    getStudyPrograms();
+    getInitialStudyPrograms();
     getStudyProgramWI();
     getStudyProgramBWL();
     getStudyProgramAI();
@@ -91,7 +91,10 @@ function StudyPrograms(this: any) {
     setStudyModal(true);
   }
 
-  /*function filterFunction(degree: string){
+  /*
+  const degree = ["bachelor", "master"]
+
+  function filterFunction(degree: string){
     //const [programs, setPrograms] = useState<any[]>([]);
     let deg: number;
 
