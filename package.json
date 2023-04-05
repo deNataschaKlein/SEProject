@@ -10,18 +10,21 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@supabase/auth-helpers-nextjs": "^0.5.6",
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/auth-ui-react": "^0.3.5",
+    "@supabase/supabase-js": "^2.10.0",
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
-    "@supabase/supabase-js": "^2.10.0",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "next": "^13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.5",
     "react-icons": "^4.7.1",
-    "swiper": "^9.0.5"
+    "swiper": "^9.0.5",
+    "typescript": "4.9.5"
   },
   "devDependencies": {
     "eslint": "^8.34.0",

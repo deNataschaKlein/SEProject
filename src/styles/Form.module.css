@@ -9,3 +9,12 @@
         grid-gap: var(--spacing-md);
     }
 }
+
+.form__submitButton {
+    background: var(--color-primary--100);
+    border: none;
+    border-radius: var(--spacing-md);
+    padding: var(--spacing-md);
+    font-size: 1em;
+    color: var(--color-light);
+}
