@@ -1,0 +1,24 @@
+.pillCheckbox {
+    --bg-color: var(--color-primary--10);
+    --textcolor: var(--color-dark);
+    background-color: var(--bg-color);
+    color: var(--textcolor);
+    width: max-content;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--spacing-xs);
+    cursor: pointer;
+    display: inline-block;
+    margin-right: var(--spacing-sm);
+}
+
+.pillCheckbox:last-child {
+    margin-right: 0;
+}
+
+.pillCheckbox input[type="checkbox"] {
+    display: none;
+}
+
+.checked {
+    --bg-color: var(--color-primary--100);
+}

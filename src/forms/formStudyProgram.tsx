@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/Form.module.css";
 
-export default function FormStudyProgram({ addStudy }) {
-  const [studyProgram, setStudyProgram] = useState("");
-  const [specialization, setSpecialisation] = useState("");
-  const [studyType, setStudyType] = useState("");
+export default function FormStudyProgram(props) {
+  const [programs, setPrograms] = useState<any[]>([]);
+  const [name, setName] = useState("Wirtschaftsinformatik");
+  const [specialization, setSpecialization] = useState("");
 
-  const handleSubmit = (e) => {
-    addStudy([{ studyProgram, specialization, studyType }]);
+  async function getStudyPrograms() {
+    let { data: study_programs } = await supabase
+      .from("study_programs")
+      .select("*");
+    setPrograms(study_programs);
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!specialization || !name) {
+      return;
+    }
+
+      props.onSubmit(name, specialization)
+
   };
+
+  useEffect(() => {
+    getStudyPrograms();
+  }, []);
 
   return (
     <form
@@ -22,26 +39,26 @@ export default function FormStudyProgram({ addStudy }) {
         <label>
           Studiengang
           <select
-            name="studyProgram"
-            value={studyProgram}
-            onChange={(e) => setStudyProgram(e.target.value)}
+            name="options"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           >
-            <option value="wirtschaftsinformatik">Wirtschaftsinformatik</option>
-            <option value="bwl">Betriebswirtschaftslehre</option>
-            <option value="aif">Angewandte Informatik</option>
+            <option value="Wirtschaftsinformatik">Wirtschaftsinformatik</option>
+            <option value="Betriebswirtschaftslehre">Betriebswirtschaftslehre</option>
+            <option value="Angewandte Informatik">Angewandte Informatik</option>
           </select>
         </label>
         <label>
           Schwerpunkt
           <input
-            className={styles.input}
+            className={styles.button}
             type="text"
-            name="specialization"
+            id="specialization"
             value={specialization}
-            onChange={(e) => setSpecialisation(e.target.value)}
+            onChange={(e) => setSpecialization(e.target.value)}
           />
         </label>
-        <label>
+        {/*<label>
           Studientyp
           <select
             name="studyType"
@@ -51,7 +68,7 @@ export default function FormStudyProgram({ addStudy }) {
             <option value="dual">Dual</option>
             <option value="berufsbegleitend">Berufsbegleitend</option>
           </select>
-        </label>
+        </label>*/}
         <input type="submit" value="Submit" />
       </div>
 
