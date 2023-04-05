@@ -20,25 +20,21 @@ export default function StudyProgramSwiper({ setStudyModal }) {
   const [specializationsBwl, setSpecializationsBwl] = useState<any[]>([]);
 
   
-  async function getInitialStudyPrograms() {
-    let { data: study_programs } = await supabase
-      .from("study_programs")
-      .select("*")
-      
-    setPrograms(study_programs);
-  }
 
+  const spezes = ["Wirtschaftsinformatik", "Angewandte Informatik", "Betriebswirtschaftslehre"]
 
-  let deg: number = 1;
   
   async function getFilteredStudyPrograms() {
-    let { data: study_programs, error} = await supabase
-      .from("study_programs")
-      .select("*")
-      .filter("study_degree", "in", deg);
+  
+    for (let i of spezes){
+      let {data: study_programs} = await supabase
+        .from("study_programs")
+        .select("*")
+        .filter("name", "in", (spezes[0]))
+        .filter("degree", "in", "(1,2,3)");
 
-    console.log(error);
-    setPrograms(study_programs);
+      return(study_programs);
+    }
   }
 
 
@@ -48,7 +44,9 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
-      .eq("name","Wirtschaftsinformatik");
+      //.eq("name",spezes[0])
+      .eq("degree", 2);
+
       setSpecializationsWi(study_programs);
   }
 
@@ -56,7 +54,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
-      .eq("name","Angewandte Informatik");
+      .eq("name",spezes[1]);
       setSpecializationsAi(study_programs);
   }
 
@@ -64,12 +62,11 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
-      .eq("name","Betriebswirtschaftslehre");
+      .eq("name",spezes[2]);
       setSpecializationsBwl(study_programs);
   }
 
   useEffect(() => {
-    getInitialStudyPrograms();
     getSpecializationsWi();
     getSpecializationsAi();
     getSpecializationBwl();
