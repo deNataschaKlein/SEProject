@@ -18,16 +18,6 @@
     font-size: 1em;
 }
 
-.submitButton {
-    background: var(--color-primary--100);
-    border: none;
-    border-radius: var(--spacing-md);
-    padding: var(--spacing-md);
-    font-size: 1em;
-    color: var(--color-light);
-}
-
-
 @media (min-width: 760px) {
     .studyProgram {
         flex-direction: row;
