@@ -9,8 +9,6 @@ import PillCheckbox from "@/components/PillCheckbox";
 function StudyPrograms(this: any) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  const [name, setName] = useState("");
-  const [studies, setStudies] = useState([]);
 /*  const degree = ["bachelor", "master"]*/
 
   async function getStudyPrograms() {
@@ -24,43 +22,25 @@ function StudyPrograms(this: any) {
     getStudyPrograms();
   }, []);
 
-  const addStudy = (study) => {
-    let studyProgram = [...studies, study];
-    setStudies(studyProgram);
-    console.log(studies);
-  };
 
   function ModalclickHandler() {
-    setStudyModal(true);
+    setStudyModal(!studyModal);
   }
 
-  /*function filterFunction(degree: string){
-    //const [programs, setPrograms] = useState<any[]>([]);
-    let deg: number;
+  async function getData(name, specialization){
+    let { data: study_programs, error } = await supabase
+      .from("study_programs")
+      .insert([{ name, specialization }]);
 
-    if (degree = "bachelor"){
-      deg = 1;
+    if (error) {
+      console.log(error);
     }
-    else if (degree = "master"){
-      deg = 2;
-    }
-
-    async function getStudyPrograms() {
-      let { data: study_programs } = await supabase
-        .from("study_programs")
-        .select("*")
-        .eq("study_degree", deg);
-      //.filter("study_degree", "in", deg);
-
-      setPrograms(study_programs);
+    else {
+      setStudyModal(false)
+      window.location.reload()
     }
 
-    useEffect(() => {
-      getStudyPrograms();
-    }, []);
-
-    return programs;
-  }*/
+  }
 
   if (programs) {
     return (
@@ -75,7 +55,7 @@ function StudyPrograms(this: any) {
             headline={"Neuen Studiengang hinzufügen"}
             setModal={setStudyModal}
           >
-            <FormStudyProgram addStudy={addStudy} />
+            <FormStudyProgram onSubmit={getData}/>
           </ModalOffCanvas>
         )}
         <div className={styles.studyProgram}>
