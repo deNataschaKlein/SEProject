@@ -19,7 +19,7 @@ function StudyPrograms(this: any) {
   }
 
   useEffect(() => {
-    getStudyPrograms();
+    getInitialStudyPrograms();
   }, []);
 
 
