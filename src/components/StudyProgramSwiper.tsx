@@ -20,7 +20,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
   const [specializationsBwl, setSpecializationsBwl] = useState<any[]>([]);
 
   
-  async function getStudyPrograms() {
+  async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
@@ -40,8 +40,6 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     console.log(error);
     setPrograms(study_programs);
   }
-
-
 
 
 
@@ -71,7 +69,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
   }
 
   useEffect(() => {
-    getStudyPrograms();
+    getInitialStudyPrograms();
     getSpecializationsWi();
     getSpecializationsAi();
     getSpecializationBwl();
@@ -84,7 +82,6 @@ export default function StudyProgramSwiper({ setStudyModal }) {
 
   return (
     <>
-      
         <div className={styles.swiperbox} >
           <h2 className="primary">Wirtschaftsinformatik</h2>
           <Swiper
@@ -111,15 +108,13 @@ export default function StudyProgramSwiper({ setStudyModal }) {
             }}
             className={styles.study_swiper}
           >
-
             {
               specializationsWi.map((program, _index) => (
                <SwiperSlide className={styles.swiper__slide} onClick={clickHandler} key={_index}>
                  {program.specialization}
                 </SwiperSlide>
                ))
-            } 
-            
+            }    
           </Swiper>
         </div>
       
@@ -187,7 +182,6 @@ export default function StudyProgramSwiper({ setStudyModal }) {
             }}
             className={styles.study_swiper}
           >
-
             {
               specializationsAi.map((program, _index) => (
                <SwiperSlide className={styles.swiper__slide} onClick={clickHandler} key={_index}>
@@ -198,9 +192,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
             
           </Swiper>
         </div>
-
     </>
-    
   );
 }
 

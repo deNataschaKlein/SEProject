@@ -17,7 +17,7 @@ function StudyPrograms(this: any) {
   const [programAI, setProgramAI] = useState<any[]>([]);
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
-/*  const degree = ["bachelor", "master"]*/
+  const degree = ["bachelor", "master"]
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -92,7 +92,6 @@ function StudyPrograms(this: any) {
   }
 
   /*
-  const degree = ["bachelor", "master"]
 
   function filterFunction(degree: string){
     //const [programs, setPrograms] = useState<any[]>([]);
