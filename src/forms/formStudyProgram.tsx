@@ -1,11 +1,14 @@
 import { supabase } from "../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "../styles/Form.module.css";
+import { FormControlLabel, Switch } from "@mui/material";
 
 export default function FormStudyProgram(props) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [name, setName] = useState("Wirtschaftsinformatik");
   const [specialization, setSpecialization] = useState("");
+  const [active, setActive] = useState(true)
+  const labelSwitch = "Studiengang aktivieren"
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -14,13 +17,18 @@ export default function FormStudyProgram(props) {
     setPrograms(study_programs);
   }
 
+  const handleSwitch = () => {
+    setActive(!active)
+
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!specialization || !name) {
       return;
     }
 
-      props.onSubmit(name, specialization)
+      props.onSubmit(name, specialization, active)
 
   };
 
@@ -58,6 +66,7 @@ export default function FormStudyProgram(props) {
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </label>
+        <FormControlLabel control={<Switch defaultChecked onChange={handleSwitch}/>} label={labelSwitch}/>
         {/*<label>
           Studientyp
           <select

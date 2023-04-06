@@ -44,3 +44,14 @@
 .swiper-button-disabled {
     opacity: 0.5;
 }
+
+.deactivated {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.deactivated__object {
+    background-color: var(--color-secondary--50);
+    padding: var(--spacing-lg);
+    max-width: max-content;
+}
