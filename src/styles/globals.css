@@ -73,6 +73,7 @@ button {
 .button--primary {
     background-color: var(--color-primary--100);
     color: var(--color-light);
+    margin-bottom: var(--spacing-lg);
 }
 
 form {

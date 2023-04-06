@@ -9,7 +9,7 @@ import PillCheckbox from "@/components/PillCheckbox";
 function StudyPrograms(this: any) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-/*  const degree = ["bachelor", "master"]*/
+  /*  const degree = ["bachelor", "master"]*/
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -22,24 +22,21 @@ function StudyPrograms(this: any) {
     getInitialStudyPrograms();
   }, []);
 
-
   function ModalclickHandler() {
     setStudyModal(!studyModal);
   }
 
-  async function getData(name, specialization){
+  async function getData(name, specialization, active) {
     let { data: study_programs, error } = await supabase
       .from("study_programs")
-      .insert([{ name, specialization }]);
+      .insert([{ name, specialization, active }]);
 
     if (error) {
       console.log(error);
+    } else {
+      setStudyModal(false);
+      window.location.reload();
     }
-    else {
-      setStudyModal(false)
-      window.location.reload()
-    }
-
   }
 
   if (programs) {
@@ -55,7 +52,7 @@ function StudyPrograms(this: any) {
             headline={"Neuen Studiengang hinzufügen"}
             setModal={setStudyModal}
           >
-            <FormStudyProgram onSubmit={getData}/>
+            <FormStudyProgram onSubmit={getData} />
           </ModalOffCanvas>
         )}
         <div className={styles.studyProgram}>
@@ -67,14 +64,49 @@ function StudyPrograms(this: any) {
           </div>
           <div className={styles.studyProgram__filter}>
             <form>
-              <PillCheckbox label={"Bachelor"} id="bachelor" name="degree" checked={false}/>
-              <PillCheckbox label={"Master"} id="master" name="degree" checked={false} />
-              <PillCheckbox label={"Promotion"} id="promotion" name="degree" checked={false}/>
+              <PillCheckbox
+                label={"Bachelor"}
+                id="bachelor"
+                name="degree"
+                checked={false}
+              />
+              <PillCheckbox
+                label={"Master"}
+                id="master"
+                name="degree"
+                checked={false}
+              />
+              <PillCheckbox
+                label={"Promotion"}
+                id="promotion"
+                name="degree"
+                checked={false}
+              />
 
-              <PillCheckbox label={"dual"} id="dual" name="studyType" checked={false}/>
-              <PillCheckbox label={"berufsbegleitend"} id="berufsbegleitend" name="studyType" checked={false}/>
-              <PillCheckbox label={"vollzeit"} id="vollzeit" name="studyType" checked={false}/>
-              <PillCheckbox label={"verkürzt"} id="verkürzt" name="studyType" checked={false}/>
+              <PillCheckbox
+                label={"dual"}
+                id="dual"
+                name="studyType"
+                checked={false}
+              />
+              <PillCheckbox
+                label={"berufsbegleitend"}
+                id="berufsbegleitend"
+                name="studyType"
+                checked={false}
+              />
+              <PillCheckbox
+                label={"vollzeit"}
+                id="vollzeit"
+                name="studyType"
+                checked={false}
+              />
+              <PillCheckbox
+                label={"verkürzt"}
+                id="verkürzt"
+                name="studyType"
+                checked={false}
+              />
 
               <button
                 type={"submit"}
@@ -86,7 +118,6 @@ function StudyPrograms(this: any) {
                 Filter Anwenden
               </button>
             </form>
-
           </div>
         </div>
       </>
