@@ -1,0 +1,6 @@
+.box {
+    background-color: var(--color-light);
+    border-radius: var(--spacing-xs);
+    box-shadow: var(--shadow-base);
+    padding:  var(--spacing-md);
+}
