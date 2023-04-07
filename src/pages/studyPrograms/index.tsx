@@ -1,3 +1,4 @@
+import {NextPage} from "next";
 import { supabase } from "../../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
@@ -6,10 +7,9 @@ import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "../../forms/formStudyProgram";
 import PillCheckbox from "@/components/PillCheckbox";
 
-function StudyPrograms(this: any) {
+const StudyPrograms: NextPage = () => {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  /*  const degree = ["bachelor", "master"]*/
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -38,6 +38,7 @@ function StudyPrograms(this: any) {
       window.location.reload();
     }
   }
+
 
   if (programs) {
     return (
