@@ -13,6 +13,19 @@
     gap: var(--spacing-sm);
 }
 
+.box__modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: var(--color-light);
+    box-shadow: var(--shadow-base);
+    padding: var(--spacing-lg);
+    border-radius: var(--spacing-md);
+    outline: none;
+}
+
 @media (min-width: 1100px) {
     .applications {
         display: grid;
