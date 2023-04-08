@@ -1,4 +1,4 @@
-import {NextPage} from "next";
+import { NextPage } from "next";
 import { supabase } from "../../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
@@ -32,13 +32,11 @@ const StudyPrograms: NextPage = () => {
       .insert([{ name, specialization, active }]);
 
     if (error) {
-      console.log(error);
     } else {
       setStudyModal(false);
       window.location.reload();
     }
   }
-
 
   if (programs) {
     return (
@@ -124,6 +122,6 @@ const StudyPrograms: NextPage = () => {
       </>
     );
   }
-}
+};
 
 export default StudyPrograms;

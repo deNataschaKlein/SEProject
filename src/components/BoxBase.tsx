@@ -1,12 +1,7 @@
-import styles from './BoxBase.module.css'
+import styles from "./BoxBase.module.css";
 
-const BoxBase = (props) => {
-
-  return(
-    <div className={styles.box}>
-      {props.children}
-    </div>
-  );
+const BoxBase = (props: any) => {
+  return <div className={styles.box}>{props.children}</div>;
 };
 
 export default BoxBase;

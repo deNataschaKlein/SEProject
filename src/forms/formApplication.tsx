@@ -3,7 +3,7 @@ import ContainerBase from "@/components/ContainerBase";
 import { Button } from "@mui/material";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function FormApplication(props) {
+export default function FormApplication(props: any) {
   const application = props.applications;
 
   async function changeStatus(status: number) {
