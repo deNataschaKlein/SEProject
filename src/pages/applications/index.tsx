@@ -7,6 +7,7 @@ import { Box, Button, Modal } from "@mui/material";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormApplication from "@/forms/formApplication";
 import ContainerBase from "@/components/ContainerBase";
+import ChipHeadline from "@/components/ChipHeadline";
 
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
@@ -80,52 +81,75 @@ const Applications: NextPage = () => {
       <div className={styles.applications}>
         {/*Incoming Applications*/}
 
-        <ContainerBase>
-          {sendApplications.map((application, _index) => (
-            <div onClick={() => editApplication(application)}>
-              <BoxApplications
-                name={application.firstname + " " + application.name}
-                studyProgram={"studyProgram.name"}
-                specialization={"studyProgram.specialization"}
-                cv={true}
-                image={true}
-              />
-            </div>
-          ))}
-        </ContainerBase>
-
-        <ContainerBase>
-          {workApplications.map((application, _index) => (
-            <div onClick={() => showApplication(application)}>
-              <BoxApplications
-                name={application.firstname + " " + application.name}
-                studyProgram={"studyProgram.name"}
-                specialization={"studyProgram.specialization"}
-                cv={true}
-                image={true}
-              />
-            </div>
-          ))}
-        </ContainerBase>
         <div>
+          <ChipHeadline
+            label={"Eingänge"}
+            number={sendApplications.length.toString()}
+          />
           <ContainerBase>
-            {acceptApplications.map((application, _index) => (
-              <BoxApplications
-                name={application.firstname + " " + application.name}
-                studyProgram={"studyProgram.name"}
-                specialization={"studyProgram.specialization"}
-                cv={true}
-                image={true}
-              />
+            {sendApplications.map((application, _index) => (
+              <div onClick={() => editApplication(application)}>
+                <BoxApplications
+                  name={application.firstname + " " + application.name}
+                  studyProgram={"studyProgram.name"}
+                  specialization={"studyProgram.specialization"}
+                  cv={true}
+                  image={true}
+                />
+              </div>
             ))}
           </ContainerBase>
+        </div>
+        <div>
+          <ChipHeadline
+            label={"in Bearbeitung"}
+            number={workApplications.length.toString()}
+          />
           <ContainerBase>
-            {declineApplications.map((application, _index) => (
-              <BoxApplications
-                name={application.firstname + " " + application.name}
-              />
+            {workApplications.map((application, _index) => (
+              <div onClick={() => showApplication(application)}>
+                <BoxApplications
+                  name={application.firstname + " " + application.name}
+                  studyProgram={"studyProgram.name"}
+                  specialization={"studyProgram.specialization"}
+                  cv={true}
+                  image={true}
+                />
+              </div>
             ))}
           </ContainerBase>
+        </div>
+        <div className={styles.lastColumn}>
+          <div>
+            <ChipHeadline
+              label={"Angenommen"}
+              number={acceptApplications.length.toString()}
+            />
+            <ContainerBase>
+              {acceptApplications.map((application, _index) => (
+                <BoxApplications
+                  name={application.firstname + " " + application.name}
+                  studyProgram={"studyProgram.name"}
+                  specialization={"studyProgram.specialization"}
+                  cv={true}
+                  image={true}
+                />
+              ))}
+            </ContainerBase>
+          </div>
+          <div>
+            <ChipHeadline
+              label={"Abgelehnt"}
+              number={declineApplications.length.toString()}
+            />
+            <ContainerBase>
+              {declineApplications.map((application, _index) => (
+                <BoxApplications
+                  name={application.firstname + " " + application.name}
+                />
+              ))}
+            </ContainerBase>
+          </div>
         </div>
       </div>
 
