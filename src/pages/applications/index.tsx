@@ -11,7 +11,7 @@ import ChipHeadline from "@/components/ChipHeadline";
 
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
-  const [studyProgram, setStudyProgram] = useState<any[]>([]);
+  const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
   const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
@@ -34,14 +34,14 @@ const Applications: NextPage = () => {
     }
   }
 
-  async function getStudyProgram() {
+  async function getStudyPrograms() {
     try {
       let { data: study_programs, error } = await supabase
         .from("study_programs")
         .select("*");
 
       if (study_programs) {
-        setStudyProgram(study_programs);
+        setStudyPrograms(study_programs);
       }
       if (error) throw error;
     } catch (error) {
@@ -51,7 +51,7 @@ const Applications: NextPage = () => {
 
   useEffect(() => {
     getApplications();
-    getStudyProgram();
+    getStudyPrograms();
   }, []);
 
   const sendApplications = applications.filter(
@@ -83,22 +83,35 @@ const Applications: NextPage = () => {
     window.location.reload();
   }
 
+  function getStudyName(applicationStudyProgram: any) {
+    const StudyProgramName = studyPrograms.find(
+      (program) => program.id == applicationStudyProgram
+    );
+    if (StudyProgramName) {
+      return StudyProgramName.name;
+    }
+  }
+  function getSpecialization(applicationStudyProgram) {
+    const StudyProgramName = studyPrograms.find(
+      (program) => program.id == applicationStudyProgram
+    );
+    if (StudyProgramName) {
+      return StudyProgramName.specialization;
+    }
+  }
+
+  function getStudyProgram(application: any) {
+    const StudyProgram = studyPrograms.find(
+      (program) => program.id == application.study_programs
+    );
+    if (StudyProgram) {
+      return StudyProgram;
+    }
+  }
+
   function showApplication(application: Object[]) {
     seteditApplitcation(application);
     setApplicationModal(true);
-  }
-
-  function getStudyName(applicationStudyProgram) {
-    const StudyProgramName = studyProgram.find(
-      (element) => element.id == applicationStudyProgram
-    );
-    return StudyProgramName.name;
-  }
-  function getSpecialization(applicationStudyProgram) {
-    const StudyProgramName = studyProgram.find(
-      (element) => element.id == applicationStudyProgram
-    );
-    return StudyProgramName.specialization;
   }
 
   return (
@@ -212,7 +225,10 @@ const Applications: NextPage = () => {
       {/*Modal to show up details of an application*/}
       {applicationModal && (
         <ModalOffCanvas setModal={setApplicationModal}>
-          <FormApplication applications={editApplitcation} />
+          <FormApplication
+            applications={editApplitcation}
+            studyProgram={getStudyProgram(editApplitcation)}
+          />
         </ModalOffCanvas>
       )}
     </>

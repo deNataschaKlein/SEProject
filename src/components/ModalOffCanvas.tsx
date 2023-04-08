@@ -25,14 +25,6 @@ function ModalOffCanvas(props: any) {
               </div>
               <div>{props.children}</div>
             </div>
-            {props.button && (
-              <div className={styles.modalOffCanvas__footer}>
-                <div className={styles.modalOffCanvas__buttons}>
-                  <button onClick={close}> schließen</button>
-                  <button className="button--primary">{props.button}</button>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}

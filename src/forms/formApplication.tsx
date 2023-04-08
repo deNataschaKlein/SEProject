@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 
 export default function FormApplication(props: any) {
   const application = props.applications;
+  const studyProgram = props.studyProgram;
 
   async function changeStatus(status: number) {
     const { error } = await supabase
@@ -21,36 +22,54 @@ export default function FormApplication(props: any) {
         {" "}
         {application.firstname + " " + application.name}
       </h1>
-      <form className={styles.col__two}>
-        <div>
-          <h2>Studium</h2>
+      {application && (
+        <form className={styles.col__two}>
+          <div>
+            <div className={styles.item__space}>
+              <h2>Studium</h2>
+              <label>
+                Studienang
+                <input type={"text"} value={studyProgram.name} readOnly />
+              </label>
+              <label>
+                Schwerpunkt
+                <input
+                  type={"text"}
+                  value={studyProgram.specialization}
+                  readOnly
+                />
+              </label>
+            </div>
 
-          <h2>Werdegang</h2>
-          <label>
-            Adresse
-            <input type={"text"} value={application.address} />
-          </label>
-          <label>
-            Telefon
-            <input type={"text"} value={application.telefone} />
-          </label>
-          <label>
-            E-Mail Adresse
-            <input type={"text"} value={application.email} />
-          </label>
-        </div>
-        <div>
-          <ContainerBase>
-            Ein Bild
-            <Button variant={"contained"} onClick={() => changeStatus(3)}>
-              Bewerbuung annehmen
-            </Button>
-            <Button variant={"outlined"} onClick={() => changeStatus(4)}>
-              Bewerbung ablehnen
-            </Button>
-          </ContainerBase>
-        </div>
-      </form>
+            <div>
+              <h2>Informationen</h2>
+              <label>
+                Adresse
+                <input type={"text"} value={application.address} readOnly />
+              </label>
+              <label>
+                Telefon
+                <input type={"text"} value={application.telefone} readOnly />
+              </label>
+              <label>
+                E-Mail Adresse
+                <input type={"text"} value={application.email} readOnly />
+              </label>
+            </div>
+          </div>
+          <div>
+            <ContainerBase>
+              Ein Bild
+              <Button variant={"contained"} onClick={() => changeStatus(3)}>
+                Bewerbung annehmen
+              </Button>
+              <Button variant={"outlined"} onClick={() => changeStatus(4)}>
+                Bewerbung ablehnen
+              </Button>
+            </ContainerBase>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
