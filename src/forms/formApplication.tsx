@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
 
 export default function FormApplication(props: any) {
+  const employee = props.employee;
   const studyNames = props.studyNames; //BWL, Wirtschaftsinformatik, Angewandte Informatik
   const studyPrograms = props.studyPrograms; // Software Engineering, IT-Consulting,....
   const [studyName, setStudyName] = useState(""); //Value zum schicken der Bewerbung
@@ -55,11 +56,11 @@ export default function FormApplication(props: any) {
     useEffect(() => {
       changeValues();
     }, [studyName]);
+  } else {
+    useEffect(() => {
+      getStudyName();
+    }, []);
   }
-
-  useEffect(() => {
-    getStudyName();
-  }, []);
 
   return (
     <div>
@@ -96,7 +97,7 @@ export default function FormApplication(props: any) {
                 {studySpecial ? (
                   <select>
                     {studySpecial.map((special, _index) => (
-                      <option value={special.specialization}>
+                      <option value={special.specialization} key={special.id}>
                         {special.specialization}
                       </option>
                     ))}
@@ -113,17 +114,42 @@ export default function FormApplication(props: any) {
 
             <div>
               <h2>Informationen</h2>
+              {!employee && (
+                <div>
+                  <label>
+                    Vorname
+                    <input type={"text"} />
+                  </label>
+                  <label>
+                    Nachname
+                    <input type={"text"} />
+                  </label>
+                </div>
+              )}
+
               <label>
                 Adresse
-                <input type={"text"} value={application.address} readOnly />
+                <input
+                  type={"text"}
+                  value={application.address}
+                  readOnly={employee}
+                />
               </label>
               <label>
                 Telefon
-                <input type={"text"} value={application.telefone} readOnly />
+                <input
+                  type={"text"}
+                  value={application.telefone}
+                  readOnly={employee}
+                />
               </label>
               <label>
                 E-Mail Adresse
-                <input type={"text"} value={application.email} readOnly />
+                <input
+                  type={"text"}
+                  value={application.email}
+                  readOnly={employee}
+                />
               </label>
             </div>
           </div>

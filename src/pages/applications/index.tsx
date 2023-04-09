@@ -15,6 +15,7 @@ const Applications: NextPage = () => {
   const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
+  const [employee, setEmployee] = useState(true);
 
   const handleClose = () => setOpen(false);
 
@@ -228,6 +229,7 @@ const Applications: NextPage = () => {
           <FormApplication
             applications={editApplitcation}
             studyPrograms={getStudyProgram(editApplitcation)}
+            employee={employee}
           />
         </ModalOffCanvas>
       )}
