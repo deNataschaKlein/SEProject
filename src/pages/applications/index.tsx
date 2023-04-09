@@ -227,7 +227,7 @@ const Applications: NextPage = () => {
         <ModalOffCanvas setModal={setApplicationModal}>
           <FormApplication
             applications={editApplitcation}
-            studyProgram={getStudyProgram(editApplitcation)}
+            studyPrograms={getStudyProgram(editApplitcation)}
           />
         </ModalOffCanvas>
       )}

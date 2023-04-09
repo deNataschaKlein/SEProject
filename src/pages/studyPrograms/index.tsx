@@ -6,10 +6,14 @@ import StudyProgramSwiper from "../../components/StudyProgramSwiper";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "../../forms/formStudyProgram";
 import PillCheckbox from "@/components/PillCheckbox";
+import { Button } from "@mui/material";
+import FormApplication from "@/forms/formApplication";
 
 const StudyPrograms: NextPage = () => {
   const [programs, setPrograms] = useState<any[]>([]);
+  const [studyNames, setStudyNames] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
+  const [employee, setEmployee] = useState(false);
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -18,8 +22,17 @@ const StudyPrograms: NextPage = () => {
     setPrograms(study_programs);
   }
 
+  async function getStudyNames() {
+    let { data: study_name, error } = await supabase
+      .from("study_name")
+      .select("*");
+
+    setStudyNames(study_name);
+  }
+
   useEffect(() => {
     getInitialStudyPrograms();
+    getStudyNames();
   }, []);
 
   function ModalclickHandler() {
@@ -42,18 +55,16 @@ const StudyPrograms: NextPage = () => {
     return (
       <>
         <h1>Studiengänge</h1>
-        <button className="button--primary" onClick={ModalclickHandler}>
-          Neuen Studiengang hinzufügen
-        </button>
-        {studyModal && (
-          <ModalOffCanvas
-            button="yes"
-            headline={"Neuen Studiengang hinzufügen"}
-            setModal={setStudyModal}
-          >
-            <FormStudyProgram onSubmit={getData} />
-          </ModalOffCanvas>
+        {employee && (
+          <button className="button--primary" onClick={ModalclickHandler}>
+            Neuen Studiengang hinzufügen
+          </button>
         )}
+        <Button variant={"contained"} onClick={ModalclickHandler}>
+          {" "}
+          Jetzt Bewerben
+        </Button>
+
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
             <StudyProgramSwiper
@@ -119,6 +130,26 @@ const StudyPrograms: NextPage = () => {
             </form>
           </div>
         </div>
+
+        {/*Modal for the Forms*/}
+
+        {studyModal && (
+          <ModalOffCanvas
+            button="yes"
+            headline={"Neuen Studiengang hinzufügen"}
+            setModal={setStudyModal}
+          >
+            {employee ? (
+              <FormStudyProgram onSubmit={getData} />
+            ) : (
+              <FormApplication
+                employee={employee}
+                studyPrograms={programs}
+                studyNames={studyNames}
+              />
+            )}
+          </ModalOffCanvas>
+        )}
       </>
     );
   }

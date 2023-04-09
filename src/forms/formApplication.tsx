@@ -2,10 +2,33 @@ import styles from "../styles/Form.module.css";
 import ContainerBase from "@/components/ContainerBase";
 import { Button } from "@mui/material";
 import { supabase } from "../../lib/supabaseClient";
+import { useEffect, useState } from "react";
 
 export default function FormApplication(props: any) {
-  const application = props.applications;
-  const studyProgram = props.studyProgram;
+  const studyNames = props.studyNames; //BWL, Wirtschaftsinformatik, Angewandte Informatik
+  const studyPrograms = props.studyPrograms; // Software Engineering, IT-Consulting,....
+  const [studyName, setStudyName] = useState(""); //Value zum schicken der Bewerbung
+  const [studySpecial, setStudySpecial] = useState(); //Spezialisierung gefiltert
+
+  let application = {
+    name: "",
+    firstname: "",
+    address: "",
+    telefone: "",
+    email: "",
+  };
+  if (props.applications) {
+    application = props.applications;
+  }
+
+  async function getStudyName() {
+    let { data: study_name, error } = await supabase
+      .from("study_name")
+      .select()
+      .eq("id", studyPrograms.study_name);
+
+    setStudyName(study_name);
+  }
 
   async function changeStatus(status: number) {
     const { error } = await supabase
@@ -15,6 +38,28 @@ export default function FormApplication(props: any) {
 
     window.location.reload();
   }
+
+  function changeValues() {
+    const nameID = studyNames.find((element) => element.name === studyName);
+
+    if (nameID) {
+      const findSpecial = studyPrograms.filter(
+        (element) => element.study_name === nameID.id
+      );
+
+      setStudySpecial(findSpecial);
+    }
+  }
+
+  if (studyNames) {
+    useEffect(() => {
+      changeValues();
+    }, [studyName]);
+  }
+
+  useEffect(() => {
+    getStudyName();
+  }, []);
 
   return (
     <div>
@@ -29,15 +74,40 @@ export default function FormApplication(props: any) {
               <h2>Studium</h2>
               <label>
                 Studienang
-                <input type={"text"} value={studyProgram.name} readOnly />
+                {studyNames ? (
+                  <select
+                    name={"StudyProgramName"}
+                    onChange={(e) => setStudyName(e.target.value)}
+                  >
+                    {studyNames.map((name, _index) => (
+                      <option key={name.id} value={name.name}>
+                        {name.name}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input type={"text"} value={studyName[0]?.name} readOnly />
+                )}
               </label>
+
+              {/*Schwerpunkt*/}
               <label>
                 Schwerpunkt
-                <input
-                  type={"text"}
-                  value={studyProgram.specialization}
-                  readOnly
-                />
+                {studySpecial ? (
+                  <select>
+                    {studySpecial.map((special, _index) => (
+                      <option value={special.specialization}>
+                        {special.specialization}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={"text"}
+                    readOnly
+                    value={studyPrograms.specialization}
+                  />
+                )}
               </label>
             </div>
 
@@ -57,17 +127,19 @@ export default function FormApplication(props: any) {
               </label>
             </div>
           </div>
-          <div>
-            <ContainerBase>
-              Ein Bild
-              <Button variant={"contained"} onClick={() => changeStatus(3)}>
-                Bewerbung annehmen
-              </Button>
-              <Button variant={"outlined"} onClick={() => changeStatus(4)}>
-                Bewerbung ablehnen
-              </Button>
-            </ContainerBase>
-          </div>
+          {props.employee && (
+            <div>
+              <ContainerBase>
+                Ein Bild
+                <Button variant={"contained"} onClick={() => changeStatus(3)}>
+                  Bewerbung annehmen
+                </Button>
+                <Button variant={"outlined"} onClick={() => changeStatus(4)}>
+                  Bewerbung ablehnen
+                </Button>
+              </ContainerBase>
+            </div>
+          )}
         </form>
       )}
     </div>
