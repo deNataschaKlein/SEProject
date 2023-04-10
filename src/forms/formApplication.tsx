@@ -9,14 +9,26 @@ export default function FormApplication(props: any) {
   const studyNames = props.studyNames; //BWL, Wirtschaftsinformatik, Angewandte Informatik
   const studyPrograms = props.studyPrograms; // Software Engineering, IT-Consulting,....
   const [studyName, setStudyName] = useState(""); //Value zum schicken der Bewerbung
-  const [studySpecial, setStudySpecial] = useState(); //Spezialisierung gefiltert
+  const [filteredstudySpecial, setFilteredStudySpecial] = useState(); //Spezialisierung gefiltert
+
+  // data  for sending new Applicant
+  const [study_programs, setStudy_programs] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
+  const [birth, setBirth] = useState();
 
   let application = {
-    name: "",
-    firstname: "",
-    address: "",
-    telefone: "",
-    email: "",
+    firstname: firstname,
+    name: name,
+    study_programs: study_programs,
+    birth: birth,
+    address: address,
+    telefone: telefone,
+    email: email,
+    status: 1,
   };
   if (props.applications) {
     application = props.applications;
@@ -48,8 +60,24 @@ export default function FormApplication(props: any) {
         (element) => element.study_name === nameID.id
       );
 
-      setStudySpecial(findSpecial);
+      setFilteredStudySpecial(findSpecial);
     }
+  }
+
+  async function sendApplication() {
+    const { error } = await supabase.from("applications").insert({
+      firstname,
+      name,
+      study_programs: study_programs,
+      birth,
+      address,
+      telefone,
+      email,
+      status: 1,
+    });
+
+    if (error) {
+    } else window.location.reload();
   }
 
   if (studyNames) {
@@ -64,10 +92,11 @@ export default function FormApplication(props: any) {
 
   return (
     <div>
-      <h1 className={"primary"}>
-        {" "}
-        {application.firstname + " " + application.name}
-      </h1>
+      {employee && (
+        <h1 className={"primary"}>
+          {application.firstname + " " + application.name}
+        </h1>
+      )}
       {application && (
         <form className={styles.col__two}>
           <div>
@@ -80,6 +109,7 @@ export default function FormApplication(props: any) {
                     name={"StudyProgramName"}
                     onChange={(e) => setStudyName(e.target.value)}
                   >
+                    <option value="none" selected disabled hidden />
                     {studyNames.map((name, _index) => (
                       <option key={name.id} value={name.name}>
                         {name.name}
@@ -94,10 +124,14 @@ export default function FormApplication(props: any) {
               {/*Schwerpunkt*/}
               <label>
                 Schwerpunkt
-                {studySpecial ? (
-                  <select>
-                    {studySpecial.map((special, _index) => (
-                      <option value={special.specialization} key={special.id}>
+                {filteredstudySpecial ? (
+                  <select
+                    name={"studyProgramSpecialization"}
+                    onChange={(e) => setStudy_programs(e.target.value)}
+                  >
+                    <option value="none" selected disabled hidden />
+                    {filteredstudySpecial.map((special, _index) => (
+                      <option value={special.id} key={special.id}>
                         {special.specialization}
                       </option>
                     ))}
@@ -118,20 +152,35 @@ export default function FormApplication(props: any) {
                 <div>
                   <label>
                     Vorname
-                    <input type={"text"} />
+                    <input
+                      type={"text"}
+                      onChange={(e) => setFirstname(e.target.value)}
+                    />
                   </label>
                   <label>
                     Nachname
-                    <input type={"text"} />
+                    <input
+                      type={"text"}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </label>
                 </div>
               )}
+              <label>
+                Geburtstag
+                <input
+                  defaultValue={application.birth}
+                  type={"date"}
+                  onChange={(e) => setBirth(e.target.value)}
+                />
+              </label>
 
               <label>
                 Adresse
                 <input
                   type={"text"}
-                  value={application.address}
+                  defaultValue={application.address}
+                  onChange={(e) => setAddress(e.target.value)}
                   readOnly={employee}
                 />
               </label>
@@ -139,19 +188,26 @@ export default function FormApplication(props: any) {
                 Telefon
                 <input
                   type={"text"}
-                  value={application.telefone}
+                  defaultValue={application.telefone}
                   readOnly={employee}
+                  onChange={(e) => setTelefone(e.target.value)}
                 />
               </label>
               <label>
                 E-Mail Adresse
                 <input
                   type={"text"}
-                  value={application.email}
+                  defaultValue={application.email}
                   readOnly={employee}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </label>
             </div>
+            {!employee && (
+              <Button variant={"contained"} onClick={() => sendApplication()}>
+                Bewerbung senden
+              </Button>
+            )}
           </div>
           {props.employee && (
             <div>
