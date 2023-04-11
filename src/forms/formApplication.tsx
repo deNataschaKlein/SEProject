@@ -60,7 +60,11 @@ export default function FormApplication(props: any) {
         (element) => element.study_name === nameID.id
       );
 
-      setFilteredStudySpecial(findSpecial);
+      const filterActive = findSpecial.filter(
+        (element) => element.active === true
+      );
+
+      setFilteredStudySpecial(filterActive);
     }
   }
 
