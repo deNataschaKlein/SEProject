@@ -12,7 +12,10 @@ import styles from "./studyProgramSwiper.module.css";
 import { Mousewheel, Navigation, Pagination } from "swiper";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function StudyProgramSwiper({ setStudyModal, onSetCurrent }:any) {
+export default function StudyProgramSwiper({
+  setStudyModal,
+  onSetCurrent,
+}: any) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [specializationsWi, setSpecializationsWi] = useState<any[]>([]);
   const [specializationsAi, setSpecializationsAi] = useState<any[]>([]);

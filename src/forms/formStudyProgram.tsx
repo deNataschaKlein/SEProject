@@ -4,78 +4,105 @@ import styles from "../styles/Form.module.css";
 import { FormControlLabel, Switch } from "@mui/material";
 
 export default function FormStudyProgram(props: any) {
-  const [programs, setPrograms] = useState<any[]>([]);
-  const [studyName, setStudyName] = useState<any[]>([]);
-  const [name, setName] = useState("Wirtschaftsinformatik");
-  const [specialization, setSpecialization] = useState("");
+  const [current, setCurrent] = useState<any[]>(undefined); // value if clicked existing Study
+  const [studyProgramNames, setStudyProgramNames] = useState([]); // Wirtschaftsinformatik, Angwandte Informatik, BWL
+
   const [active, setActive] = useState(true);
-  const labelSwitch = "Studiengang aktivieren";
+  const labelSwitch = active
+    ? "Studiengang deaktivieren"
+    : "Studiengang aktivieren";
 
-  function removeDuplicatesByKey(array, key) {
-    return array.reduce((accumulator, currentValue) => {
-      if (!accumulator.find((obj) => obj[key] === currentValue[key])) {
-        accumulator.push(currentValue);
-      }
-      return accumulator;
-    }, []);
-  }
+  //Values from Input-fields
+  const [studyName, setStudyName] = useState();
+  const [specialization, setSpecialization] = useState("");
 
-  async function getStudyPrograms() {
-    let { data: study_programs } = await supabase
-      .from("study_programs")
-      .select("*");
+  let defaultStudyName: undefined;
 
-    const resultArray = removeDuplicatesByKey(study_programs, "name");
-    setPrograms(resultArray);
+  if (current) {
+    defaultStudyName = studyProgramNames.find(
+      (name) => name.id == current.study_name
+    );
   }
 
   const handleSwitch = () => {
     setActive(!active);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!specialization || !name) {
-      return;
-    }
+  async function getStudyNames() {
+    let { data: study_name, error } = await supabase
+      .from("study_name")
+      .select();
 
-    props.onSubmit(name, specialization, active);
-  };
+    setStudyProgramNames(study_name);
+  }
+
+  function postData() {
+    if (current == undefined) {
+      insertData();
+    } else updateData();
+  }
+
+  async function updateData() {
+    const study_name = studyName;
+    const currentId = current.id;
+
+    const { error } = await supabase
+      .from("study_programs")
+      .update([{ study_name, specialization, active }])
+      .eq("id", currentId);
+
+    if (error) {
+      debugger;
+    } else {
+    }
+  }
+  async function insertData() {
+    let { error } = await supabase
+      .from("study_programs")
+      .insert([{ study_name: studyName, specialization, active }]);
+
+    if (error) {
+    } else {
+      window.location.reload();
+    }
+  }
 
   useEffect(() => {
-    getStudyPrograms();
-    setName(props.current.name);
-    setSpecialization(props.current.specialization);
-    setActive(props.current.active);
+    getStudyNames();
+    if (props.current) {
+      setCurrent(props.current);
+      setSpecialization(props.current.specialization);
+      setActive(props.current.active);
+      setStudyName(props.current.study_name);
+    }
   }, []);
 
   return (
-    <form
-      className={styles.col__two}
-      onSubmit={(e) => {
-        handleSubmit(e);
-      }}
-    >
+    <form className={styles.col__two} onSubmit={postData}>
       <div className={styles.item}>
         <label>
           Studiengang
-          <select
-            name="options"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          >
-            {programs.map((item) => (
-              <option value={item.name}>{item.name}</option>
+          <select onChange={(e) => setStudyName(e.target.value)}>
+            {studyProgramNames.map((studyName, _index) => (
+              <option
+                key={studyName.id}
+                value={studyName.id}
+                selected={
+                  defaultStudyName ? defaultStudyName.id == studyName.id : ""
+                }
+              >
+                {studyName.name}
+              </option>
             ))}
           </select>
         </label>
+
         <label>
           Schwerpunkt
           <input
-            className={styles.button}
-            type="text"
-            id="specialization"
+            type={"text"}
             value={specialization}
+            id="specialization"
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </label>
@@ -83,21 +110,8 @@ export default function FormStudyProgram(props: any) {
           control={<Switch checked={active} onChange={handleSwitch} />}
           label={labelSwitch}
         />
-        {/*<label>
-          Studientyp
-          <select
-            name="studyType"
-            value={studyType}
-            onChange={(e) => setStudyType(e.target.value)}
-          >
-            <option value="dual">Dual</option>
-            <option value="berufsbegleitend">Berufsbegleitend</option>
-          </select>
-        </label>*/}
-        <input type="submit" value="Submit" />
+        <input type={"submit"} value={"bearbeiten speichern"} />
       </div>
-
-      <div>Evaluierungsbögen</div>
     </form>
   );
 }

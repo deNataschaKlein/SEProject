@@ -17,15 +17,13 @@ const StudyPrograms: NextPage = () => {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyNames, setStudyNames] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  const [employee, setEmployee] = useState(false);
+  const [employee, setEmployee] = useState(true);
 
   const [current, setCurrent] = useState();
 
   function handleCurrent(data) {
     setCurrent(data);
   }
-
-  /*  const degree = ["bachelor", "master"]*/
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -51,18 +49,6 @@ const StudyPrograms: NextPage = () => {
     setStudyModal(!studyModal);
   }
 
-  async function getData(name, specialization, active) {
-    let { error } = await supabase
-      .from("study_programs")
-      .insert([{ name, specialization, active }]);
-
-    if (error) {
-    } else {
-      setStudyModal(false);
-      window.location.reload();
-    }
-  }
-
   if (programs) {
     return (
       <>
@@ -82,17 +68,8 @@ const StudyPrograms: NextPage = () => {
           <div></div>
         )}
         <h1>Studiengänge</h1>
-        {studyModal && (
-          <ModalOffCanvas
-            button="yes"
-            headline={"Neuen Studiengang hinzufügen"}
-            setModal={setStudyModal}
-          >
-            <FormStudyProgram current={current} onSubmit={getData} />
-          </ModalOffCanvas>
-        )}
+
         <Button variant={"contained"} onClick={ModalclickHandler}>
-          {" "}
           Jetzt Bewerben
         </Button>
 
@@ -172,7 +149,7 @@ const StudyPrograms: NextPage = () => {
             setModal={setStudyModal}
           >
             {employee ? (
-              <FormStudyProgram onSubmit={getData} />
+              <FormStudyProgram current={current} />
             ) : (
               <FormApplication
                 employee={employee}
