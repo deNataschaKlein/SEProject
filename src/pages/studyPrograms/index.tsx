@@ -1,6 +1,4 @@
 import { NextPage } from "next";
-import { Auth } from "@supabase/auth-ui-react";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
@@ -8,6 +6,8 @@ import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "../../forms/formStudyProgram";
 import PillCheckbox from "@/components/PillCheckbox";
 import Account from "@/components/Account";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Auth } from "@supabase/auth-ui-react";
 
 const StudyPrograms: NextPage = () => {
   const session = useSession();

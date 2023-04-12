@@ -11,6 +11,7 @@ import ChipHeadline from "@/components/ChipHeadline";
 
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
+  const [studyProgram, setStudyProgram] = useState<any[]>([]);
   const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
@@ -19,26 +20,38 @@ const Applications: NextPage = () => {
 
   //Load Applications
   async function getApplications() {
-    let { data: applications, error } = await supabase
-      .from("applications")
-      .select("*");
-    setApplications(applications);
+    try {
+      let { data: applications, error } = await supabase
+        .from("applications")
+        .select("*");
+      if (applications) {
+        setApplications(applications);
+      }
+
+      if (error) throw error;
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
-  //Getting Name and Specialization from study_programs for each application
-  /*async function getStudyProgram(id) {
-    const { data, error } = await supabase
-      .from('study_programs')
-      .select('name, specialization, id').is('id', id)
+  async function getStudyProgram() {
+    try {
+      let { data: study_programs, error } = await supabase
+        .from("study_programs")
+        .select("*");
 
-    console.log(data)
-
-    setStudyProgram(data);
-  }*/
+      if (study_programs) {
+        setStudyProgram(study_programs);
+      }
+      if (error) throw error;
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   useEffect(() => {
     getApplications();
-    console.log(applications);
+    getStudyProgram();
   }, []);
 
   const sendApplications = applications.filter(
@@ -75,12 +88,24 @@ const Applications: NextPage = () => {
     setApplicationModal(true);
   }
 
+  function getStudyName(applicationStudyProgram) {
+    const StudyProgramName = studyProgram.find(
+      (element) => element.id == applicationStudyProgram
+    );
+    return StudyProgramName.name;
+  }
+  function getSpecialization(applicationStudyProgram) {
+    const StudyProgramName = studyProgram.find(
+      (element) => element.id == applicationStudyProgram
+    );
+    return StudyProgramName.specialization;
+  }
+
   return (
     <>
       <h1>Bewerbungen verwalten</h1>
       <div className={styles.applications}>
         {/*Incoming Applications*/}
-
         <div>
           <ChipHeadline
             label={"Eingänge"}
@@ -88,11 +113,14 @@ const Applications: NextPage = () => {
           />
           <ContainerBase>
             {sendApplications.map((application, _index) => (
-              <div onClick={() => editApplication(application)}>
+              <div
+                onClick={() => editApplication(application)}
+                key={application.id}
+              >
                 <BoxApplications
                   name={application.firstname + " " + application.name}
-                  studyProgram={"studyProgram.name"}
-                  specialization={"studyProgram.specialization"}
+                  studyProgram={getStudyName(application.study_programs)}
+                  specialization={getSpecialization(application.study_programs)}
                   cv={true}
                   image={true}
                 />
@@ -100,6 +128,8 @@ const Applications: NextPage = () => {
             ))}
           </ContainerBase>
         </div>
+
+        {/*in Progress Applications*/}
         <div>
           <ChipHeadline
             label={"in Bearbeitung"}
@@ -107,11 +137,14 @@ const Applications: NextPage = () => {
           />
           <ContainerBase>
             {workApplications.map((application, _index) => (
-              <div onClick={() => showApplication(application)}>
+              <div
+                onClick={() => showApplication(application)}
+                key={application.id}
+              >
                 <BoxApplications
                   name={application.firstname + " " + application.name}
-                  studyProgram={"studyProgram.name"}
-                  specialization={"studyProgram.specialization"}
+                  studyProgram={getStudyName(application.study_programs)}
+                  specialization={getSpecialization(application.study_programs)}
                   cv={true}
                   image={true}
                 />
@@ -119,6 +152,8 @@ const Applications: NextPage = () => {
             ))}
           </ContainerBase>
         </div>
+
+        {/*accept and declined Applications*/}
         <div className={styles.lastColumn}>
           <div>
             <ChipHeadline
@@ -128,9 +163,10 @@ const Applications: NextPage = () => {
             <ContainerBase>
               {acceptApplications.map((application, _index) => (
                 <BoxApplications
+                  key={application.id}
                   name={application.firstname + " " + application.name}
-                  studyProgram={"studyProgram.name"}
-                  specialization={"studyProgram.specialization"}
+                  studyProgram={getStudyName(application.study_programs)}
+                  specialization={getSpecialization(application.study_programs)}
                   cv={true}
                   image={true}
                 />
@@ -145,6 +181,7 @@ const Applications: NextPage = () => {
             <ContainerBase>
               {declineApplications.map((application, _index) => (
                 <BoxApplications
+                  key={application.id}
                   name={application.firstname + " " + application.name}
                 />
               ))}
