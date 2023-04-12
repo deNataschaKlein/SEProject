@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/Form.module.css";
 import { FormControlLabel, Switch } from "@mui/material";
 
-export default function FormStudyProgram(props) {
+export default function FormStudyProgram(props: any) {
   const [programs, setPrograms] = useState<any[]>([]);
+  const [studyName, setStudyName] = useState<any[]>([]);
   const [name, setName] = useState("Wirtschaftsinformatik");
   const [specialization, setSpecialization] = useState("");
-  const [active, setActive] = useState(true)
-  const labelSwitch = "Studiengang aktivieren"
+  const [active, setActive] = useState(true);
+  const labelSwitch = "Studiengang aktivieren";
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -18,9 +19,8 @@ export default function FormStudyProgram(props) {
   }
 
   const handleSwitch = () => {
-    setActive(!active)
-
-  }
+    setActive(!active);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,8 +28,7 @@ export default function FormStudyProgram(props) {
       return;
     }
 
-      props.onSubmit(name, specialization, active)
-
+    props.onSubmit(name, specialization, active);
   };
 
   useEffect(() => {
@@ -52,7 +51,9 @@ export default function FormStudyProgram(props) {
             onChange={(e) => setName(e.target.value)}
           >
             <option value="Wirtschaftsinformatik">Wirtschaftsinformatik</option>
-            <option value="Betriebswirtschaftslehre">Betriebswirtschaftslehre</option>
+            <option value="Betriebswirtschaftslehre">
+              Betriebswirtschaftslehre
+            </option>
             <option value="Angewandte Informatik">Angewandte Informatik</option>
           </select>
         </label>
@@ -66,7 +67,10 @@ export default function FormStudyProgram(props) {
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </label>
-        <FormControlLabel control={<Switch defaultChecked onChange={handleSwitch}/>} label={labelSwitch}/>
+        <FormControlLabel
+          control={<Switch defaultChecked onChange={handleSwitch} />}
+          label={labelSwitch}
+        />
         {/*<label>
           Studientyp
           <select

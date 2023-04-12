@@ -1,0 +1,10 @@
+.list {
+    display: grid;
+    grid-gap: var(--spacing-md);
+}
+
+.listElement {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}

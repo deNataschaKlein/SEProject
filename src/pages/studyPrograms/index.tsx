@@ -1,6 +1,5 @@
+import { NextPage } from "next";
 import { supabase } from "../../../lib/supabaseClient";
-import { Auth } from '@supabase/auth-ui-react'
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
@@ -8,13 +7,18 @@ import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "../../forms/formStudyProgram";
 import PillCheckbox from "@/components/PillCheckbox";
 import Account from "@/components/Account";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Auth } from "@supabase/auth-ui-react";
+import { Button } from "@mui/material";
+import FormApplication from "@/forms/formApplication";
 
-function StudyPrograms(this: any) {
-  const session = useSession()
-  const supabase = useSupabaseClient()
+const StudyPrograms: NextPage = () => {
+  const session = useSession();
+  const supabase = useSupabaseClient();
   const [programs, setPrograms] = useState<any[]>([]);
+  const [studyNames, setStudyNames] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  /*  const degree = ["bachelor", "master"]*/
+  const [employee, setEmployee] = useState(false);
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -23,8 +27,17 @@ function StudyPrograms(this: any) {
     setPrograms(study_programs);
   }
 
+  async function getStudyNames() {
+    let { data: study_name, error } = await supabase
+      .from("study_name")
+      .select("*");
+
+    setStudyNames(study_name);
+  }
+
   useEffect(() => {
     getInitialStudyPrograms();
+    getStudyNames();
   }, []);
 
   function ModalclickHandler() {
@@ -32,12 +45,11 @@ function StudyPrograms(this: any) {
   }
 
   async function getData(name, specialization, active) {
-    let { data: study_programs, error } = await supabase
+    let { error } = await supabase
       .from("study_programs")
       .insert([{ name, specialization, active }]);
 
     if (error) {
-      console.log(error);
     } else {
       setStudyModal(false);
       window.location.reload();
@@ -49,16 +61,12 @@ function StudyPrograms(this: any) {
       <>
         <div>
           {!session ? (
-            <Auth 
-              providers={[]}
-              supabaseClient={supabase}
-            />
+            <Auth providers={[]} supabaseClient={supabase} />
           ) : (
             <Account session={session} />
-            
           )}
         </div>
-        
+
         {session ? (
           <button className="button--primary" onClick={ModalclickHandler}>
             Neuen Studiengang hinzufügen
@@ -76,6 +84,11 @@ function StudyPrograms(this: any) {
             <FormStudyProgram onSubmit={getData} />
           </ModalOffCanvas>
         )}
+        <Button variant={"contained"} onClick={ModalclickHandler}>
+          {" "}
+          Jetzt Bewerben
+        </Button>
+
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
             <StudyProgramSwiper
@@ -141,9 +154,29 @@ function StudyPrograms(this: any) {
             </form>
           </div>
         </div>
+
+        {/*Modal for the Forms*/}
+
+        {studyModal && (
+          <ModalOffCanvas
+            button="yes"
+            headline={"Neuen Studiengang hinzufügen"}
+            setModal={setStudyModal}
+          >
+            {employee ? (
+              <FormStudyProgram onSubmit={getData} />
+            ) : (
+              <FormApplication
+                employee={employee}
+                studyPrograms={programs}
+                studyNames={studyNames}
+              />
+            )}
+          </ModalOffCanvas>
+        )}
       </>
     );
   }
-}
+};
 
 export default StudyPrograms;

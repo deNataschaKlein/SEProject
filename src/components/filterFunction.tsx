@@ -1,6 +1,6 @@
 import { useEffect} from "react";
 import { supabase } from "../../lib/supabaseClient";
-import StudyPrograms from "@/pages/studyPrograms/studyPrograms";
+import StudyPrograms from "@/pages/studyPrograms/index";
 
 
 function Filter() {

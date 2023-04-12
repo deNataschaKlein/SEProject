@@ -1,7 +1,7 @@
 import styles from "./pillCheckbox.module.css";
 import { useState } from "react";
 
-const PillCheckbox = ({ label, checked, ...props }) => {
+const PillCheckbox = ({ label, checked, ...props }: any) => {
   const defaultChecked = checked ? checked : false;
   const [isChecked, setIsChecked] = useState(defaultChecked);
 
@@ -15,7 +15,7 @@ const PillCheckbox = ({ label, checked, ...props }) => {
     >
       <input
         type="checkbox"
-        onChange={() => setIsChecked((prev) => !prev)}
+        onChange={() => setIsChecked((prev: any) => !prev)}
         {...props}
       />
       <span>{label}</span>
