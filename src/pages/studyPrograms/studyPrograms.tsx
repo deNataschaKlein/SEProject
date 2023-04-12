@@ -1,12 +1,17 @@
 import { supabase } from "../../../lib/supabaseClient";
+import { Auth } from '@supabase/auth-ui-react'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "../../forms/formStudyProgram";
 import PillCheckbox from "@/components/PillCheckbox";
+import Account from "@/components/Account";
 
 function StudyPrograms(this: any) {
+  const session = useSession()
+  const supabase = useSupabaseClient()
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
   /*  const degree = ["bachelor", "master"]*/
@@ -42,10 +47,26 @@ function StudyPrograms(this: any) {
   if (programs) {
     return (
       <>
+        <div>
+          {!session ? (
+            <Auth 
+              providers={[]}
+              supabaseClient={supabase}
+            />
+          ) : (
+            <Account session={session} />
+            
+          )}
+        </div>
+        
+        {session ? (
+          <button className="button--primary" onClick={ModalclickHandler}>
+            Neuen Studiengang hinzufügen
+          </button>
+        ) : (
+          <div></div>
+        )}
         <h1>Studiengänge</h1>
-        <button className="button--primary" onClick={ModalclickHandler}>
-          Neuen Studiengang hinzufügen
-        </button>
         {studyModal && (
           <ModalOffCanvas
             button="yes"

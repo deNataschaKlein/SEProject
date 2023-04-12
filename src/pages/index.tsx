@@ -2,9 +2,11 @@ import { supabase } from "../../lib/supabaseClient";
 import StudyPrograms from "@/pages/studyPrograms/studyPrograms";
 import * as AiIcons from "react-icons/ai";
 import { useState } from "react";
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import styles from "../styles/Home.module.css";
 
 function Home() {
+  const session = useSession()
   const [navBar, setNavBar] = useState(false);
   const showNav = () => setNavBar(!navBar);
 
@@ -21,8 +23,14 @@ function Home() {
           </div>
           {navBar && (
             <ul>
-              <li>test</li>
-              <li>test2</li>
+              <li>Studiengänge</li>
+              <li>Bewerben</li>
+              {session ?
+              <>
+                <li>Bewerbungen</li>
+                <li>Evaluationsbögen</li>
+              </> : <>
+              </>}
             </ul>
           )}
         </nav>
