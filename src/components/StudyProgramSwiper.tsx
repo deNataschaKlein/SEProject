@@ -12,7 +12,7 @@ import styles from "./studyProgramSwiper.module.css";
 import { Mousewheel, Navigation, Pagination } from "swiper";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function StudyProgramSwiper({ setStudyModal }) {
+export default function StudyProgramSwiper({ setStudyModal, onSetCurrent }) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [specializationsWi, setSpecializationsWi] = useState<any[]>([]);
   const [specializationsAi, setSpecializationsAi] = useState<any[]>([]);
@@ -80,8 +80,9 @@ export default function StudyProgramSwiper({ setStudyModal }) {
     getDeactivated();
   }, []);
 
-  function clickHandler() {
+  function clickHandler(program) {
     setStudyModal(true);
+    onSetCurrent(program);
   }
 
   return (
@@ -115,7 +116,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
           {specializationsWi.map((program, _index) => (
             <SwiperSlide
               className={styles.swiper__slide}
-              onClick={clickHandler}
+              onClick={() => clickHandler(program)}
               key={_index}
             >
               {program.specialization}
@@ -153,7 +154,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
           {specializationsBwl.map((program, _index) => (
             <SwiperSlide
               className={styles.swiper__slide}
-              onClick={clickHandler}
+              onClick={() => clickHandler(program)}
               key={_index}
             >
               {program.specialization}
@@ -191,7 +192,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
           {specializationsAi.map((program, _index) => (
             <SwiperSlide
               className={styles.swiper__slide}
-              onClick={clickHandler}
+              onClick={() => clickHandler(program)}
               key={_index}
             >
               {program.specialization}
@@ -202,7 +203,7 @@ export default function StudyProgramSwiper({ setStudyModal }) {
 
       <div className={styles.deactivated}>
         {deactivated.map((program, _index) => (
-          <div className={styles.deactivated__object}>
+          <div key={_index} className={styles.deactivated__object}>
             {program.specialization}
           </div>
         ))}

@@ -3,6 +3,7 @@ import styles from "./modalOffCanvas.module.css";
 import * as AiIcons from "react-icons/ai";
 
 function ModalOffCanvas(props) {
+  console.log(props);
   function close() {
     props.setModal(false);
   }

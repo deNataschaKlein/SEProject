@@ -9,6 +9,13 @@ import PillCheckbox from "@/components/PillCheckbox";
 function StudyPrograms(this: any) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
+
+  const [current, setCurrent] = useState();
+
+  function handleCurrent(data) {
+    setCurrent(data);
+  }
+
   /*  const degree = ["bachelor", "master"]*/
 
   async function getInitialStudyPrograms() {
@@ -52,7 +59,7 @@ function StudyPrograms(this: any) {
             headline={"Neuen Studiengang hinzufügen"}
             setModal={setStudyModal}
           >
-            <FormStudyProgram onSubmit={getData} />
+            <FormStudyProgram current={current} onSubmit={getData} />
           </ModalOffCanvas>
         )}
         <div className={styles.studyProgram}>
@@ -60,6 +67,7 @@ function StudyPrograms(this: any) {
             <StudyProgramSwiper
               programs={programs}
               setStudyModal={setStudyModal}
+              onSetCurrent={handleCurrent}
             />
           </div>
           <div className={styles.studyProgram__filter}>

@@ -7,20 +7,30 @@ export default function FormStudyProgram(props) {
   const [programs, setPrograms] = useState<any[]>([]);
   const [name, setName] = useState("Wirtschaftsinformatik");
   const [specialization, setSpecialization] = useState("");
-  const [active, setActive] = useState(true)
-  const labelSwitch = "Studiengang aktivieren"
+  const [active, setActive] = useState(true);
+  const labelSwitch = "Studiengang aktivieren";
+
+  function removeDuplicatesByKey(array, key) {
+    return array.reduce((accumulator, currentValue) => {
+      if (!accumulator.find((obj) => obj[key] === currentValue[key])) {
+        accumulator.push(currentValue);
+      }
+      return accumulator;
+    }, []);
+  }
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*");
-    setPrograms(study_programs);
+
+    const resultArray = removeDuplicatesByKey(study_programs, "name");
+    setPrograms(resultArray);
   }
 
   const handleSwitch = () => {
-    setActive(!active)
-
-  }
+    setActive(!active);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,12 +38,14 @@ export default function FormStudyProgram(props) {
       return;
     }
 
-      props.onSubmit(name, specialization, active)
-
+    props.onSubmit(name, specialization, active);
   };
 
   useEffect(() => {
     getStudyPrograms();
+    setName(props.current.name);
+    setSpecialization(props.current.specialization);
+    setActive(props.current.active);
   }, []);
 
   return (
@@ -51,9 +63,9 @@ export default function FormStudyProgram(props) {
             value={name}
             onChange={(e) => setName(e.target.value)}
           >
-            <option value="Wirtschaftsinformatik">Wirtschaftsinformatik</option>
-            <option value="Betriebswirtschaftslehre">Betriebswirtschaftslehre</option>
-            <option value="Angewandte Informatik">Angewandte Informatik</option>
+            {programs.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))}
           </select>
         </label>
         <label>
@@ -66,7 +78,10 @@ export default function FormStudyProgram(props) {
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </label>
-        <FormControlLabel control={<Switch defaultChecked onChange={handleSwitch}/>} label={labelSwitch}/>
+        <FormControlLabel
+          control={<Switch checked={active} onChange={handleSwitch} />}
+          label={labelSwitch}
+        />
         {/*<label>
           Studientyp
           <select
