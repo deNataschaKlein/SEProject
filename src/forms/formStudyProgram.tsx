@@ -11,11 +11,22 @@ export default function FormStudyProgram(props: any) {
   const [active, setActive] = useState(true);
   const labelSwitch = "Studiengang aktivieren";
 
+  function removeDuplicatesByKey(array, key) {
+    return array.reduce((accumulator, currentValue) => {
+      if (!accumulator.find((obj) => obj[key] === currentValue[key])) {
+        accumulator.push(currentValue);
+      }
+      return accumulator;
+    }, []);
+  }
+
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*");
-    setPrograms(study_programs);
+
+    const resultArray = removeDuplicatesByKey(study_programs, "name");
+    setPrograms(resultArray);
   }
 
   const handleSwitch = () => {
@@ -33,6 +44,9 @@ export default function FormStudyProgram(props: any) {
 
   useEffect(() => {
     getStudyPrograms();
+    setName(props.current.name);
+    setSpecialization(props.current.specialization);
+    setActive(props.current.active);
   }, []);
 
   return (
@@ -50,11 +64,9 @@ export default function FormStudyProgram(props: any) {
             value={name}
             onChange={(e) => setName(e.target.value)}
           >
-            <option value="Wirtschaftsinformatik">Wirtschaftsinformatik</option>
-            <option value="Betriebswirtschaftslehre">
-              Betriebswirtschaftslehre
-            </option>
-            <option value="Angewandte Informatik">Angewandte Informatik</option>
+            {programs.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))}
           </select>
         </label>
         <label>
@@ -68,7 +80,7 @@ export default function FormStudyProgram(props: any) {
           />
         </label>
         <FormControlLabel
-          control={<Switch defaultChecked onChange={handleSwitch} />}
+          control={<Switch checked={active} onChange={handleSwitch} />}
           label={labelSwitch}
         />
         {/*<label>

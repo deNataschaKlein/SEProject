@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { supabase } from "../../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
@@ -19,6 +18,14 @@ const StudyPrograms: NextPage = () => {
   const [studyNames, setStudyNames] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
   const [employee, setEmployee] = useState(false);
+
+  const [current, setCurrent] = useState();
+
+  function handleCurrent(data) {
+    setCurrent(data);
+  }
+
+  /*  const degree = ["bachelor", "master"]*/
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -81,7 +88,7 @@ const StudyPrograms: NextPage = () => {
             headline={"Neuen Studiengang hinzufügen"}
             setModal={setStudyModal}
           >
-            <FormStudyProgram onSubmit={getData} />
+            <FormStudyProgram current={current} onSubmit={getData} />
           </ModalOffCanvas>
         )}
         <Button variant={"contained"} onClick={ModalclickHandler}>
@@ -94,6 +101,7 @@ const StudyPrograms: NextPage = () => {
             <StudyProgramSwiper
               programs={programs}
               setStudyModal={setStudyModal}
+              onSetCurrent={handleCurrent}
             />
           </div>
           <div className={styles.studyProgram__filter}>
