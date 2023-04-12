@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { supabase } from "../../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
