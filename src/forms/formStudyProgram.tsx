@@ -5,6 +5,7 @@ import { FormControlLabel, Switch } from "@mui/material";
 
 export default function FormStudyProgram(props: any) {
   const [programs, setPrograms] = useState<any[]>([]);
+  const [studyName, setStudyName] = useState<any[]>([]);
   const [name, setName] = useState("Wirtschaftsinformatik");
   const [specialization, setSpecialization] = useState("");
   const [active, setActive] = useState(true);

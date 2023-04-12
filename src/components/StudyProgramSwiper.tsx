@@ -27,17 +27,6 @@ export default function StudyProgramSwiper({ setStudyModal }: any) {
     setPrograms(study_programs);
   }
 
-  let deg: number = 1;
-
-  async function getFilteredStudyPrograms() {
-    let { data: study_programs, error } = await supabase
-      .from("study_programs")
-      .select("*")
-      .filter("study_degree", "in", deg);
-
-    setPrograms(study_programs);
-  }
-
   async function getSpecializationsWi() {
     let { data: study_programs } = await supabase
       .from("study_programs")
@@ -75,7 +64,6 @@ export default function StudyProgramSwiper({ setStudyModal }: any) {
     getSpecializationsWi();
     getSpecializationsAi();
     getSpecializationBwl();
-    getFilteredStudyPrograms();
     getDeactivated();
   }, []);
 
