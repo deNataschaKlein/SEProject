@@ -56,6 +56,7 @@ body {
 
 h1, h2 {
     color: var(--color-dark);
+    margin-top: 0;
 }
 
 .primary {
@@ -63,11 +64,11 @@ h1, h2 {
 }
 
 button {
-    padding: var(--spacing-sm);
-    border-radius: var(--spacing-xs);
-    border: none;
-    background-color: var(--color-secondary--50);
-    color: var(--color-dark);
+    padding: var(--spacing-sm)!important;
+    border-radius: var(--spacing-xs)!important;
+    border: none!important;
+    background-color: var(--color-primary--100)!important;
+    color: var(--color-light)!important;
 }
 
 .button--primary {
@@ -90,10 +91,11 @@ label {
 
 input, select {
     display: block;
-    padding: var(--spacing-sm);
-    border: 1px solid var(--color-secondary--50);
-    border-radius: var(--spacing-xs);
-    box-shadow: var(--shadow-input);
+    padding: var(--spacing-sm)!important;
+    border: 1px solid var(--color-secondary--50)!important;
+    border-radius: var(--spacing-xs)!important;
+    background: var(--color-light)!important;
+    box-shadow: var(--shadow-input)!important;
 }
 
 input:focus , select:focus {

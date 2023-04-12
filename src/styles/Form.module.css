@@ -3,6 +3,10 @@
     grid-gap: var(--spacing-sm);
 }
 
+.item__space{
+    margin-bottom: var(--spacing-lg);
+}
+
 @media (min-width: 760px) {
     .col__two {
         grid-template-columns: repeat(2, 50%);
