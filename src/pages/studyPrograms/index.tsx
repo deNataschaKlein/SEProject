@@ -60,19 +60,16 @@ const StudyPrograms: NextPage = () => {
           )}
         </div>
 
+        <h1>Studiengänge</h1>
         {session ? (
           <button className="button--primary" onClick={ModalclickHandler}>
             Neuen Studiengang hinzufügen
           </button>
         ) : (
-          <div></div>
+          <Button variant={"contained"} onClick={ModalclickHandler}>
+            Jetzt Bewerben
+          </Button>
         )}
-        <h1>Studiengänge</h1>
-
-        <Button variant={"contained"} onClick={ModalclickHandler}>
-          Jetzt Bewerben
-        </Button>
-
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
             <StudyProgramSwiper
