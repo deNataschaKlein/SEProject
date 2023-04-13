@@ -5,6 +5,12 @@ import UploadDocuments from "@/components/UploadDocuments";
 import { Button } from "@mui/material";
 
 export default function FormApplication(props: any) {
+  const [pdfUrl, setPdfUrl] = useState('')
+
+  const handleUploadSuccess = (fileUrl: string) => {
+    setPdfUrl(fileUrl)
+  }
+
   const [studyProgramName, setStudyProgramName] = useState<any[] | null>(); // Inhalte aus der Datenbank WI,AI,BWL
   const [study_programsName, setStudyPrograms] = useState<any | undefined>(); //ausgewählter Schwerpunkt Name & ID
   const [allStudy_programs, setAllStudy_programs] = useState<any | undefined>(
