@@ -79,7 +79,7 @@ export default function Avatar({
         <div className="avatar no-image" style={{ height: size, width: size }} />
       )}
       <div className={styles.accountInput}>
-        <label className="button primary block" htmlFor="single">
+        <label className="button input block" htmlFor="single">
           {uploading ? 'Uploading ...' : 'Upload'}
         </label>
         <input

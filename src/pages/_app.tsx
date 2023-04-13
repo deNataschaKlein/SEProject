@@ -67,13 +67,6 @@ export default function App({
                     Evaluationen
                   </Link>
                 </div>
-                {/*<div className={styles.login}>
-                  {!session ? (
-                    <Auth providers={[]} supabaseClient={supabase} />
-                  ) : (
-                    <Account session={session} />
-                  )}
-                </div>*/}
               </div>
             )}
           </nav>
