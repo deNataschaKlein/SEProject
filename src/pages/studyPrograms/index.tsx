@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { supabase } from "../../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "./studyPrograms.module.css";
 import StudyProgramSwiper from "../../components/StudyProgramSwiper";
@@ -18,7 +17,13 @@ const StudyPrograms: NextPage = () => {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyNames, setStudyNames] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  const [employee, setEmployee] = useState(false);
+  const [employee, setEmployee] = useState(true);
+
+  const [current, setCurrent] = useState();
+
+  function handleCurrent(data) {
+    setCurrent(data);
+  }
 
   async function getInitialStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -44,18 +49,6 @@ const StudyPrograms: NextPage = () => {
     setStudyModal(!studyModal);
   }
 
-  async function getData(name, specialization, active) {
-    let { error } = await supabase
-      .from("study_programs")
-      .insert([{ name, specialization, active }]);
-
-    if (error) {
-    } else {
-      setStudyModal(false);
-      window.location.reload();
-    }
-  }
-
   if (programs) {
     return (
       <>
@@ -67,33 +60,22 @@ const StudyPrograms: NextPage = () => {
           )}
         </div>
 
+        <h1>Studiengänge</h1>
         {session ? (
           <button className="button--primary" onClick={ModalclickHandler}>
             Neuen Studiengang hinzufügen
           </button>
         ) : (
-          <div></div>
+          <Button variant={"contained"} onClick={ModalclickHandler}>
+            Jetzt Bewerben
+          </Button>
         )}
-        <h1>Studiengänge</h1>
-        {studyModal && (
-          <ModalOffCanvas
-            button="yes"
-            headline={"Neuen Studiengang hinzufügen"}
-            setModal={setStudyModal}
-          >
-            <FormStudyProgram onSubmit={getData} />
-          </ModalOffCanvas>
-        )}
-        <Button variant={"contained"} onClick={ModalclickHandler}>
-          {" "}
-          Jetzt Bewerben
-        </Button>
-
         <div className={styles.studyProgram}>
           <div className={styles.studyProgram__swipersection}>
             <StudyProgramSwiper
               programs={programs}
               setStudyModal={setStudyModal}
+              onSetCurrent={handleCurrent}
             />
           </div>
           <div className={styles.studyProgram__filter}>
@@ -164,7 +146,7 @@ const StudyPrograms: NextPage = () => {
             setModal={setStudyModal}
           >
             {employee ? (
-              <FormStudyProgram onSubmit={getData} />
+              <FormStudyProgram current={current} />
             ) : (
               <FormApplication
                 employee={employee}

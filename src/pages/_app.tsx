@@ -10,7 +10,7 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styles from "@/styles/Home.module.css";
 import * as AiIcons from "react-icons/ai";
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 export default function App({
@@ -49,16 +49,24 @@ export default function App({
                 <AiIcons.AiOutlineMenu size={28} />
               )}
             </div>
+
             {navBar && (
-              <div className={styles.nav__ul}>
-                <Link href="/studyPrograms" className={styles.nav__li}>
-                  Studiengänge
-                </Link>
-                {session && (
+              <div className={styles.navBar__sections}>
+                <div className={styles.nav__ul}>
+                  <Link href="/studyPrograms" className={styles.nav__li}>
+                    Studiengänge
+                  </Link>
                   <Link href="/applications" className={styles.nav__li}>
                     Bewerbungen
                   </Link>
-                )}
+                </div>
+                {/*<div className={styles.login}>
+                  {!session ? (
+                    <Auth providers={[]} supabaseClient={supabase} />
+                  ) : (
+                    <Account session={session} />
+                  )}
+                </div>*/}
               </div>
             )}
           </nav>
