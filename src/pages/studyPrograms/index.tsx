@@ -52,14 +52,13 @@ const StudyPrograms: NextPage = () => {
   if (programs) {
     return (
       <>
-        <div>
+        {/*<div>
           {!session ? (
             <Auth providers={[]} supabaseClient={supabase} />
           ) : (
             <Account session={session} />
           )}
-        </div>
-
+          </div>*/}
         <h1>Studiengänge</h1>
         {session ? (
           <button className="button--primary" onClick={ModalclickHandler}>

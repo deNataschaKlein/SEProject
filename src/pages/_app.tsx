@@ -6,12 +6,14 @@ import {
   Session,
   useSession,
 } from "@supabase/auth-helpers-react";
-
+import Account from "@/components/Account";
+import { Auth } from "@supabase/auth-ui-react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styles from "@/styles/Home.module.css";
 import * as AiIcons from "react-icons/ai";
 import React, { useState } from "react";
 import Link from "next/link";
+import Login from "@/components/Login";
 
 export default function App({
   Component,
@@ -60,13 +62,14 @@ export default function App({
                     Bewerbungen
                   </Link>
                 </div>
+                <Login/>
                 {/*<div className={styles.login}>
                   {!session ? (
                     <Auth providers={[]} supabaseClient={supabase} />
                   ) : (
                     <Account session={session} />
                   )}
-                </div>*/}
+                  </div>*/}
               </div>
             )}
           </nav>
