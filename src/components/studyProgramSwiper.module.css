@@ -17,7 +17,7 @@
 
 .swiper__slide {
     background-color: var(--color-primary--10);
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
     height: 100%;
 }
 

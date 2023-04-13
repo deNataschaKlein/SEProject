@@ -29,9 +29,7 @@ export default function FormStudyProgram(props: any) {
   };
 
   async function getStudyNames() {
-    let { data: study_name, error } = await supabase
-      .from("study_name")
-      .select();
+    let { data: study_name } = await supabase.from("study_name").select();
 
     setStudyProgramNames(study_name);
   }
@@ -83,6 +81,7 @@ export default function FormStudyProgram(props: any) {
         <label>
           Studiengang
           <select onChange={(e) => setStudyName(e.target.value)}>
+            <option value="none" selected disabled hidden />
             {studyProgramNames.map((studyName, _index) => (
               <option
                 key={studyName.id}

@@ -5,9 +5,7 @@ import StudyProgramSwiper from "../../components/StudyProgramSwiper";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "../../forms/formStudyProgram";
 import PillCheckbox from "@/components/PillCheckbox";
-import Account from "@/components/Account";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Auth } from "@supabase/auth-ui-react";
 import { Button } from "@mui/material";
 import FormApplication from "@/forms/formApplication";
 
@@ -52,13 +50,6 @@ const StudyPrograms: NextPage = () => {
   if (programs) {
     return (
       <>
-        {/*<div>
-          {!session ? (
-            <Auth providers={[]} supabaseClient={supabase} />
-          ) : (
-            <Account session={session} />
-          )}
-          </div>*/}
         <h1>Studiengänge</h1>
         {session ? (
           <button className="button--primary" onClick={ModalclickHandler}>
@@ -75,6 +66,7 @@ const StudyPrograms: NextPage = () => {
               programs={programs}
               setStudyModal={setStudyModal}
               onSetCurrent={handleCurrent}
+              session={session}
             />
           </div>
           <div className={styles.studyProgram__filter}>

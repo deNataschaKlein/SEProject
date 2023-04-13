@@ -37,9 +37,8 @@
     background-color: var(--color-secondary--20);
     box-shadow: var(--shadow-base);
     border-radius: var(--spacing-lg) 0 0 var(--spacing-lg);
-    max-height: 100%;
     padding: var(--spacing-xl);
-    width: 100%;
+    width: 82%;
 }
 
 .home {
@@ -53,4 +52,12 @@
     background-color: var(--color-secondary--40);
     padding: var(--spacing-lg);
 
+}
+
+@media (min-width: 760px) {
+    .content {
+        max-height: 100%;
+        flex-grow: 2;
+        width: auto;
+    }
 }
