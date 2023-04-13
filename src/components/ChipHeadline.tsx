@@ -5,7 +5,7 @@ import styles from "./ChipHeadline.module.css";
 const ChipHeadline = (props: any) => {
   return (
     <div className={styles.chipHeadline}>
-      {props.label && <p data-testid={"label"}> {props.label} </p>}
+      <p> {props.label} </p>
       <Chip label={props.number} />
     </div>
   );
