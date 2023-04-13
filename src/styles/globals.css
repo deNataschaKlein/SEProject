@@ -62,6 +62,10 @@ h1, h2 {
     margin-top: 0;
 }
 
+h3 {
+    color: var(--color-primary--100);
+}
+
 .primary {
     color: var(--color-primary--100);
 }

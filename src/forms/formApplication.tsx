@@ -3,6 +3,7 @@ import ContainerBase from "@/components/ContainerBase";
 import { Button } from "@mui/material";
 import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
+import UploadDocuments from "@/components/UploadDocuments";
 
 export default function FormApplication(props: any) {
   const employee = props.employee;
@@ -10,6 +11,11 @@ export default function FormApplication(props: any) {
   const studyPrograms = props.studyPrograms; // Software Engineering, IT-Consulting,....
   const [studyName, setStudyName] = useState(""); //Value zum schicken der Bewerbung
   const [filteredstudySpecial, setFilteredStudySpecial] = useState(); //Spezialisierung gefiltert
+  const [pdfUrl, setPdfUrl] = useState('')
+
+  const handleUploadSuccess = (fileUrl: string) => {
+    setPdfUrl(fileUrl)
+  }
 
   // data  for sending new Applicant
   const [study_programs, setStudy_programs] = useState("");
@@ -215,8 +221,16 @@ export default function FormApplication(props: any) {
           </div>
           {props.employee && (
             <div>
-              <ContainerBase>
-                Ein Bild
+              <UploadDocuments onUploadSuccess={handleUploadSuccess} />
+                {pdfUrl && (
+                  <div>
+                    <h2>Uploaded PDF:</h2>
+                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                      {pdfUrl}
+                    </a>
+                  </div>
+                )}
+                <ContainerBase>
                 <Button variant={"contained"} onClick={() => changeStatus(3)}>
                   Bewerbung annehmen
                 </Button>
