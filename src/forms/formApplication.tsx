@@ -1,9 +1,15 @@
 import styles from "../styles/Form.module.css";
 import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
+import UploadDocuments from "@/components/UploadDocuments";
 import { Button } from "@mui/material";
 
 export default function FormApplication(props: any) {
+  const [pdfUrl, setPdfUrl] = useState('')
+
+  const handleUploadSuccess = (fileUrl: string) => {
+    setPdfUrl(fileUrl)
+  }
   const [studyProgramName, setStudyProgramName] = useState(); // Inhalte aus der Datenbank WI,AI,BWL
   const [study_programsName, setStudyPrograms] = useState(); //ausgewählter Schwerpunkt Name & ID
   const [allStudy_programs, setAllStudy_programs] = useState(undefined);
@@ -143,6 +149,16 @@ export default function FormApplication(props: any) {
           Telefonnummer
           <input type="text" onChange={(e) => setTelefone(e.target.value)} />
         </label>
+
+        <UploadDocuments onUploadSuccess={handleUploadSuccess} />
+                {pdfUrl && (
+                  <div>
+                    <h2>Uploaded PDF:</h2>
+                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                      {pdfUrl}
+                    </a>
+                  </div>
+        )}
 
         <Button onClick={() => postApplication()} variant={"contained"}>
           Jetzt Bewerben

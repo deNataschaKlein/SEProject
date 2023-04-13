@@ -143,7 +143,7 @@ const StudyPrograms: NextPage = () => {
             headline={"Neuen Studiengang hinzufügen"}
             setModal={setStudyModal}
           >
-            {employee ? (
+            {session ? (
               <FormStudyProgram current={current} />
             ) : (
               <FormApplication
