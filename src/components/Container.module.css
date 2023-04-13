@@ -2,6 +2,7 @@
     background-color: var(--color-secondary--70);
     border-radius: var(--spacing-xs);
     padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
