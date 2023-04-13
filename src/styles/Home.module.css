@@ -1,10 +1,18 @@
 .navBar {
     background-color: var(--color-primary--100);
-    color: var(--color-light);
     min-width: 32px;
     height: 100vh;
     left: -2px;
     padding: var(--spacing-lg);
+}
+
+.navBar__sections{
+    display: flex;
+    flex-direction: column;
+}
+
+.login {
+    margin-top: 25rem;
 }
 
 .nav__ul{
