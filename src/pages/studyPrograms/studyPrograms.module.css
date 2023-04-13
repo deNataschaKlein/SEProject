@@ -1,7 +1,4 @@
 .studyProgram {
-    display: grid;
-    grid-template-columns: minmax(20px, 1fr) 1fr;
-    grid-gap: var(--spacing-lg);
 }
 
 .studyProgram__swiper{
@@ -20,7 +17,9 @@
 
 @media (min-width: 760px) {
     .studyProgram {
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: minmax(20px, 2fr) 1fr;
+        grid-gap: var(--spacing-lg);
     }
 
     .studyProgram__swipersection {
