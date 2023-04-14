@@ -1,233 +1,153 @@
 import styles from "../styles/Form.module.css";
-import ContainerBase from "@/components/ContainerBase";
-import { Button } from "@mui/material";
 import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 
 export default function FormApplication(props: any) {
-  const employee = props.employee;
-  const studyNames = props.studyNames; //BWL, Wirtschaftsinformatik, Angewandte Informatik
-  const studyPrograms = props.studyPrograms; // Software Engineering, IT-Consulting,....
-  const [studyName, setStudyName] = useState(""); //Value zum schicken der Bewerbung
-  const [filteredstudySpecial, setFilteredStudySpecial] = useState(); //Spezialisierung gefiltert
+  const [studyProgramName, setStudyProgramName] = useState(); // Inhalte aus der Datenbank WI,AI,BWL
+  const [study_programsName, setStudyPrograms] = useState(); //ausgewählter Schwerpunkt Name & ID
+  const [allStudy_programs, setAllStudy_programs] = useState(undefined);
 
-  // data  for sending new Applicant
-  const [study_programs, setStudy_programs] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [email, setEmail] = useState("");
-  const [birth, setBirth] = useState();
+  const [studyNameID, setStudyNameID] = useState(""); // Studiengang ID zum herausfinden des foreign key
+  const [selectedStudyProgram, setSelectedStudyProgram] = useState(undefined); // bei Klick auf einen existierenden Studiengang
+  const [specialization, setSpecialization] = useState(undefined); // falls es current gibt
 
-  let application = {
-    firstname: firstname,
-    name: name,
-    study_programs: study_programs,
-    birth: birth,
-    address: address,
-    telefone: telefone,
-    email: email,
-    status: 1,
-  };
-  if (props.applications) {
-    application = props.applications;
-  }
+  const [study_programs, setStudy_programs] = useState(undefined); //zu verschickender Study-Program foreign Key
+  const [firstname, setFirstname] = useState(undefined);
+  const [name, setName] = useState(undefined);
+  const [telefone, setTelefone] = useState(undefined);
+  const [email, setEmail] = useState(undefined);
 
   async function getStudyName() {
     let { data: study_name, error } = await supabase
       .from("study_name")
-      .select()
-      .eq("id", studyPrograms.study_name);
-
-    setStudyName(study_name);
+      .select("*");
+    setStudyProgramName(study_name);
   }
 
-  async function changeStatus(status: number) {
-    const { error } = await supabase
-      .from("applications")
-      .update({ status: status })
-      .eq("id", application.id);
+  async function getStudyPrograms() {
+    let { data } = await supabase.from("study_programs").select("*");
 
-    window.location.reload();
+    setAllStudy_programs(data);
   }
 
-  function changeValues() {
-    const nameID = studyNames.find((element) => element.name === studyName);
+  function getSpezialization(specialization) {
+    let study = allStudy_programs?.find(
+      (program) => program.specialization == specialization
+    );
 
-    if (nameID) {
-      const findSpecial = studyPrograms.filter(
-        (element) => element.study_name === nameID.id
-      );
+    setStudy_programs(study?.id);
+  }
 
-      const filterActive = findSpecial.filter(
-        (element) => element.active === true
-      );
+  async function postApplication() {
+    if (firstname && name && study_programs && email && telefone) {
+      const { error } = await supabase.from("applications").insert({
+        firstname,
+        name,
+        study_programs: study_programs,
+        email,
+        telefone,
+        status: 1,
+      });
 
-      setFilteredStudySpecial(filterActive);
+      if (error) {
+      } else window.location.reload();
     }
   }
 
-  async function sendApplication() {
-    const { error } = await supabase.from("applications").insert({
-      firstname,
-      name,
-      study_programs: study_programs,
-      birth,
-      address,
-      telefone,
-      email,
-      status: 1,
-    });
+  useEffect(() => {
+    getStudyName();
+    getStudyPrograms();
+    if (props.current) {
+      setSelectedStudyProgram(props.current);
+      setSpecialization(props.current.specialization);
+    }
+  }, []);
 
-    if (error) {
-    } else window.location.reload();
-  }
+  useEffect(() => {
+    const studiengang = studyProgramName?.find(
+      (studyProgram) => studyProgram.id == selectedStudyProgram?.study_name
+    );
 
-  if (studyNames) {
-    useEffect(() => {
-      changeValues();
-    }, [studyName]);
-  } else {
-    useEffect(() => {
-      getStudyName();
-    }, []);
-  }
+    if (studiengang) {
+      setStudyPrograms(studiengang);
+    }
+  }, [studyProgramName && selectedStudyProgram]);
 
+  useEffect(() => {
+    if (props.current) {
+      getSpezialization(props.current.specialization);
+    }
+  }, [allStudy_programs]);
   return (
-    <div>
-      {employee && (
-        <h1 className={"primary"}>
-          {application.firstname + " " + application.name}
-        </h1>
-      )}
-      {application && (
-        <form className={styles.col__two}>
-          <div>
-            <div className={styles.item__space}>
-              <h2>Studium</h2>
-              <label>
-                Studienang
-                {studyNames ? (
-                  <select
-                    name={"StudyProgramName"}
-                    onChange={(e) => setStudyName(e.target.value)}
-                  >
-                    <option value="none" selected disabled hidden />
-                    {studyNames.map((name, _index) => (
-                      <option key={name.id} value={name.name}>
-                        {name.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input type={"text"} value={studyName[0]?.name} readOnly />
-                )}
-              </label>
-
-              {/*Schwerpunkt*/}
-              <label>
-                Schwerpunkt
-                {filteredstudySpecial ? (
-                  <select
-                    name={"studyProgramSpecialization"}
-                    onChange={(e) => setStudy_programs(e.target.value)}
-                  >
-                    <option value="none" selected disabled hidden />
-                    {filteredstudySpecial.map((special, _index) => (
-                      <option value={special.id} key={special.id}>
-                        {special.specialization}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type={"text"}
-                    readOnly
-                    value={studyPrograms.specialization}
-                  />
-                )}
-              </label>
-            </div>
-
-            <div>
-              <h2>Informationen</h2>
-              {!employee && (
-                <div>
-                  <label>
-                    Vorname
-                    <input
-                      type={"text"}
-                      onChange={(e) => setFirstname(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Nachname
-                    <input
-                      type={"text"}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </label>
-                </div>
-              )}
-              <label>
-                Geburtstag
-                <input
-                  defaultValue={application.birth}
-                  type={"date"}
-                  onChange={(e) => setBirth(e.target.value)}
-                />
-              </label>
-
-              <label>
-                Adresse
-                <input
-                  type={"text"}
-                  defaultValue={application.address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  readOnly={employee}
-                />
-              </label>
-              <label>
-                Telefon
-                <input
-                  type={"text"}
-                  defaultValue={application.telefone}
-                  readOnly={employee}
-                  onChange={(e) => setTelefone(e.target.value)}
-                />
-              </label>
-              <label>
-                E-Mail Adresse
-                <input
-                  type={"text"}
-                  defaultValue={application.email}
-                  readOnly={employee}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </label>
-            </div>
-            {!employee && (
-              <Button variant={"contained"} onClick={() => sendApplication()}>
-                Bewerbung senden
-              </Button>
-            )}
-          </div>
-          {props.employee && (
-            <div>
-              <ContainerBase>
-                Ein Bild
-                <Button variant={"contained"} onClick={() => changeStatus(3)}>
-                  Bewerbung annehmen
-                </Button>
-                <Button variant={"outlined"} onClick={() => changeStatus(4)}>
-                  Bewerbung ablehnen
-                </Button>
-              </ContainerBase>
-            </div>
+    <form className={styles.col__two}>
+      {/*Auswahl des Studiengangs vorausgewählt oder über den globalen Button*/}
+      <div>
+        <label>
+          Studiengang
+          {selectedStudyProgram ? (
+            <input
+              type={"text"}
+              value={study_programsName?.name}
+              readOnly
+            ></input>
+          ) : (
+            <select onChange={(e) => setStudyNameID(e.target.value)}>
+              <option value="none" selected disabled hidden />
+              {studyProgramName?.map((name, _index) => (
+                <option key={name.id} value={name.id}>
+                  {name.name}
+                </option>
+              ))}
+            </select>
           )}
-        </form>
-      )}
-    </div>
+        </label>
+        <label>
+          Schwerpunkt
+          {selectedStudyProgram && specialization ? (
+            <input
+              type={"text"}
+              readOnly
+              value={specialization}
+              onLoad={() => getSpezialization()}
+            />
+          ) : (
+            <select onChange={(e) => setStudy_programs(e.target.value)}>
+              <option value="none" selected disabled hidden />
+              {allStudy_programs
+                ?.filter((studyId) => studyId.study_name == studyNameID)
+                .map((specialization, _index) => (
+                  <option key={specialization.id} value={specialization.id}>
+                    {specialization.specialization}
+                  </option>
+                ))}
+            </select>
+          )}
+        </label>
+
+        {/*  Persönliche Angaben zu der Bewerbung*/}
+        <h2>persönliche Angaben</h2>
+        <label>
+          Vorname
+          <input type={"text"} onChange={(e) => setFirstname(e.target.value)} />
+        </label>
+        <label>
+          Nachname
+          <input type={"text"} onChange={(e) => setName(e.target.value)} />
+        </label>
+        <label>
+          Email
+          <input type="email" onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <label>
+          Telefonnummer
+          <input type="text" onChange={(e) => setTelefone(e.target.value)} />
+        </label>
+
+        <Button onClick={() => postApplication()} variant={"contained"}>
+          Jetzt Bewerben
+        </Button>
+      </div>
+    </form>
   );
 }
