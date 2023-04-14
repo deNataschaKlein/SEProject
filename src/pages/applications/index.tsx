@@ -12,45 +12,52 @@ import FormApplicationManager from "@/forms/formApplicationManager";
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
   const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
+  const [studyNames, setStudyNames] = useState();
   const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
-  const [employee, setEmployee] = useState(true);
+  const [employee] = useState(true);
 
   const handleClose = () => setOpen(false);
 
   //Load Applications
   async function getApplications() {
-    try {
-      let { data: applications, error } = await supabase
-        .from("applications")
-        .select("*");
-      if (applications) {
-        setApplications(applications);
-      }
+    let { data: applications, error } = await supabase
+      .from("applications")
+      .select("*");
+    if (applications) {
+      setApplications(applications);
+    }
 
-      if (error) throw error;
-    } catch (error) {
+    if (error) {
       alert(error.message);
     }
   }
 
   async function getStudyPrograms() {
-    try {
-      let { data: study_programs, error } = await supabase
-        .from("study_programs")
-        .select("*");
+    let { data: study_programs, error } = await supabase
+      .from("study_programs")
+      .select("*");
 
-      if (study_programs) {
-        setStudyPrograms(study_programs);
-      }
-      if (error) throw error;
-    } catch (error) {
+    if (study_programs) {
+      setStudyPrograms(study_programs);
+    }
+    if (error) {
       alert(error);
     }
   }
 
+  async function getStudyNames() {
+    let { data, error } = await supabase.from("study_name").select("*");
+
+    if (data) {
+      setStudyNames(data);
+    }
+    if (error) alert(error);
+  }
+
   useEffect(() => {
+    getStudyNames();
     getApplications();
     getStudyPrograms();
   }, []);
@@ -81,15 +88,22 @@ const Applications: NextPage = () => {
       .update({ status: 2 })
       .eq("id", editApplitcation.id);
 
-    window.location.reload();
+    if (error) {
+      alert(error);
+    } else window.location.reload();
   }
 
   function getStudyName(applicationStudyProgram: any) {
     const StudyProgramName = studyPrograms.find(
-      (program) => program.id == applicationStudyProgram
+      (program) => applicationStudyProgram == program.id
     );
-    if (StudyProgramName) {
-      return StudyProgramName.name;
+
+    const studyNameID = StudyProgramName?.study_name;
+
+    const studyName = studyNames?.find((name) => name.id == studyNameID);
+
+    if (studyName) {
+      return studyName.name;
     }
   }
   function getSpecialization(applicationStudyProgram) {
@@ -159,8 +173,6 @@ const Applications: NextPage = () => {
                   name={application.firstname + " " + application.name}
                   studyProgram={getStudyName(application.study_programs)}
                   specialization={getSpecialization(application.study_programs)}
-                  cv={true}
-                  image={true}
                 />
               </div>
             ))}
@@ -181,8 +193,6 @@ const Applications: NextPage = () => {
                   name={application.firstname + " " + application.name}
                   studyProgram={getStudyName(application.study_programs)}
                   specialization={getSpecialization(application.study_programs)}
-                  cv={true}
-                  image={true}
                 />
               ))}
             </ContainerBase>
