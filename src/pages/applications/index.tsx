@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { Box, Button, Modal } from "@mui/material";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
-import FormApplication from "@/forms/formApplication";
 import ContainerBase from "@/components/ContainerBase";
 import ChipHeadline from "@/components/ChipHeadline";
+import FormApplicationManager from "@/forms/formApplicationManager";
 
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
@@ -226,7 +226,7 @@ const Applications: NextPage = () => {
       {/*Modal to show up details of an application*/}
       {applicationModal && (
         <ModalOffCanvas setModal={setApplicationModal}>
-          <FormApplication
+          <FormApplicationManager
             applications={editApplitcation}
             studyPrograms={getStudyProgram(editApplitcation)}
             employee={employee}
