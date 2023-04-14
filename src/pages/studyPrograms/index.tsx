@@ -15,12 +15,16 @@ const StudyPrograms: NextPage = () => {
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyNames, setStudyNames] = useState<any[]>([]);
   const [studyModal, setStudyModal] = useState(false);
-  const [employee, setEmployee] = useState(true);
+  const [employee, setEmployee] = useState(false);
 
-  const [current, setCurrent] = useState();
+  const [current, setCurrent] = useState(undefined);
 
   function handleCurrent(data) {
     setCurrent(data);
+  }
+
+  if (session) {
+    setEmployee(true);
   }
 
   async function getInitialStudyPrograms() {
@@ -45,6 +49,9 @@ const StudyPrograms: NextPage = () => {
 
   function ModalclickHandler() {
     setStudyModal(!studyModal);
+    if (current != undefined) {
+      setCurrent(undefined);
+    }
   }
 
   if (programs) {
@@ -140,6 +147,7 @@ const StudyPrograms: NextPage = () => {
               <FormStudyProgram current={current} />
             ) : (
               <FormApplication
+                current={current}
                 employee={employee}
                 studyPrograms={programs}
                 studyNames={studyNames}
