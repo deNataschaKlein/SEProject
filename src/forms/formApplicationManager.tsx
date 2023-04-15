@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function FormApplicationManager(props: any) {
-  const [applicant, setApplicant] = useState(undefined);
+  const [applicant, setApplicant] = useState<any>(undefined);
 
   useEffect(() => {
     setApplicant(props.applications);
