@@ -42,10 +42,10 @@ const StudyPrograms: NextPage = () => {
     setStudyNames(study_name);
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     getInitialStudyPrograms();
     getStudyNames();
-  }, []);
+  }, []);*/
 
   function ModalclickHandler() {
     setStudyModal(!studyModal);

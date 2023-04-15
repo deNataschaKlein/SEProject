@@ -5,11 +5,6 @@ import UploadDocuments from "@/components/UploadDocuments";
 import { Button } from "@mui/material";
 
 export default function FormApplication(props: any) {
-  const [pdfUrl, setPdfUrl] = useState('')
-
-  const handleUploadSuccess = (fileUrl: string) => {
-    setPdfUrl(fileUrl)
-  }
   const [studyProgramName, setStudyProgramName] = useState(); // Inhalte aus der Datenbank WI,AI,BWL
   const [study_programsName, setStudyPrograms] = useState(); //ausgewählter Schwerpunkt Name & ID
   const [allStudy_programs, setAllStudy_programs] = useState(undefined);
@@ -23,6 +18,7 @@ export default function FormApplication(props: any) {
   const [name, setName] = useState(undefined);
   const [telefone, setTelefone] = useState(undefined);
   const [email, setEmail] = useState(undefined);
+  const [document_url, setDocument_url] = useState('');
 
   async function getStudyName() {
     let { data: study_name, error } = await supabase
@@ -54,6 +50,7 @@ export default function FormApplication(props: any) {
         email,
         telefone,
         status: 1,
+        document_url: document_url,
       });
 
       if (error) {
@@ -150,15 +147,7 @@ export default function FormApplication(props: any) {
           <input type="text" onChange={(e) => setTelefone(e.target.value)} />
         </label>
 
-        <UploadDocuments onUploadSuccess={handleUploadSuccess} />
-                {pdfUrl && (
-                  <div>
-                    <h2>Uploaded PDF:</h2>
-                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                      {pdfUrl}
-                    </a>
-                  </div>
-        )}
+        <UploadDocuments onUpload={setDocument_url} />
 
         <Button onClick={() => postApplication()} variant={"contained"}>
           Jetzt Bewerben
