@@ -17,13 +17,11 @@ export default function FormApplication(props: any) {
   >(undefined); // bei Klick auf einen existierenden Studiengang
   const [specialization, setSpecialization] = useState(undefined); // falls es current gibt
 
-  const [study_programs, setStudy_programs] = useState<string | undefined>(
-    undefined
-  ); //zu verschickender Study-Program foreign Key
-  const [firstname, setFirstname] = useState<string | undefined>(undefined);
-  const [name, setName] = useState<string | undefined>(undefined);
-  const [telefone, setTelefone] = useState<string | undefined>(undefined);
-  const [email, setEmail] = useState<string | undefined>(undefined);
+  const [study_programs, setStudy_programs] = useState(undefined); //zu verschickender Study-Program foreign Key
+  const [firstname, setFirstname] = useState(undefined);
+  const [name, setName] = useState(undefined);
+  const [telefone, setTelefone] = useState(undefined);
+  const [email, setEmail] = useState(undefined);
 
   async function getStudyName() {
     let { data: study_name, error } = await supabase
@@ -67,6 +65,7 @@ export default function FormApplication(props: any) {
         telefone,
         status: 1,
         studyName: studyNameID,
+        document_url: document_url,
       });
 
       if (error) {
@@ -163,15 +162,7 @@ export default function FormApplication(props: any) {
           <input type="text" onChange={(e) => setTelefone(e.target.value)} />
         </label>
 
-        <UploadDocuments onUploadSuccess={handleUploadSuccess} />
-                {pdfUrl && (
-                  <div>
-                    <h2>Uploaded PDF:</h2>
-                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                      {pdfUrl}
-                    </a>
-                  </div>
-        )}
+        <UploadDocuments onUpload={setDocument_url} />
 
         <Button onClick={() => postApplication()} variant={"contained"}>
           Jetzt Bewerben
