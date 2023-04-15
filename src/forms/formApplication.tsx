@@ -189,15 +189,7 @@ export default function FormApplication(props: any) {
             <input type="text" onChange={(e) => setTelefone(e.target.value)} />
           </label>
 
-        <UploadDocuments onUploadSuccess={handleUploadSuccess} />
-                {pdfUrl && (
-                  <div>
-                    <h2>Uploaded PDF:</h2>
-                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                      {pdfUrl}
-                    </a>
-                  </div>
-        )}
+        <UploadDocuments onUpload={setDocument_url} />
 
           <Button onClick={() => postApplication()} variant={"contained"}>
             Jetzt Bewerben
