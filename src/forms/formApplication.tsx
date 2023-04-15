@@ -190,6 +190,7 @@ export default function FormApplication(props: any) {
           </label>
 
         <UploadDocuments onUpload={setDocument_url} />
+        <UploadDocuments onUpload={setDocument_url} />
 
           <Button onClick={() => postApplication()} variant={"contained"}>
             Jetzt Bewerben
