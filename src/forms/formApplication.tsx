@@ -4,19 +4,25 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 
 export default function FormApplication(props: any) {
-  const [studyProgramName, setStudyProgramName] = useState(); // Inhalte aus der Datenbank WI,AI,BWL
-  const [study_programsName, setStudyPrograms] = useState(); //ausgewählter Schwerpunkt Name & ID
-  const [allStudy_programs, setAllStudy_programs] = useState(undefined);
+  const [studyProgramName, setStudyProgramName] = useState<any[] | null>(); // Inhalte aus der Datenbank WI,AI,BWL
+  const [study_programsName, setStudyPrograms] = useState<any | undefined>(); //ausgewählter Schwerpunkt Name & ID
+  const [allStudy_programs, setAllStudy_programs] = useState<any | undefined>(
+    undefined
+  );
 
   const [studyNameID, setStudyNameID] = useState(""); // Studiengang ID zum herausfinden des foreign key
-  const [selectedStudyProgram, setSelectedStudyProgram] = useState(undefined); // bei Klick auf einen existierenden Studiengang
+  const [selectedStudyProgram, setSelectedStudyProgram] = useState<
+    any | undefined
+  >(undefined); // bei Klick auf einen existierenden Studiengang
   const [specialization, setSpecialization] = useState(undefined); // falls es current gibt
 
-  const [study_programs, setStudy_programs] = useState(undefined); //zu verschickender Study-Program foreign Key
-  const [firstname, setFirstname] = useState(undefined);
-  const [name, setName] = useState(undefined);
-  const [telefone, setTelefone] = useState(undefined);
-  const [email, setEmail] = useState(undefined);
+  const [study_programs, setStudy_programs] = useState<string | undefined>(
+    undefined
+  ); //zu verschickender Study-Program foreign Key
+  const [firstname, setFirstname] = useState<string | undefined>(undefined);
+  const [name, setName] = useState<string | undefined>(undefined);
+  const [telefone, setTelefone] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string | undefined>(undefined);
 
   async function getStudyName() {
     let { data: study_name, error } = await supabase
@@ -35,9 +41,9 @@ export default function FormApplication(props: any) {
     setAllStudy_programs(data);
   }
 
-  function getSpezialization(specialization) {
+  function getSpezialization(specialization: any) {
     let study = allStudy_programs?.find(
-      (program) => program.specialization == specialization
+      (program: any) => program.specialization == specialization
     );
 
     setStudy_programs(study?.id);
@@ -121,14 +127,14 @@ export default function FormApplication(props: any) {
               type={"text"}
               readOnly
               value={specialization}
-              onLoad={() => getSpezialization()}
+              onLoad={() => getSpezialization(specialization)}
             />
           ) : (
             <select onChange={(e) => setStudy_programs(e.target.value)}>
               <option value="none" selected disabled hidden />
               {allStudy_programs
-                ?.filter((studyId) => studyId.study_name == studyNameID)
-                .map((specialization, _index) => (
+                ?.filter((studyId: any) => studyId.study_name == studyNameID)
+                .map((specialization: any, _index: any) => (
                   <option key={specialization.id} value={specialization.id}>
                     {specialization.specialization}
                   </option>

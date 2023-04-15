@@ -4,8 +4,10 @@ import styles from "../styles/Form.module.css";
 import { FormControlLabel, Switch } from "@mui/material";
 
 export default function FormStudyProgram(props: any) {
-  const [current, setCurrent] = useState<any[]>(undefined); // value if clicked existing Study
-  const [studyProgramNames, setStudyProgramNames] = useState([]); // Wirtschaftsinformatik, Angwandte Informatik, BWL
+  const [current, setCurrent] = useState<any | undefined>(); // value if clicked existing Study
+  const [studyProgramNames, setStudyProgramNames] = useState<any[] | undefined>(
+    undefined
+  ); // Wirtschaftsinformatik, Angwandte Informatik, BWL
 
   const [active, setActive] = useState(true);
   const labelSwitch = active
@@ -13,15 +15,16 @@ export default function FormStudyProgram(props: any) {
     : "Studiengang aktivieren";
 
   //Values from Input-fields
-  const [studyName, setStudyName] = useState();
+  const [studyName, setStudyName] = useState<string | undefined>();
   const [specialization, setSpecialization] = useState("");
 
-  let defaultStudyName: undefined;
+  let defaultStudyName: any;
 
   if (current) {
-    defaultStudyName = studyProgramNames.find(
-      (name) => name.id == current.study_name
-    );
+    defaultStudyName =
+      studyProgramNames != undefined
+        ? studyProgramNames.find((name: any) => name.id == current.study_name)
+        : undefined;
   }
 
   const handleSwitch = () => {
@@ -31,7 +34,9 @@ export default function FormStudyProgram(props: any) {
   async function getStudyNames() {
     let { data: study_name } = await supabase.from("study_name").select();
 
-    setStudyProgramNames(study_name);
+    if (study_name) {
+      setStudyProgramNames(study_name);
+    }
   }
 
   function postData() {
@@ -42,7 +47,7 @@ export default function FormStudyProgram(props: any) {
 
   async function updateData() {
     const study_name = studyName;
-    const currentId = current.id;
+    const currentId = current?.id;
 
     const { error } = await supabase
       .from("study_programs")
@@ -82,12 +87,14 @@ export default function FormStudyProgram(props: any) {
           Studiengang
           <select onChange={(e) => setStudyName(e.target.value)}>
             <option value="none" selected disabled hidden />
-            {studyProgramNames.map((studyName, _index) => (
+            {studyProgramNames?.map((studyName, _index) => (
               <option
                 key={studyName.id}
                 value={studyName.id}
                 selected={
-                  defaultStudyName ? defaultStudyName.id == studyName.id : ""
+                  defaultStudyName
+                    ? defaultStudyName.id == studyName.id
+                    : undefined
                 }
               >
                 {studyName.name}

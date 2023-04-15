@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function FormApplicationManager(props: any) {
-  const [applicant, setApplicant] = useState(undefined);
+  const [applicant, setApplicant] = useState<any>(undefined);
 
   async function changeStatus(status: number) {
     const { error } = await supabase
