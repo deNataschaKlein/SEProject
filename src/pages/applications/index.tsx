@@ -8,6 +8,7 @@ import ModalOffCanvas from "@/components/ModalOffCanvas";
 import ContainerBase from "@/components/ContainerBase";
 import ChipHeadline from "@/components/ChipHeadline";
 import FormApplicationManager from "@/forms/formApplicationManager";
+import PillCheckbox from "@/components/PillCheckbox";
 
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
@@ -17,6 +18,8 @@ const Applications: NextPage = () => {
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
   const [employee] = useState(true);
+
+  const [filterTags, setFilterTags] = useState([]);
 
   const handleClose = () => setOpen(false);
 
@@ -62,16 +65,32 @@ const Applications: NextPage = () => {
     getStudyPrograms();
   }, []);
 
-  const sendApplications = applications.filter(
+  const filteredDATA = applications.filter((application) =>
+    filterTags.length > 0
+      ? filterTags.find((filter) => filter == application.studyName)
+      : applications
+  );
+
+  const filterHandler = (event) => {
+    if (event.target.checked) {
+      setFilterTags([...filterTags, event.target.value]);
+    } else {
+      setFilterTags(
+        filterTags.filter((filterTag) => filterTag !== event.target.value)
+      );
+    }
+  };
+
+  const sendApplications = filteredDATA.filter(
     (application) => application.status === 1
   );
-  const workApplications = applications.filter(
+  const workApplications = filteredDATA.filter(
     (application) => application.status === 2
   );
-  const acceptApplications = applications.filter(
+  const acceptApplications = filteredDATA.filter(
     (application) => application.status === 3
   );
-  const declineApplications = applications.filter(
+  const declineApplications = filteredDATA.filter(
     (application) => application.status === 4
   );
 
@@ -133,6 +152,23 @@ const Applications: NextPage = () => {
   return (
     <>
       <h1>Bewerbungen verwalten</h1>
+      <ContainerBase>
+        <div className={styles.applications__filter}>
+          <div>
+            <h2>Filter</h2>
+            <div>
+              {studyNames?.map((study, _index) => (
+                <PillCheckbox
+                  label={study.name}
+                  id={study.id}
+                  value={study.id}
+                  onClick={filterHandler}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </ContainerBase>
       <div className={styles.applications}>
         {/*Incoming Applications*/}
         <div>
