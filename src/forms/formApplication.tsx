@@ -23,6 +23,10 @@ export default function FormApplication(props: any) {
       .from("study_name")
       .select("*");
     setStudyProgramName(study_name);
+
+    if (error) {
+      alert(error);
+    }
   }
 
   async function getStudyPrograms() {
@@ -40,7 +44,14 @@ export default function FormApplication(props: any) {
   }
 
   async function postApplication() {
-    if (firstname && name && study_programs && email && telefone) {
+    if (
+      firstname &&
+      name &&
+      study_programs &&
+      email &&
+      telefone &&
+      studyNameID
+    ) {
       const { error } = await supabase.from("applications").insert({
         firstname,
         name,
@@ -48,6 +59,7 @@ export default function FormApplication(props: any) {
         email,
         telefone,
         status: 1,
+        studyName: studyNameID,
       });
 
       if (error) {
