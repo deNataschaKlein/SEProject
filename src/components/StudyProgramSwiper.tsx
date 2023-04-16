@@ -86,6 +86,7 @@ export default function StudyProgramSwiper({
                 <SwiperSlide
                   className={styles.swiper__slide}
                   onClick={() => clickHandler(program)}
+                  key={program.id}
                 >
                   {program.specialization}
                 </SwiperSlide>

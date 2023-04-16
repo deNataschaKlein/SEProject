@@ -71,14 +71,14 @@ export default function FormStudyProgram(props: any) {
   }
 
   useEffect(() => {
-    getStudyNames();
+    void getStudyNames();
     if (props.current) {
       setCurrent(props.current);
       setSpecialization(props.current.specialization);
       setActive(props.current.active);
       setStudyName(props.current.study_name);
     }
-  }, []);
+  }, [props]);
 
   return (
     <form className={styles.col__two} onSubmit={postData}>

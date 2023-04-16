@@ -41,7 +41,7 @@ export default function FormApplication(props: any) {
     setAllStudy_programs(data);
   }
 
-  function getSpezialization(specialization: any) {
+  function getSpecialization(specialization: any) {
     let study = allStudy_programs?.find(
       (program: any) => program.specialization == specialization
     );
@@ -74,13 +74,13 @@ export default function FormApplication(props: any) {
   }
 
   useEffect(() => {
-    getStudyName();
-    getStudyPrograms();
+    void getStudyName();
+    void getStudyPrograms();
     if (props.current) {
       setSelectedStudyProgram(props.current);
       setSpecialization(props.current.specialization);
     }
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     const studiengang = studyProgramName?.find(
@@ -90,13 +90,13 @@ export default function FormApplication(props: any) {
     if (studiengang) {
       setStudyPrograms(studiengang);
     }
-  }, [studyProgramName && selectedStudyProgram]);
+  }, [selectedStudyProgram?.study_name, studyProgramName]);
 
   useEffect(() => {
     if (props.current) {
-      getSpezialization(props.current.specialization);
+      getSpecialization(props.current.specialization);
     }
-  }, [allStudy_programs]);
+  }, [allStudy_programs, getSpecialization, props]);
   return (
     <form className={styles.col__two}>
       {/*Auswahl des Studiengangs vorausgewählt oder über den globalen Button*/}
@@ -127,7 +127,7 @@ export default function FormApplication(props: any) {
               type={"text"}
               readOnly
               value={specialization}
-              onLoad={() => getSpezialization(specialization)}
+              onLoad={() => getSpecialization(specialization)}
             />
           ) : (
             <select onChange={(e) => setStudy_programs(e.target.value)}>

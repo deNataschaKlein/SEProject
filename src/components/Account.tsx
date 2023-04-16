@@ -14,10 +14,6 @@ export default function Account({ session }: { session: Session }) {
   const [username, setUsername] = useState<string>();
   const [avatar_url, setAvatarUrl] = useState();
 
-  useEffect(() => {
-    getProfile();
-  }, [session]);
-
   async function getProfile() {
     try {
       setLoading(true);
@@ -69,6 +65,9 @@ export default function Account({ session }: { session: Session }) {
     }
   }
 
+  useEffect(() => {
+    void getProfile();
+  }, [getProfile, session]);
   return (
     <div>
       <div className={styles.accountInput}>
