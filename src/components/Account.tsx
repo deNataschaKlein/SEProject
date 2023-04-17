@@ -1,72 +1,73 @@
-import { useState, useEffect } from 'react'
-import { useUser, useSupabaseClient, Session } from '@supabase/auth-helpers-react'
+import { useState, useEffect } from "react";
+import {
+  useUser,
+  useSupabaseClient,
+  Session,
+} from "@supabase/auth-helpers-react";
 import styles from "./account.module.css";
-import Avatar from './Avatar'
+import Avatar from "./Avatar";
 
 export default function Account({ session }: { session: Session }) {
-  const supabase = useSupabaseClient()
-  const user = useUser()
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState(null)
-  const [avatar_url, setAvatarUrl] = useState(null)
-
-  useEffect(() => {
-    getProfile()
-  }, [session])
+  const supabase = useSupabaseClient();
+  const user = useUser();
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState<string>();
+  const [avatar_url, setAvatarUrl] = useState();
 
   async function getProfile() {
     try {
-      setLoading(true)
-      if (!user) throw new Error('No user')
+      setLoading(true);
+      if (!user) throw new Error("No user");
 
       let { data, error, status } = await supabase
         .from("profiles")
         .select("username, avatar_url")
-        .eq('id', user.id)
-        .single()
+        .eq("id", user.id)
+        .single();
 
       if (error && status !== 406) {
-        throw error
+        throw error;
       }
 
       if (data) {
-        setUsername(data.username)
-        setAvatarUrl(data.avatar_url)
+        setUsername(data.username);
+        setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
-      alert('Error loading user data!')
-      console.log(error)
+      alert("Error loading user data!");
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
-  async function updateProfile({ username, avatar_url }) {
+  async function updateProfile({ username, avatar_url }: any) {
     try {
-      setLoading(true)
-      if (!user) throw new Error('No user')
+      setLoading(true);
+      if (!user) throw new Error("No user");
 
       const updates = {
         id: user.id,
         username,
         avatar_url,
         updated_at: new Date().toISOString(),
-      }
+      };
 
-      let { error } = await supabase
-      .from('profiles')
-      .upsert(updates)
-      
-      if (error) throw error
-      alert('Profile updated!')
+      let { error } = await supabase.from("profiles").upsert(updates);
+
+      if (error) throw error;
+      alert("Profile updated!");
     } catch (error) {
-      alert('Error updating the data!')
-      console.log(error)
+      alert("Error updating the data!");
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
+  useEffect(() => {
+    void getProfile();
+  }, [getProfile, session]);
   return (
     <div>
       <div className={styles.accountInput}>
@@ -79,7 +80,7 @@ export default function Account({ session }: { session: Session }) {
           id="username"
           type="text"
           placeholder="Username"
-          value={username || ''}
+          value={username || ""}
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
@@ -89,24 +90,27 @@ export default function Account({ session }: { session: Session }) {
           onClick={() => updateProfile({ username, avatar_url })}
           disabled={loading}
         >
-          {loading ? 'Loading ...' : 'Update'}
+          {loading ? "Loading ..." : "Update"}
         </button>
       </div>
 
       <div className={styles.accountInput}>
-        <button className="button block" onClick={() => supabase.auth.signOut()}>
+        <button
+          className="button block"
+          onClick={() => supabase.auth.signOut()}
+        >
           Ausloggen
         </button>
       </div>
       <Avatar
-            uid={user.id}
-            url={avatar_url}
-            size={40}
-            onUpload={(url) => {
-                setAvatarUrl(url)
-                updateProfile({ username, avatar_url: url })
-            }}
-        />
+        uid={user?.id}
+        url={avatar_url}
+        size={40}
+        onUpload={(url) => {
+          setAvatarUrl(url);
+          updateProfile({ username, avatar_url: url });
+        }}
+      />
     </div>
-  )
+  );
 }

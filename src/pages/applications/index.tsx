@@ -5,14 +5,14 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { Box, Button, Modal } from "@mui/material";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
-import FormApplication from "@/forms/formApplication";
 import ContainerBase from "@/components/ContainerBase";
 import ChipHeadline from "@/components/ChipHeadline";
+import FormApplicationManager from "@/forms/formApplicationManager";
 
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
   const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
-  const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
+  const [editApplitcation, seteditApplitcation] = useState<any>([]);
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
   const [employee, setEmployee] = useState(true);
@@ -31,7 +31,7 @@ const Applications: NextPage = () => {
 
       if (error) throw error;
     } catch (error) {
-      alert(error.message);
+      alert(error);
     }
   }
 
@@ -92,7 +92,7 @@ const Applications: NextPage = () => {
       return StudyProgramName.name;
     }
   }
-  function getSpecialization(applicationStudyProgram) {
+  function getSpecialization(applicationStudyProgram: any) {
     const StudyProgramName = studyPrograms.find(
       (program) => program.id == applicationStudyProgram
     );
@@ -226,7 +226,7 @@ const Applications: NextPage = () => {
       {/*Modal to show up details of an application*/}
       {applicationModal && (
         <ModalOffCanvas setModal={setApplicationModal}>
-          <FormApplication
+          <FormApplicationManager
             applications={editApplitcation}
             studyPrograms={getStudyProgram(editApplitcation)}
             employee={employee}

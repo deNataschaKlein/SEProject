@@ -16,9 +16,9 @@ export default function StudyProgramSwiper({
   setStudyModal,
   onSetCurrent,
 }: any) {
-  const [programs, setPrograms] = useState<any[]>([]);
-  const [programNames, setProgramNames] = useState<any[]>([]);
-  const [deactivated, setDeactivated] = useState<any[]>([]);
+  const [programs, setPrograms] = useState<any[] | null>([]);
+  const [programNames, setProgramNames] = useState<any[] | null>([]);
+  const [deactivated, setDeactivated] = useState<any[] | null>([]);
 
   async function getStudyPrograms() {
     let { data: study_programs } = await supabase
@@ -42,7 +42,7 @@ export default function StudyProgramSwiper({
     setDeactivated(study_programs);
   }
 
-  function clickHandler(program) {
+  function clickHandler(program: any[]) {
     setStudyModal(true);
     onSetCurrent(program);
   }
@@ -54,7 +54,7 @@ export default function StudyProgramSwiper({
 
   return (
     <>
-      {programNames.map((programName, _index) => (
+      {programNames?.map((programName, _index) => (
         <div className={styles.swiperbox} key={programName.id}>
           <h2 className="primary">{programName.name}</h2>
           <Swiper
@@ -78,7 +78,7 @@ export default function StudyProgramSwiper({
             className={styles.study_swiper}
           >
             {programs
-              .filter(
+              ?.filter(
                 (program) =>
                   program.study_name == programName.id && program.active
               )
@@ -86,6 +86,7 @@ export default function StudyProgramSwiper({
                 <SwiperSlide
                   className={styles.swiper__slide}
                   onClick={() => clickHandler(program)}
+                  key={program.id}
                 >
                   {program.specialization}
                 </SwiperSlide>
@@ -95,7 +96,7 @@ export default function StudyProgramSwiper({
       ))}
 
       <div className={styles.deactivated}>
-        {deactivated.map((program, _index) => (
+        {deactivated?.map((program, _index) => (
           <div key={_index} className={styles.deactivated__object}>
             {program.specialization}
           </div>
