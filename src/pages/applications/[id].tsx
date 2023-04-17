@@ -1,10 +1,5 @@
-import { useRouter } from "next/router";
-import { supabase } from "../../../lib/supabaseClient";
-import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
-
 function ApplicantDetail() {
-  const router = useRouter();
+  /*const router = useRouter();
   const { id } = router.query;
 
   const [applicant, setApplicant] = useState(undefined);
@@ -36,11 +31,11 @@ function ApplicantDetail() {
     if (applicant) {
       getStatus();
     }
-  }, [id]);
+  }, [id]);*/
 
   return (
     <>
-      {applicant && (
+      {/*{applicant && (
         <div>
           <h1>
             Hallo {applicant[0].firstname} {applicant[0].name}
@@ -49,7 +44,7 @@ function ApplicantDetail() {
 
           <Button onClick={() => getApplicant()}>Status erneut abfragen</Button>
         </div>
-      )}
+      )}*/}
     </>
   );
 }
