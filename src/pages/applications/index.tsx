@@ -33,19 +33,21 @@ const Applications: NextPage = () => {
     }
 
     if (error) {
-      alert(error.message);
+      alert(error);
     }
   }
 
   async function getStudyPrograms() {
-    let { data: study_programs, error } = await supabase
-      .from("study_programs")
-      .select("*");
+    try {
+      let { data: study_programs, error } = await supabase
+        .from("study_programs")
+        .select("*");
 
-    if (study_programs) {
-      setStudyPrograms(study_programs);
-    }
-    if (error) {
+      if (study_programs) {
+        setStudyPrograms(study_programs);
+      }
+      if (error) throw error;
+    } catch (error) {
       alert(error);
     }
   }
@@ -125,7 +127,7 @@ const Applications: NextPage = () => {
       return studyName.name;
     }
   }
-  function getSpecialization(applicationStudyProgram) {
+  function getSpecialization(applicationStudyProgram: any) {
     const StudyProgramName = studyPrograms.find(
       (program) => program.id == applicationStudyProgram
     );
@@ -158,6 +160,7 @@ const Applications: NextPage = () => {
             <div>
               {studyNames?.map((study, _index) => (
                 <PillCheckbox
+                  key={study.id}
                   label={study.name}
                   id={study.id}
                   value={study.id}

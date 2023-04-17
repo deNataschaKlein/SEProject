@@ -11,12 +11,8 @@ export default function Account({ session }: { session: Session }) {
   const supabase = useSupabaseClient();
   const user = useUser();
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState(null);
-  const [avatar_url, setAvatarUrl] = useState(null);
-
-  useEffect(() => {
-    getProfile();
-  }, [session]);
+  const [username, setUsername] = useState<string>();
+  const [avatar_url, setAvatarUrl] = useState();
 
   async function getProfile() {
     try {
@@ -69,6 +65,9 @@ export default function Account({ session }: { session: Session }) {
     }
   }
 
+  useEffect(() => {
+    void getProfile();
+  }, [getProfile, session]);
   return (
     <div>
       <div className={styles.accountInput}>
@@ -104,7 +103,7 @@ export default function Account({ session }: { session: Session }) {
         </button>
       </div>
       <Avatar
-        uid={user.id}
+        uid={user?.id}
         url={avatar_url}
         size={40}
         onUpload={(url) => {
