@@ -13,13 +13,13 @@ import PillCheckbox from "@/components/PillCheckbox";
 const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
   const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
-  const [studyNames, setStudyNames] = useState();
+  const [studyNames, setStudyNames] = useState<any>();
   const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
   const [employee] = useState(true);
 
-  const [filterTags, setFilterTags] = useState([]);
+  const [filterTags, setFilterTags] = useState<any[]>([]);
 
   const handleClose = () => setOpen(false);
 
@@ -73,7 +73,7 @@ const Applications: NextPage = () => {
       : applications
   );
 
-  const filterHandler = (event) => {
+  const filterHandler = (event: any) => {
     if (event.target.checked) {
       setFilterTags([...filterTags, event.target.value]);
     } else {
@@ -107,7 +107,7 @@ const Applications: NextPage = () => {
     const { error } = await supabase
       .from("applications")
       .update({ status: 2 })
-      .eq("id", editApplitcation.id);
+      .eq("id", editApplitcation[0].id);
 
     if (error) {
       alert(error);
@@ -121,7 +121,7 @@ const Applications: NextPage = () => {
 
     const studyNameID = StudyProgramName?.study_name;
 
-    const studyName = studyNames?.find((name) => name.id == studyNameID);
+    const studyName = studyNames?.find((name: any) => name.id == studyNameID);
 
     if (studyName) {
       return studyName.name;
@@ -158,7 +158,7 @@ const Applications: NextPage = () => {
           <div>
             <h2>Filter</h2>
             <div>
-              {studyNames?.map((study, _index) => (
+              {studyNames?.map((study: any, _index: any) => (
                 <PillCheckbox
                   key={study.id}
                   label={study.name}
@@ -262,10 +262,7 @@ const Applications: NextPage = () => {
       >
         <Box className={styles.box__modal}>
           <h2>Bewerbung bearbeiten</h2>
-          <p>
-            Möchtest du mit der Bearbeitung der Bewerbung von{" "}
-            {editApplitcation.firstname + " " + editApplitcation.name} starten?
-          </p>
+          <p>Möchtest du mit der Bearbeitung der Bewerbung von starten?</p>
           <Button variant={"contained"} onClick={startEditing}>
             Ja
           </Button>
