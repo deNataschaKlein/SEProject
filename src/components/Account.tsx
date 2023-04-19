@@ -67,7 +67,7 @@ export default function Account({ session }: { session: Session }) {
 
   useEffect(() => {
     void getProfile();
-  }, [getProfile, session]);
+  }, [session]);
   return (
     <div>
       <div className={styles.accountInput}>

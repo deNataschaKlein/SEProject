@@ -17,11 +17,14 @@ export default function FormApplication(props: any) {
   >(undefined); // bei Klick auf einen existierenden Studiengang
   const [specialization, setSpecialization] = useState(undefined); // falls es current gibt
 
-  const [study_programs, setStudy_programs] = useState(undefined); //zu verschickender Study-Program foreign Key
-  const [firstname, setFirstname] = useState(undefined);
-  const [name, setName] = useState(undefined);
-  const [telefone, setTelefone] = useState(undefined);
-  const [email, setEmail] = useState(undefined);
+  const [study_programs, setStudy_programs] = useState<string | undefined>(
+    undefined
+  ); //zu verschickender Study-Program foreign Key
+  const [firstname, setFirstname] = useState<string | undefined>(undefined);
+  const [name, setName] = useState<string | undefined>(undefined);
+  const [telefone, setTelefone] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string | undefined>(undefined);
+  const [document_url, setDocument_url] = useState<string | undefined>(undefined);
 
   async function getStudyName() {
     let { data: study_name, error } = await supabase
