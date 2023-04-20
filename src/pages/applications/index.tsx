@@ -92,6 +92,7 @@ const Applications: NextPage = () => {
       return StudyProgramName.name;
     }
   }
+
   function getSpecialization(applicationStudyProgram) {
     const StudyProgramName = studyPrograms.find(
       (program) => program.id == applicationStudyProgram

@@ -6,6 +6,8 @@ import {
   Session,
   useSession,
 } from "@supabase/auth-helpers-react";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styles from "@/styles/Home.module.css";
@@ -39,6 +41,8 @@ export default function App({
       supabaseClient={supabase}
       initialSession={pageProps.initialSession}
     >
+      <ToastContainer/>
+
       <ThemeProvider theme={customTheme}>
         <aside className={styles.navBar}>
           <nav>
@@ -58,6 +62,9 @@ export default function App({
                   </Link>
                   <Link href="/applications" className={styles.nav__li}>
                     Bewerbungen
+                  </Link>
+                  <Link href="/evaluations" className={styles.nav__li}>
+                    Evaluationen
                   </Link>
                 </div>
                 {/*<div className={styles.login}>

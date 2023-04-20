@@ -34,7 +34,7 @@ export default function StudyProgramSwiper({
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
-      .eq("name", "Wirtschaftsinformatik");
+      .eq("study_name", "3");
     setSpecializationsWi(study_programs);
   }
 
@@ -42,7 +42,7 @@ export default function StudyProgramSwiper({
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
-      .eq("name", "Angewandte Informatik");
+      .eq("study_name", "2");
     setSpecializationsAi(study_programs);
   }
 
@@ -50,7 +50,7 @@ export default function StudyProgramSwiper({
     let { data: study_programs } = await supabase
       .from("study_programs")
       .select("*")
-      .eq("name", "Betriebswirtschaftslehre");
+      .eq("study_name", "1");
     setSpecializationsBwl(study_programs);
   }
 
