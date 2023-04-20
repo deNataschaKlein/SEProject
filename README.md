@@ -11,7 +11,10 @@ npm run dev
 ```
 
 ## Einrichtung
-Richte eine .env.local ein und hinterlege dort deinen ANON_key zu supabase
+Im obersten Ordner eine Datei mit dem Namen „ .env.local“ erstellen und deinen ANON_key zu supabase einfügen:
+
+Mit dem Befehl „npm run dev“, können sie dann das Projekt starten, gegebenenfalls müssen sie noch Pakete, wie beispielsweise Next, nachinstallieren. 
+
 
 ## Commit-Regeln
 Es wird nach dem Git Flow Prinzip gearbeitet. Das bedeutet es gibt einen Develop, Integration und Master Branch. 
