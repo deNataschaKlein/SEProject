@@ -189,6 +189,8 @@ export default function FormApplication(props: any) {
             <input type="text" onChange={(e) => setTelefone(e.target.value)} />
           </label>
 
+        <UploadDocuments onUpload={setDocument_url} />
+
           <Button onClick={() => postApplication()} variant={"contained"}>
             Jetzt Bewerben
           </Button>
