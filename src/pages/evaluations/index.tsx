@@ -9,30 +9,25 @@ import ContainerBase from "@/components/ContainerBase";
 import ChipHeadline from "@/components/ChipHeadline";
 import FormEvaluation from "@/forms/formEvaluation";
 
-const Applications: NextPage = () => {
-  const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
+const Evaluations: NextPage = () => {
   const [editEvaluation, seteditEvaluation] = useState<any[]>([]);
   const [evaluationModal, setEvaluationModal] = useState(false);
 
   //ab hier const für evaluations
   const [evaluations, setEvaluations] = useState<any[]>([]);
-
   const [study_names, setStudyNames] = useState<any[]>([]);
-
 
   //ab hier getter für evaluations
   async function getEvaluations() {
-    try {
-      let { data: evaluations, error } = await supabase
-        .from("evaluations")
-        .select("*");
+    let { data: evaluations, error } = await supabase
+      .from("evaluations")
+      .select("*");
+    if (error) {
+      alert(error);
+    } else {
       if (evaluations) {
         setEvaluations(evaluations);
       }
-
-      if (error) throw error;
-    } catch (error) {
-      alert(error);
     }
   }
 
@@ -51,34 +46,19 @@ const Applications: NextPage = () => {
     }
   }
 
-  useEffect(() => {
-    getEvaluations();
-    getStudyNames();
-  }, []);
-
-  function editEval(event, evaluation: Object[]) {
+  function editEval(event: any, evaluation: Object[]) {
     if (event.target.tagName !== "BUTTON") {
       setEvaluationModal(true);
       seteditEvaluation(evaluation);
     }
   }
 
-  function getStudyProgram(application: any) {
-    const StudyProgram = studyPrograms.find(
-      (program) => program.id == application.study_programs
-    );
-    if (StudyProgram) {
-      return StudyProgram;
-    }
-  }
-
   function showEvaluation(evaluation: Object[]) {
     seteditEvaluation(evaluation);
-
     setEvaluationModal(true);
   }
 
-  function handleDelete(event, evaluation) {
+  function handleDelete(event: any, evaluation: any) {
     setEvaluationModal(false);
 
     supabase
@@ -87,11 +67,13 @@ const Applications: NextPage = () => {
       .eq("id", evaluation.id)
       .then((result) => {
         getEvaluations();
-      })
-      .catch((error) => {
-        console.error(error);
       });
   }
+
+  useEffect(() => {
+    getEvaluations();
+    getStudyNames();
+  }, []);
 
   return (
     <>
@@ -111,7 +93,9 @@ const Applications: NextPage = () => {
                   key={evaluation.id}
                 >
                   <BoxEvaluations
-                    handleDelete={(event) => handleDelete(event, evaluation)}
+                    handleDelete={(event: any) =>
+                      handleDelete(event, evaluation)
+                    }
                     name={evaluation.name}
                     studyname1_id={
                       study_names[evaluation.studyname1_id - 1]?.name
@@ -139,15 +123,11 @@ const Applications: NextPage = () => {
       {/*Modal to show up details of an evaluation*/}
       {evaluationModal && (
         <ModalOffCanvas setModal={setEvaluationModal}>
-          <FormEvaluation
-            applications={editEvaluation}
-            studyPrograms={getStudyProgram(editEvaluation)}
-            editEvaluation={editEvaluation}
-          />
+          <FormEvaluation editEvaluation={editEvaluation} />
         </ModalOffCanvas>
       )}
     </>
   );
 };
 
-export default Applications;
+export default Evaluations;
