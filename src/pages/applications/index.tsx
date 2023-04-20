@@ -14,7 +14,7 @@ const Applications: NextPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
   const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
   const [studyNames, setStudyNames] = useState<any>();
-  const [editApplitcation, seteditApplitcation] = useState<any[]>([]);
+  const [editApplitcation, seteditApplitcation] = useState<any>();
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
   const [employee] = useState(true);
@@ -96,7 +96,7 @@ const Applications: NextPage = () => {
     (application) => application.status === 4
   );
 
-  function editApplication(application: Object[]) {
+  function editApplication(application: Object) {
     setOpen(true);
     seteditApplitcation(application);
   }
@@ -107,7 +107,7 @@ const Applications: NextPage = () => {
     const { error } = await supabase
       .from("applications")
       .update({ status: 2 })
-      .eq("id", editApplitcation[0].id);
+      .eq("id", editApplitcation.id);
 
     if (error) {
       alert(error);
@@ -171,6 +171,8 @@ const Applications: NextPage = () => {
           </div>
         </div>
       </ContainerBase>
+
+      {/* Applications*/}
       <div className={styles.applications}>
         {/*Incoming Applications*/}
         <div>
