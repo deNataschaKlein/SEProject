@@ -190,8 +190,7 @@ const Applications: NextPage = () => {
                   name={application.firstname + " " + application.name}
                   studyProgram={getStudyName(application.study_programs)}
                   specialization={getSpecialization(application.study_programs)}
-                  cv={true}
-                  image={true}
+                  document_url={application.document_url}
                 />
               </div>
             ))}
@@ -214,6 +213,7 @@ const Applications: NextPage = () => {
                   name={application.firstname + " " + application.name}
                   studyProgram={getStudyName(application.study_programs)}
                   specialization={getSpecialization(application.study_programs)}
+                  document_url={application.document_url}
                 />
               </div>
             ))}
@@ -234,6 +234,7 @@ const Applications: NextPage = () => {
                   name={application.firstname + " " + application.name}
                   studyProgram={getStudyName(application.study_programs)}
                   specialization={getSpecialization(application.study_programs)}
+                  document_url={application.document_url}
                 />
               ))}
             </ContainerBase>
