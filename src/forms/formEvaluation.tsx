@@ -5,27 +5,30 @@ import { Slider, Button, Checkbox, FormControlLabel } from "@mui/material";
 import { toast } from "react-toastify";
 
 export default function FormStudyProgram(props: any) {
-  const [current, setCurrent] = useState<any[]>(undefined); // value if clicked existing Study
-  const [studyProgramNames, setStudyProgramNames] = useState([]); // Wirtschaftsinformatik, Angwandte Informatik, BWL
+  const [current, setCurrent] = useState<any | undefined>(undefined); // value if clicked existing Study
+  const [studyProgramNames, setStudyProgramNames] = useState<any>([]); // Wirtschaftsinformatik, Angwandte Informatik, BWL
 
   //Values from Input-fields
   const [studyName, setStudyName] = useState();
   const [evaluationName, setEvaluationName] = useState("");
-  const [forWi, setforWi] = React.useState(false);
-  const [forBwl, setforBwl] = React.useState(false);
-  const [forAi, setforAi] = React.useState(false);
+  const [forWi, setforWi] = useState(false);
+  const [forBwl, setforBwl] = useState(false);
+  const [forAi, setforAi] = useState(false);
   const [reqKnowledge, setReqKnowledge] = useState(0);
-  const [forWi1, setforWi1] = useState(null);
-  const [forBwl1, setforBwl1] = useState(null);
-  const [forAi1, setforAi1] = useState(null);
-
+  const [forWi1, setforWi1] = useState<number>();
+  const [forBwl1, setforBwl1] = useState<number>();
+  const [forAi1, setforAi1] = useState<number>();
 
   async function getStudyNames() {
     let { data: study_name, error } = await supabase
       .from("study_name")
       .select();
 
-    setStudyProgramNames(study_name);
+    if (error) {
+      alert(error);
+    } else {
+      setStudyProgramNames(study_name);
+    }
   }
 
   function postData() {
@@ -36,7 +39,7 @@ export default function FormStudyProgram(props: any) {
 
   async function updateData() {
     const study_name = studyName;
-    const currentId = current.id;
+    const currentId = current?.id;
 
     const { error } = await supabase
       .from("study_programs")
@@ -44,10 +47,10 @@ export default function FormStudyProgram(props: any) {
       .eq("id", currentId);
 
     if (error) {
-      debugger;
-    } else {
+      alert(error);
     }
   }
+
   async function insertData() {
     let { error } = await supabase.from("evaluations").insert([
       {
@@ -67,7 +70,7 @@ export default function FormStudyProgram(props: any) {
 
   function clickHandler() {
     if (
-      reqKnowledge.length == 0 ||
+      reqKnowledge == 0 ||
       evaluationName.length == 0 ||
       (forWi == false && forBwl == false && forAi == false)
     ) {
@@ -85,36 +88,35 @@ export default function FormStudyProgram(props: any) {
     }
   }
 
-  function activeHandlerWi(e) {
+  function activeHandlerWi(e: any) {
     setforWi(e.target.checked);
     if (forWi1 != 1) {
       setforWi1(1);
     } else {
-      setforWi1(null);
+      setforWi1(undefined);
     }
-    console.log(forWi1);
   }
 
-  function activeHandlerBwl(e) {
+  function activeHandlerBwl(e: any) {
     setforBwl(e.target.checked);
     if (forBwl1 != 2) {
       setforBwl1(2);
     } else {
-      setforBwl1(null);
+      setforBwl1(undefined);
     }
   }
 
-  function activeHandlerAi(e) {
+  function activeHandlerAi(e: any) {
     setforAi(e.target.checked);
 
     if (forAi1 != 3) {
       setforAi1(3);
     } else {
-      setforAi1(null);
+      setforAi1(undefined);
     }
   }
 
-  function handleRangeSlider(event, value) {
+  function handleRangeSlider(event: any, value: any) {
     setReqKnowledge(value);
   }
 
@@ -125,7 +127,7 @@ export default function FormStudyProgram(props: any) {
       setEvaluationName(props.current.specialization);
       setStudyName(props.current.study_name);
     }
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     setEvaluationName(props.editEvaluation.name);
@@ -139,7 +141,7 @@ export default function FormStudyProgram(props: any) {
     if (props.editEvaluation.studyname3_id) {
       setforAi(true);
     }
-  }, []);
+  }, [props.editEvaluation]);
 
   return (
     <form className={styles.col__two}>
@@ -203,10 +205,7 @@ export default function FormStudyProgram(props: any) {
           max={10}
           onChange={handleRangeSlider}
         />
-        <Button variant="undefined" onClick={clickHandler}>
-          {" "}
-          Evaluationsbogen hinzufügen
-        </Button>
+        <Button onClick={clickHandler}> Evaluationsbogen hinzufügen</Button>
       </div>
     </form>
   );

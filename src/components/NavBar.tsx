@@ -12,36 +12,36 @@ export default function NavBar() {
 
   return (
     <aside className={styles.navBar}>
-    <nav>
+      <nav>
         <div onClick={showNav}>
-        {navBar ? (
+          {navBar ? (
             <AiIcons.AiOutlineClose size={28} />
-        ) : (
+          ) : (
             <AiIcons.AiOutlineMenu size={28} />
-        )}
+          )}
         </div>
 
         {navBar && (
-        <div className={styles.navBar__sections}>
+          <div className={styles.navBar__sections}>
             <div className={styles.nav__ul}>
-            <Link href="/studyPrograms" className={styles.nav__li}>
+              <Link href="/studyPrograms" className={styles.nav__li}>
                 Studiengänge
-            </Link>
-            {session && (
+              </Link>
+              {session && (
                 <>
-                <Link href="/applications" className={styles.nav__li}>
-                Bewerbungen
-                </Link>
-                <Link href="/" className={styles.nav__li}>
-                Evulationsbögen
-                </Link>
+                  <Link href="/applications" className={styles.nav__li}>
+                    Bewerbungen
+                  </Link>
+                  <Link href="/evaluations" className={styles.nav__li}>
+                    Evaluationen
+                  </Link>
                 </>
-            )}
+              )}
             </div>
-            <Login/>
-        </div>
+            <Login />
+          </div>
         )}
-    </nav>
-  </aside>
+      </nav>
+    </aside>
   );
 }

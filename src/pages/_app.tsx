@@ -11,10 +11,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styles from "@/styles/Home.module.css";
-import * as AiIcons from "react-icons/ai";
 import React, { useState } from "react";
-import Link from "next/link";
-import Login from "@/components/Login";
 import NavBar from "@/components/NavBar";
 
 export default function App({
@@ -43,7 +40,7 @@ export default function App({
       supabaseClient={supabase}
       initialSession={pageProps.initialSession}
     >
-      <ToastContainer/>
+      <ToastContainer />
 
       <ThemeProvider theme={customTheme}>
         <NavBar />

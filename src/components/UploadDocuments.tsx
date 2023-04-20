@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useDropzone } from 'react-dropzone';
-import styles from './UploadDocuments.module.css';
+import React, { useCallback, useState } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useDropzone } from "react-dropzone";
+import styles from "./UploadDocuments.module.css";
 
 export default function UploadDocuments({
   onUpload,
@@ -11,34 +11,34 @@ export default function UploadDocuments({
   const supabase = useSupabaseClient();
   const [uploading, setUploading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  
+
   const uploadDocument = async (file: File) => {
     try {
       setUploading(true);
 
       if (!file) {
-        throw new Error('You must select a document to upload.');
+        throw new Error("You must select a document to upload.");
       }
 
-      const fileExt = file.name.split('.').pop();
-      const timeStamp = Date.now()
+      const fileExt = file.name.split(".").pop();
+      const timeStamp = Date.now();
       const fileName = `${timeStamp}.${fileExt}`;
       const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
-        .from('documents')
+        .from("documents")
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) {
         throw uploadError;
       }
-  
+
       onUpload(filePath);
 
-      alert('Document successfully uploaded!');
+      alert("Document successfully uploaded!");
       setUploadedFile(file);
     } catch (error) {
-      alert('Error uploading document!');
+      alert("Error uploading document!");
       console.log(error);
     } finally {
       setUploading(false);
@@ -52,7 +52,7 @@ export default function UploadDocuments({
 
       await uploadDocument(file);
     },
-    [uploadDocument],
+    [uploadDocument]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -67,7 +67,7 @@ export default function UploadDocuments({
         {isDragActive ? (
           <p>Dokument hier ablegen...</p>
         ) : (
-          <p>Drag'n'Drop oder draufklicken</p>
+          <p>Drag and Drop oder draufklicken</p>
         )}
       </div>
       {uploadedFile && (

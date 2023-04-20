@@ -1,14 +1,11 @@
 import styles from "../styles/Home.module.css";
 import { Button } from "@mui/material";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Link from "next/link";
 function Home() {
-  const name = "NO_NAME";
-
   return (
     <>
-      <h1>Hallo {name}</h1>
       <div className={styles.home}>
         <div className={styles.box}>
           <Link href="/studyPrograms" className={styles.nav__li}>
@@ -21,6 +18,13 @@ function Home() {
           <Link href="/applications" className={styles.nav__li}>
             <Button variant="text" startIcon={<AssignmentIndIcon />}>
               Zu den Bewerbungen
+            </Button>
+          </Link>
+        </div>
+        <div className={styles.box}>
+          <Link href="/evaluations" className={styles.nav__li}>
+            <Button variant="text" startIcon={<AssignmentIndIcon />}>
+              Zu den Evaluationsbögen
             </Button>
           </Link>
         </div>
