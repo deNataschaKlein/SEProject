@@ -16,9 +16,13 @@ const StudyProgram: NextPage = () => {
   const [current, setCurrent] = useState(undefined);
   const [programs, setPrograms] = useState<any[]>([]);
   const [studyNames, setStudyNames] = useState<any[]>([]);
+  const [modalHeadline, setModalHeadline] = useState<string>("");
 
   function ModalclickHandler() {
     setStudyModal(!studyModal);
+    if (session) {
+      setModalHeadline("Neuer Studiengang");
+    } else setModalHeadline("Jetzt Bewerben");
     if (current != undefined) {
       setCurrent(undefined);
     }
@@ -45,6 +49,7 @@ const StudyProgram: NextPage = () => {
           <StudyProgramSwiper
             setStudyModal={setStudyModal}
             onSetCurrent={handleCurrent}
+            setModalHeadline={setModalHeadline}
             session={session}
           />
         </div>
@@ -55,7 +60,7 @@ const StudyProgram: NextPage = () => {
         {studyModal && (
           <ModalOffCanvas
             button="yes"
-            headline={"Neuen Studiengang hinzufügen"}
+            headline={modalHeadline}
             setModal={setStudyModal}
           >
             {session ? (
