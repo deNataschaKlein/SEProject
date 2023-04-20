@@ -14,6 +14,8 @@ import styles from "@/styles/Home.module.css";
 import * as AiIcons from "react-icons/ai";
 import React, { useState } from "react";
 import Link from "next/link";
+import Login from "@/components/Login";
+import NavBar from "@/components/NavBar";
 
 export default function App({
   Component,
@@ -44,33 +46,7 @@ export default function App({
       <ToastContainer/>
 
       <ThemeProvider theme={customTheme}>
-        <aside className={styles.navBar}>
-          <nav>
-            <div onClick={showNav}>
-              {navBar ? (
-                <AiIcons.AiOutlineClose size={28} />
-              ) : (
-                <AiIcons.AiOutlineMenu size={28} />
-              )}
-            </div>
-
-            {navBar && (
-              <div className={styles.navBar__sections}>
-                <div className={styles.nav__ul}>
-                  <Link href="/studyPrograms" className={styles.nav__li}>
-                    Studiengänge
-                  </Link>
-                  <Link href="/applications" className={styles.nav__li}>
-                    Bewerbungen
-                  </Link>
-                  <Link href="/evaluations" className={styles.nav__li}>
-                    Evaluationen
-                  </Link>
-                </div>
-              </div>
-            )}
-          </nav>
-        </aside>
+        <NavBar />
         <main className={styles.content}>
           <Component {...pageProps} />
         </main>
