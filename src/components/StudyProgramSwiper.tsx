@@ -15,6 +15,8 @@ import { supabase } from "../../lib/supabaseClient";
 export default function StudyProgramSwiper({
   setStudyModal,
   onSetCurrent,
+  session,
+  setModalHeadline,
 }: any) {
   const [programs, setPrograms] = useState<any[] | null>([]);
   const [programNames, setProgramNames] = useState<any[] | null>([]);
@@ -44,6 +46,7 @@ export default function StudyProgramSwiper({
 
   function clickHandler(program: any[]) {
     setStudyModal(true);
+    setModalHeadline("Studiengang bearbeiten");
     onSetCurrent(program);
   }
   useEffect(() => {
@@ -95,13 +98,19 @@ export default function StudyProgramSwiper({
         </div>
       ))}
 
-      <div className={styles.deactivated}>
-        {deactivated?.map((program, _index) => (
-          <div key={_index} className={styles.deactivated__object}>
-            {program.specialization}
-          </div>
-        ))}
-      </div>
+      {session && (
+        <div className={styles.deactivated}>
+          {deactivated?.map((program, _index) => (
+            <div
+              key={_index}
+              className={styles.deactivated__object}
+              onClick={() => clickHandler(program)}
+            >
+              {program.specialization}
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

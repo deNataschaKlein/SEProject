@@ -92,12 +92,6 @@ export default function FormApplication(props: any) {
     }
   }
 
-  function dataCopy() {
-    const url = document.getElementById("url");
-
-    console.log(url);
-  }
-
   useEffect(() => {
     void getStudyName();
     void getStudyPrograms();
