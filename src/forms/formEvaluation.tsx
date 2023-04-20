@@ -19,13 +19,6 @@ export default function FormStudyProgram(props: any) {
   const [forBwl1, setforBwl1] = useState(null);
   const [forAi1, setforAi1] = useState(null);
 
-  let defaultStudyName: undefined;
-
-  if (current) {
-    defaultStudyName = studyProgramNames.find(
-      (name) => name.id == current.study_name
-    );
-  }
 
   async function getStudyNames() {
     let { data: study_name, error } = await supabase
@@ -109,7 +102,6 @@ export default function FormStudyProgram(props: any) {
     } else {
       setforBwl1(null);
     }
-    console.log(" der quatsch kommt " + forBwl1);
   }
 
   function activeHandlerAi(e) {
@@ -120,7 +112,6 @@ export default function FormStudyProgram(props: any) {
     } else {
       setforAi1(null);
     }
-    console.log(" der quatsch kommt " + forAi1);
   }
 
   function handleRangeSlider(event, value) {

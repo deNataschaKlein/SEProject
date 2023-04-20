@@ -3,60 +3,22 @@ import styles from "./evaluations.module.css";
 import BoxEvaluations from "@/components/BoxEvaluations";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
-import { Box, Button, Modal } from "@mui/material";
+import { Button } from "@mui/material";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
-import FormApplication from "@/forms/formApplication";
 import ContainerBase from "@/components/ContainerBase";
 import ChipHeadline from "@/components/ChipHeadline";
 import FormEvaluation from "@/forms/formEvaluation";
-import StudyPrograms from "../studyPrograms";
-import StudyProgramSwiper from "@/components/StudyProgramSwiper";
 
 const Applications: NextPage = () => {
-  const [applications, setApplications] = useState<any[]>([]);
   const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
   const [editEvaluation, seteditEvaluation] = useState<any[]>([]);
-  const [open, setOpen] = React.useState(false);
   const [evaluationModal, setEvaluationModal] = useState(false);
-  const [employee, setEmployee] = useState(true);
 
   //ab hier const für evaluations
   const [evaluations, setEvaluations] = useState<any[]>([]);
 
   const [study_names, setStudyNames] = useState<any[]>([]);
 
-  const handleClose = () => setOpen(false);
-
-  //Load Applications
-  async function getApplications() {
-    try {
-      let { data: applications, error } = await supabase
-        .from("applications")
-        .select("*");
-      if (applications) {
-        setApplications(applications);
-      }
-
-      if (error) throw error;
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async function getStudyPrograms() {
-    try {
-      let { data: study_programs, error } = await supabase
-        .from("study_programs")
-        .select("*");
-
-      if (study_programs) {
-        setStudyPrograms(study_programs);
-      }
-      if (error) throw error;
-    } catch (error) {
-      alert(error);
-    }
-  }
 
   //ab hier getter für evaluations
   async function getEvaluations() {
@@ -65,7 +27,6 @@ const Applications: NextPage = () => {
         .from("evaluations")
         .select("*");
       if (evaluations) {
-        console.log("eee", evaluations);
         setEvaluations(evaluations);
       }
 
@@ -81,7 +42,6 @@ const Applications: NextPage = () => {
         .from("study_name")
         .select("*");
       if (study_names) {
-        console.log("study", study_names);
         setStudyNames(study_names);
       }
 
@@ -91,19 +51,7 @@ const Applications: NextPage = () => {
     }
   }
 
-  function getStudyName(evaluationStudyProgram: any) {
-    const StudyProgramName = studyPrograms.find(
-      (program) => program.id == evaluationStudyProgram
-    );
-    if (StudyProgramName) {
-      console.log(StudyProgramName);
-      return StudyProgramName.name;
-    }
-  }
-
   useEffect(() => {
-    getApplications();
-    getStudyPrograms();
     getEvaluations();
     getStudyNames();
   }, []);
@@ -112,19 +60,6 @@ const Applications: NextPage = () => {
     if (event.target.tagName !== "BUTTON") {
       setEvaluationModal(true);
       seteditEvaluation(evaluation);
-    }
-  }
-
-  async function startEditing() {
-    setOpen(true);
-  }
-
-  function getSpecialization(applicationStudyProgram) {
-    const StudyProgramName = studyPrograms.find(
-      (program) => program.id == applicationStudyProgram
-    );
-    if (StudyProgramName) {
-      return StudyProgramName.specialization;
     }
   }
 
@@ -207,7 +142,6 @@ const Applications: NextPage = () => {
           <FormEvaluation
             applications={editEvaluation}
             studyPrograms={getStudyProgram(editEvaluation)}
-            employee={employee}
             editEvaluation={editEvaluation}
           />
         </ModalOffCanvas>
