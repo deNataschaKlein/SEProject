@@ -14,8 +14,13 @@ export default function EvaluationCheck(props: any) {
   return (
     <>
       <BoxBase>
-        {props.name}
-        {evaluation && <Slider disabled defaultValue={rate} max={5} />}
+        <h4>{props.name} </h4>
+        {evaluation && (
+          <div>
+            <Slider disabled defaultValue={rate} max={5} />
+            <Slider max={5} />
+          </div>
+        )}
       </BoxBase>
     </>
   );

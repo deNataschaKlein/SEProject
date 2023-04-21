@@ -18,6 +18,9 @@ function ApplicantDetail() {
 
     const appl = applications;
 
+    if (error) {
+      alert(error);
+    }
     if (appl) {
       setApplicant(appl[0]);
     }
@@ -30,6 +33,9 @@ function ApplicantDetail() {
       .select("name")
       .eq("id", applicant.status);
 
+    if (error) {
+      alert(error);
+    }
     if (applicationstatus) {
       const stat = applicationstatus[0];
 
@@ -64,6 +70,13 @@ function ApplicantDetail() {
         <div>
           <h1>Hallo {applicant.firstname}</h1>
           <p>Deine Bewerbung ist {status}.</p>
+
+          {applicant.feedback && (
+            <div>
+              <h3>Feedback zu deiner Bewerbung</h3>
+              <p>{applicant.feedback}</p>
+            </div>
+          )}
 
           <Button
             onClick={() => {

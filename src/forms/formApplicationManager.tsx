@@ -10,11 +10,12 @@ export default function FormApplicationManager(props: any) {
   const [studyProgram, setStudyProgram] = useState<any>(undefined);
   const [evaluations, setEvaluations] = useState<any>();
   const [relevantSTud, setRelevantStud] = useState<any[]>([]);
+  const [feedback, setFeedback] = useState<string>();
 
   async function changeStatus(status: number) {
     const { error } = await supabase
       .from("applications")
-      .update({ status: status })
+      .update({ status: status, feedback: feedback })
       .eq("id", applicant?.id);
 
     if (error) {
@@ -77,6 +78,7 @@ export default function FormApplicationManager(props: any) {
             </div>
 
             <ContainerBase>
+              <h3>Evaluationsbögen</h3>
               {relevantSTud?.map((evaluation: any) => (
                 <EvaluationCheck
                   key={evaluation.id}
@@ -85,6 +87,16 @@ export default function FormApplicationManager(props: any) {
                   rate={evaluation.required_knowledge}
                 />
               ))}
+
+              <label>
+                Feedback
+                <textarea
+                  rows={4}
+                  value={feedback}
+                  id="description"
+                  onChange={(e) => setFeedback(e.target.value)}
+                />
+              </label>
 
               {studyProgram.active ? (
                 <Button variant={"contained"} onClick={() => changeStatus(3)}>
