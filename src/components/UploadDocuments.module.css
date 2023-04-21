@@ -1,0 +1,8 @@
+.dropzone {
+    border: 2px dashed var(--color-primary--100);
+    border-radius: var(--spacing-xs);
+    padding: var(--spacing-xxl);
+    text-align: center;
+    cursor: pointer;
+  }
+

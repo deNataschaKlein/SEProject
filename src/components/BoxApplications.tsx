@@ -30,6 +30,11 @@ const BoxApplications = (props: any) => {
               <CheckOutlinedIcon color={"primary"} /> Foto hochgeladen
             </span>
           )}
+          {props.document_url && (
+            <span className={styles.listElement}>
+              <CheckOutlinedIcon color={"primary"} /> Dokument hochgeladen
+            </span>
+          )}
         </div>
         {props.children}
       </BoxBase>

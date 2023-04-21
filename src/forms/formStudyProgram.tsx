@@ -8,6 +8,7 @@ export default function FormStudyProgram(props: any) {
   const [studyProgramNames, setStudyProgramNames] = useState<any[] | undefined>(
     undefined
   ); // Wirtschaftsinformatik, Angwandte Informatik, BWL
+  const [studyDegree, setStudyDegree] = useState<any | undefined>();
 
   const [active, setActive] = useState(true);
   const labelSwitch = active
@@ -17,6 +18,9 @@ export default function FormStudyProgram(props: any) {
   //Values from Input-fields
   const [studyName, setStudyName] = useState<string | undefined>();
   const [specialization, setSpecialization] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState<string | undefined>(undefined);
+  const [degree, setDegree] = useState<any | undefined>();
 
   let defaultStudyName: any;
 
@@ -42,27 +46,43 @@ export default function FormStudyProgram(props: any) {
   function postData() {
     if (current == undefined) {
       insertData();
-    } else updateData();
+    } else {
+      updateData();
+    }
   }
 
   async function updateData() {
-    const study_name = studyName;
     const currentId = current?.id;
 
     const { error } = await supabase
       .from("study_programs")
-      .update([{ study_name, specialization, active }])
+      .update([
+        {
+          study_name: studyName,
+          specialization,
+          active,
+          description,
+          date,
+          study_degree: degree,
+        },
+      ])
       .eq("id", currentId);
 
     if (error) {
-      debugger;
     } else {
     }
   }
   async function insertData() {
-    let { error } = await supabase
-      .from("study_programs")
-      .insert([{ study_name: studyName, specialization, active }]);
+    let { error } = await supabase.from("study_programs").insert([
+      {
+        study_name: studyName,
+        specialization,
+        active,
+        description,
+        date,
+        study_degree: degree,
+      },
+    ]);
 
     if (error) {
     } else {
@@ -70,13 +90,27 @@ export default function FormStudyProgram(props: any) {
     }
   }
 
+  async function getDegrees() {
+    let { data: study_degrees, error } = await supabase
+      .from("study_degrees")
+      .select("*");
+
+    if (error) {
+      alert(error);
+    } else setStudyDegree(study_degrees);
+  }
+
   useEffect(() => {
     void getStudyNames();
+    void getDegrees();
     if (props.current) {
       setCurrent(props.current);
       setSpecialization(props.current.specialization);
       setActive(props.current.active);
       setStudyName(props.current.study_name);
+      setDegree(props.current.degree);
+      setDescription(props.current.description);
+      setDate(props.current.date);
     }
   }, [props]);
 
@@ -92,9 +126,7 @@ export default function FormStudyProgram(props: any) {
                 key={studyName.id}
                 value={studyName.id}
                 selected={
-                  defaultStudyName
-                    ? defaultStudyName.id == studyName.id
-                    : undefined
+                  current ? current.study_name == studyName.id : undefined
                 }
               >
                 {studyName.name}
@@ -111,6 +143,42 @@ export default function FormStudyProgram(props: any) {
             id="specialization"
             onChange={(e) => setSpecialization(e.target.value)}
           />
+        </label>
+        <label>
+          Startdatum
+          <input
+            type={"date"}
+            value={date}
+            id="date"
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </label>
+        <label>
+          Beschreibung
+          <textarea
+            rows={5}
+            value={description}
+            id="description"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Abschlussart
+          <select onChange={(e) => setDegree(e.target.value)}>
+            <option value="none" selected disabled hidden />
+            {studyDegree?.map((degree: any, _index: any) => (
+              <option
+                key={degree.id}
+                value={degree.id}
+                selected={
+                  current ? current.study_degree == degree.id : undefined
+                }
+              >
+                {degree.name}
+              </option>
+            ))}
+          </select>
         </label>
         <FormControlLabel
           control={<Switch checked={active} onChange={handleSwitch} />}
