@@ -15,7 +15,6 @@ const Evaluations: NextPage = () => {
 
   //ab hier const für evaluations
   const [evaluations, setEvaluations] = useState<any[]>([]);
-  const [study_names, setStudyNames] = useState<any[]>([]);
 
   //ab hier getter für evaluations
   async function getEvaluations() {
@@ -28,21 +27,6 @@ const Evaluations: NextPage = () => {
       if (evaluations) {
         setEvaluations(evaluations);
       }
-    }
-  }
-
-  async function getStudyNames() {
-    try {
-      let { data: study_names, error } = await supabase
-        .from("study_name")
-        .select("*");
-      if (study_names) {
-        setStudyNames(study_names);
-      }
-
-      if (error) throw error;
-    } catch (error) {
-      alert(error);
     }
   }
 
@@ -72,7 +56,6 @@ const Evaluations: NextPage = () => {
 
   useEffect(() => {
     getEvaluations();
-    getStudyNames();
   }, []);
 
   return (
@@ -97,15 +80,7 @@ const Evaluations: NextPage = () => {
                       handleDelete(event, evaluation)
                     }
                     name={evaluation.name}
-                    studyname1_id={
-                      study_names[evaluation.studyname1_id - 1]?.name
-                    }
-                    studyname2_id={
-                      study_names[evaluation.studyname2_id - 1]?.name
-                    }
-                    studyname3_id={
-                      study_names[evaluation.studyname3_id - 1]?.name
-                    }
+                    relevantStudies={evaluation.study_names}
                   />
                 </div>
               );

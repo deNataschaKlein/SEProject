@@ -1,35 +1,24 @@
 import { supabase } from "../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
 import styles from "../styles/Form.module.css";
-import { Slider, Button, Checkbox, FormControlLabel } from "@mui/material";
+import { Slider, Button } from "@mui/material";
 import { toast } from "react-toastify";
+import PillCheckbox from "@/components/PillCheckbox";
 
 export default function FormStudyProgram(props: any) {
   const [current, setCurrent] = useState<any | undefined>(undefined); // value if clicked existing Study
-  const [studyProgramNames, setStudyProgramNames] = useState<any>([]); // Wirtschaftsinformatik, Angwandte Informatik, BWL
 
   //Values from Input-fields
+  const [studyNames, setStudyNames] = useState<any>();
+  const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
+
   const [studyName, setStudyName] = useState();
-  const [evaluationName, setEvaluationName] = useState("");
-  const [forWi, setforWi] = useState(false);
-  const [forBwl, setforBwl] = useState(false);
-  const [forAi, setforAi] = useState(false);
+
+  const [evaluationName, setEvaluationName] = useState<string | undefined>(
+    undefined
+  );
+
   const [reqKnowledge, setReqKnowledge] = useState(0);
-  const [forWi1, setforWi1] = useState<number>();
-  const [forBwl1, setforBwl1] = useState<number>();
-  const [forAi1, setforAi1] = useState<number>();
-
-  async function getStudyNames() {
-    let { data: study_name, error } = await supabase
-      .from("study_name")
-      .select();
-
-    if (error) {
-      alert(error);
-    } else {
-      setStudyProgramNames(study_name);
-    }
-  }
 
   function postData() {
     if (current == undefined) {
@@ -55,9 +44,7 @@ export default function FormStudyProgram(props: any) {
     let { error } = await supabase.from("evaluations").insert([
       {
         name: evaluationName,
-        studyname1_id: forWi1,
-        studyname2_id: forBwl1,
-        studyname3_id: forAi1,
+        study_names: studyPrograms,
         required_knowledge: reqKnowledge,
       },
     ]);
@@ -68,11 +55,30 @@ export default function FormStudyProgram(props: any) {
     }
   }
 
+  async function getStudyNames() {
+    let { data, error } = await supabase.from("study_name").select("*");
+
+    if (data) {
+      setStudyNames(data);
+    }
+    if (error) alert(error);
+  }
+
+  const setRelevantStudies = (event: any) => {
+    if (event.target.checked) {
+      setStudyPrograms([...studyPrograms, event.target.value]);
+    } else {
+      setStudyPrograms(
+        studyPrograms.filter((program) => program !== event.target.value)
+      );
+    }
+  };
+
   function clickHandler() {
     if (
       reqKnowledge == 0 ||
-      evaluationName.length == 0 ||
-      (forWi == false && forBwl == false && forAi == false)
+      evaluationName == undefined ||
+      studyPrograms.length == 0
     ) {
       toast(
         "Bitte alle Felder ausfüllen und die Kenntnisstandanforderung setzen!",
@@ -88,40 +94,11 @@ export default function FormStudyProgram(props: any) {
     }
   }
 
-  function activeHandlerWi(e: any) {
-    setforWi(e.target.checked);
-    if (forWi1 != 1) {
-      setforWi1(1);
-    } else {
-      setforWi1(undefined);
-    }
-  }
-
-  function activeHandlerBwl(e: any) {
-    setforBwl(e.target.checked);
-    if (forBwl1 != 2) {
-      setforBwl1(2);
-    } else {
-      setforBwl1(undefined);
-    }
-  }
-
-  function activeHandlerAi(e: any) {
-    setforAi(e.target.checked);
-
-    if (forAi1 != 3) {
-      setforAi1(3);
-    } else {
-      setforAi1(undefined);
-    }
-  }
-
   function handleRangeSlider(event: any, value: any) {
     setReqKnowledge(value);
   }
 
   useEffect(() => {
-    getStudyNames();
     if (props.current) {
       setCurrent(props.current);
       setEvaluationName(props.current.specialization);
@@ -130,18 +107,10 @@ export default function FormStudyProgram(props: any) {
   }, [props]);
 
   useEffect(() => {
-    setEvaluationName(props.editEvaluation.name);
-    setReqKnowledge(props.editEvaluation.required_knowledge);
-    if (props.editEvaluation.studyname1_id) {
-      setforWi(true);
-    }
-    if (props.editEvaluation.studyname2_id) {
-      setforBwl(true);
-    }
-    if (props.editEvaluation.studyname3_id) {
-      setforAi(true);
-    }
-  }, [props.editEvaluation]);
+    getStudyNames();
+  }, []);
+
+  console.log(studyPrograms);
 
   return (
     <form className={styles.col__two}>
@@ -159,38 +128,15 @@ export default function FormStudyProgram(props: any) {
         <label>
           Relevant für
           <div>
-            <FormControlLabel
-              label="Wirtschaftsinformatik"
-              control={
-                <Checkbox
-                  key={Math.random()}
-                  onChange={activeHandlerWi}
-                  checked={forWi}
-                />
-              }
-            />
-
-            <FormControlLabel
-              label="Betriebswirtschaftslehre"
-              control={
-                <Checkbox
-                  key={Math.random()}
-                  onChange={activeHandlerBwl}
-                  checked={forBwl}
-                />
-              }
-            />
-
-            <FormControlLabel
-              label="Angewandte Informatik"
-              control={
-                <Checkbox
-                  key={Math.random()}
-                  onChange={activeHandlerAi}
-                  checked={forAi}
-                />
-              }
-            />
+            {studyNames?.map((study: any, _index: any) => (
+              <PillCheckbox
+                key={study.id}
+                label={study.name}
+                id={study.id}
+                value={study.id}
+                onClick={setRelevantStudies}
+              />
+            ))}
           </div>
         </label>
 
