@@ -9,7 +9,9 @@
 
 @media (min-width: 760px) {
     .col__two {
-        grid-template-columns: repeat(2, 50%);
+        display: grid;
+        align-items: start;
+        grid-template-columns: repeat(2, auto);
         grid-gap: var(--spacing-md);
     }
 }

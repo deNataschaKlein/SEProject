@@ -148,7 +148,7 @@ export default function FormStudyProgram(props: any) {
           step={1}
           marks
           min={0}
-          max={10}
+          max={5}
           onChange={handleRangeSlider}
         />
         <Button onClick={clickHandler}> Evaluationsbogen hinzufügen</Button>

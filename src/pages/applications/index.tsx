@@ -17,7 +17,6 @@ const Applications: NextPage = () => {
   const [editApplitcation, seteditApplitcation] = useState<any>();
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
-  const [employee] = useState(true);
 
   const [filterTags, setFilterTags] = useState<any[]>([]);
 
@@ -126,7 +125,7 @@ const Applications: NextPage = () => {
     }
   }
 
-  function getSpecialization(applicationStudyProgram:any) {
+  function getSpecialization(applicationStudyProgram: any) {
     const StudyProgramName = studyPrograms.find(
       (program) => program.id == applicationStudyProgram
     );
@@ -159,6 +158,7 @@ const Applications: NextPage = () => {
             <div>
               {studyNames?.map((study: any, _index: any) => (
                 <PillCheckbox
+                  key={study.id}
                   label={study.name}
                   id={study.id}
                   value={study.id}
@@ -276,7 +276,7 @@ const Applications: NextPage = () => {
           <FormApplicationManager
             applications={editApplitcation}
             studyPrograms={getStudyProgram(editApplitcation)}
-            employee={employee}
+            studyNames={studyNames}
           />
         </ModalOffCanvas>
       )}
