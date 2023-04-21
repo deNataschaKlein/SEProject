@@ -2,10 +2,9 @@ import styles from "../styles/Form.module.css";
 import applicationStyles from "../pages/applications/applications.module.css";
 import { supabase } from "../../lib/supabaseClient";
 import React, { useEffect, useState } from "react";
-import UploadDocuments from "@/components/UploadDocuments";
 import { Box, Button, Modal } from "@mui/material";
 import Link from "next/link";
-
+import UploadDocuments from "@/components/UploadDocuments";
 
 export default function FormApplication(props: any) {
   const [studyProgramName, setStudyProgramName] = useState<any[] | null>(); // Inhalte aus der Datenbank WI,AI,BWL
@@ -27,7 +26,9 @@ export default function FormApplication(props: any) {
   const [name, setName] = useState<string | undefined>(undefined);
   const [telefone, setTelefone] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
-  const [document_url, setDocument_url] = useState<string | undefined>(undefined);
+  const [document_url, setDocument_url] = useState<string | undefined>(
+    undefined
+  );
 
   const [open, setOpen] = React.useState(false);
   const [applicantID, setApplicantID] = useState<string>();
@@ -189,7 +190,7 @@ export default function FormApplication(props: any) {
             <input type="text" onChange={(e) => setTelefone(e.target.value)} />
           </label>
 
-        <UploadDocuments onUpload={setDocument_url} />
+          <UploadDocuments onUpload={setDocument_url} />
 
           <Button onClick={() => postApplication()} variant={"contained"}>
             Jetzt Bewerben

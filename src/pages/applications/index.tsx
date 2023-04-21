@@ -17,7 +17,6 @@ const Applications: NextPage = () => {
   const [editApplitcation, seteditApplitcation] = useState<any>();
   const [open, setOpen] = React.useState(false);
   const [applicationModal, setApplicationModal] = useState(false);
-  const [employee] = useState(true);
 
   const [filterTags, setFilterTags] = useState<any[]>([]);
 
@@ -38,16 +37,14 @@ const Applications: NextPage = () => {
   }
 
   async function getStudyPrograms() {
-    try {
-      let { data: study_programs, error } = await supabase
-        .from("study_programs")
-        .select("*");
+    let { data: study_programs, error } = await supabase
+      .from("study_programs")
+      .select("*");
 
-      if (study_programs) {
-        setStudyPrograms(study_programs);
-      }
-      if (error) throw error;
-    } catch (error) {
+    if (study_programs) {
+      setStudyPrograms(study_programs);
+    }
+    if (error) {
       alert(error);
     }
   }
@@ -127,6 +124,7 @@ const Applications: NextPage = () => {
       return studyName.name;
     }
   }
+
   function getSpecialization(applicationStudyProgram: any) {
     const StudyProgramName = studyPrograms.find(
       (program) => program.id == applicationStudyProgram
@@ -278,7 +276,7 @@ const Applications: NextPage = () => {
           <FormApplicationManager
             applications={editApplitcation}
             studyPrograms={getStudyProgram(editApplitcation)}
-            employee={employee}
+            studyNames={studyNames}
           />
         </ModalOffCanvas>
       )}
