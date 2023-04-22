@@ -89,6 +89,7 @@ const Evaluations: NextPage = () => {
         </div>
 
         <Button
+          className={"mt-1"}
           variant={"contained"}
           onClick={() => showEvaluation(evaluations)}
         >

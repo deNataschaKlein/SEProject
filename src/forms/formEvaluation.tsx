@@ -110,8 +110,6 @@ export default function FormStudyProgram(props: any) {
     getStudyNames();
   }, []);
 
-  console.log(studyPrograms);
-
   return (
     <form className={styles.col__two}>
       <div className={styles.item}>

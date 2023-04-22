@@ -75,6 +75,16 @@ export default function FormApplicationManager(props: any) {
                   <input readOnly value={applicant.email} />
                 </label>
               </form>
+              {studyProgram.active ? (
+                <Button variant={"contained"} onClick={() => changeStatus(3)}>
+                  Bewerbung annehmen
+                </Button>
+              ) : (
+                <p> Der Studiengang ist deaktiviert</p>
+              )}
+              <Button variant={"outlined"} onClick={() => changeStatus(4)}>
+                Bewerbung ablehnen
+              </Button>
             </div>
 
             <ContainerBase>
@@ -97,17 +107,6 @@ export default function FormApplicationManager(props: any) {
                   onChange={(e) => setFeedback(e.target.value)}
                 />
               </label>
-
-              {studyProgram.active ? (
-                <Button variant={"contained"} onClick={() => changeStatus(3)}>
-                  Bewerbung annehmen
-                </Button>
-              ) : (
-                <p> Der Studiengang ist deaktiviert</p>
-              )}
-              <Button variant={"outlined"} onClick={() => changeStatus(4)}>
-                Bewerbung ablehnen
-              </Button>
             </ContainerBase>
           </div>
         </div>

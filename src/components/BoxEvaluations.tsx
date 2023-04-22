@@ -43,6 +43,7 @@ const BoxEvaluations = (props: any) => {
         </div>
 
         <button
+          className={"mt-1"}
           style={{ zIndex: 99, cursor: "pointer" }}
           onClick={props.handleDelete}
         >

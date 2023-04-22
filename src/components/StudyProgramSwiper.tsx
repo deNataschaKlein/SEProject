@@ -46,7 +46,10 @@ export default function StudyProgramSwiper({
 
   function clickHandler(program: any[]) {
     setStudyModal(true);
-    setModalHeadline("Studiengang bearbeiten");
+    if (session) {
+      setModalHeadline("Studiengang bearbeiten");
+    } else setModalHeadline("Bewirb dich jetzt");
+
     onSetCurrent(program);
   }
   useEffect(() => {

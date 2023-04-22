@@ -66,10 +66,10 @@ export default function FormStudyProgram(props: any) {
           study_degree: degree,
         },
       ])
-      .eq("id", currentId);
+      .eq("id", currentId.toString());
 
     if (error) {
-    } else {
+      alert(error);
     }
   }
   async function insertData() {
