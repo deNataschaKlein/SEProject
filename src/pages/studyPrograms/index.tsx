@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { Button } from "@mui/material";
 import StudyProgramSwiper from "@/components/StudyProgramSwiper";
-import ContainerBase from "@/components/ContainerBase";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
 import FormStudyProgram from "@/forms/formStudyProgram";
 import FormApplication from "@/forms/formApplication";
@@ -36,11 +35,17 @@ const StudyProgram: NextPage = () => {
     <>
       <h1>Studiengänge</h1>
       {session ? (
-        <Button variant={"contained"} onClick={ModalclickHandler}>
+      
+        <Button className="button--primary mb-1 " onClick={ModalclickHandler}>
+
           Neuen Studiengang hinzufügen
         </Button>
       ) : (
-        <Button variant={"contained"} onClick={ModalclickHandler}>
+        <Button
+          className="mb-1 "
+          variant={"contained"}
+          onClick={ModalclickHandler}
+        >
           Jetzt Bewerben
         </Button>
       )}
@@ -53,7 +58,6 @@ const StudyProgram: NextPage = () => {
             session={session}
           />
         </div>
-        <ContainerBase>Filter</ContainerBase>
 
         {/*Modal for the Forms*/}
 
