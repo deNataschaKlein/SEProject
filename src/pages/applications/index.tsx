@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import styles from "./applications.module.css";
 import BoxApplications from "@/components/BoxApplications";
 import React, { useEffect, useState } from "react";
+import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "../../../lib/supabaseClient";
 import { Box, Button, Modal } from "@mui/material";
 import ModalOffCanvas from "@/components/ModalOffCanvas";
@@ -11,6 +12,7 @@ import FormApplicationManager from "@/forms/formApplicationManager";
 import PillCheckbox from "@/components/PillCheckbox";
 
 const Applications: NextPage = () => {
+  const session = useSession();
   const [applications, setApplications] = useState<any[]>([]);
   const [studyPrograms, setStudyPrograms] = useState<any[]>([]);
   const [studyNames, setStudyNames] = useState<any>();
@@ -150,135 +152,144 @@ const Applications: NextPage = () => {
 
   return (
     <>
-      <h1>Bewerbungen verwalten</h1>
-      <ContainerBase>
-        <div className={styles.applications__filter}>
-          <div>
-            <h2>Filter</h2>
+    {session ? (
+      <>
+        <h1>Bewerbungen verwalten</h1>
+        <ContainerBase>
+          <div className={styles.applications__filter}>
             <div>
-              {studyNames?.map((study: any, _index: any) => (
-                <PillCheckbox
-                  key={study.id}
-                  label={study.name}
-                  id={study.id}
-                  value={study.id}
-                  onClick={filterHandler}
-                />
+              <h2>Filter</h2>
+              <div>
+                {studyNames?.map((study: any, _index: any) => (
+                  <PillCheckbox
+                    key={study.id}
+                    label={study.name}
+                    id={study.id}
+                    value={study.id}
+                    onClick={filterHandler}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </ContainerBase>
+
+        {/* Applications*/}
+        <div className={styles.applications}>
+          {/*Incoming Applications*/}
+          <div>
+            <ChipHeadline
+              label={"Eingänge"}
+              number={sendApplications.length.toString()}
+            />
+            <ContainerBase>
+              {sendApplications.map((application, _index) => (
+                <div
+                  onClick={() => editApplication(application)}
+                  key={application.id}
+                >
+                  <BoxApplications
+                    name={application.firstname + " " + application.name}
+                    studyProgram={getStudyName(application.study_programs)}
+                    specialization={getSpecialization(application.study_programs)}
+                    document_url={application.document_url}
+                  />
+                </div>
               ))}
+            </ContainerBase>
+          </div>
+
+          {/*in Progress Applications*/}
+          <div>
+            <ChipHeadline
+              label={"in Bearbeitung"}
+              number={workApplications.length.toString()}
+            />
+            <ContainerBase>
+              {workApplications.map((application, _index) => (
+                <div
+                  onClick={() => showApplication(application)}
+                  key={application.id}
+                >
+                  <BoxApplications
+                    name={application.firstname + " " + application.name}
+                    studyProgram={getStudyName(application.study_programs)}
+                    specialization={getSpecialization(application.study_programs)}
+                    document_url={application.document_url}
+                  />
+                </div>
+              ))}
+            </ContainerBase>
+          </div>
+
+          {/*accept and declined Applications*/}
+          <div className={styles.lastColumn}>
+            <div>
+              <ChipHeadline
+                label={"Angenommen"}
+                number={acceptApplications.length.toString()}
+              />
+              <ContainerBase>
+                {acceptApplications.map((application, _index) => (
+                  <BoxApplications
+                    key={application.id}
+                    name={application.firstname + " " + application.name}
+                    studyProgram={getStudyName(application.study_programs)}
+                    specialization={getSpecialization(application.study_programs)}
+                    document_url={application.document_url}
+                  />
+                ))}
+              </ContainerBase>
+            </div>
+            <div>
+              <ChipHeadline
+                label={"Abgelehnt"}
+                number={declineApplications.length.toString()}
+              />
+              <ContainerBase>
+                {declineApplications.map((application, _index) => (
+                  <BoxApplications
+                    key={application.id}
+                    name={application.firstname + " " + application.name}
+                  />
+                ))}
+              </ContainerBase>
             </div>
           </div>
         </div>
-      </ContainerBase>
 
-      {/* Applications*/}
-      <div className={styles.applications}>
-        {/*Incoming Applications*/}
-        <div>
-          <ChipHeadline
-            label={"Eingänge"}
-            number={sendApplications.length.toString()}
-          />
-          <ContainerBase>
-            {sendApplications.map((application, _index) => (
-              <div
-                onClick={() => editApplication(application)}
-                key={application.id}
-              >
-                <BoxApplications
-                  name={application.firstname + " " + application.name}
-                  studyProgram={getStudyName(application.study_programs)}
-                  specialization={getSpecialization(application.study_programs)}
-                  document_url={application.document_url}
-                />
-              </div>
-            ))}
-          </ContainerBase>
-        </div>
+        {/*Initital Modal to Start Edit-Mode*/}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box className={styles.box__modal}>
+            <h2>Bewerbung bearbeiten</h2>
+            <p>Möchtest du mit der Bearbeitung der Bewerbung von starten?</p>
+            <Button variant={"contained"} onClick={startEditing}>
+              Ja
+            </Button>
+          </Box>
+        </Modal>
 
-        {/*in Progress Applications*/}
-        <div>
-          <ChipHeadline
-            label={"in Bearbeitung"}
-            number={workApplications.length.toString()}
-          />
-          <ContainerBase>
-            {workApplications.map((application, _index) => (
-              <div
-                onClick={() => showApplication(application)}
-                key={application.id}
-              >
-                <BoxApplications
-                  name={application.firstname + " " + application.name}
-                  studyProgram={getStudyName(application.study_programs)}
-                  specialization={getSpecialization(application.study_programs)}
-                  document_url={application.document_url}
-                />
-              </div>
-            ))}
-          </ContainerBase>
-        </div>
-
-        {/*accept and declined Applications*/}
-        <div className={styles.lastColumn}>
-          <div>
-            <ChipHeadline
-              label={"Angenommen"}
-              number={acceptApplications.length.toString()}
+        {/*Modal to show up details of an application*/}
+        {applicationModal && (
+          <ModalOffCanvas setModal={setApplicationModal}>
+            <FormApplicationManager
+              applications={editApplitcation}
+              studyPrograms={getStudyProgram(editApplitcation)}
+              studyNames={studyNames}
             />
-            <ContainerBase>
-              {acceptApplications.map((application, _index) => (
-                <BoxApplications
-                  key={application.id}
-                  name={application.firstname + " " + application.name}
-                  studyProgram={getStudyName(application.study_programs)}
-                  specialization={getSpecialization(application.study_programs)}
-                  document_url={application.document_url}
-                />
-              ))}
-            </ContainerBase>
-          </div>
-          <div>
-            <ChipHeadline
-              label={"Abgelehnt"}
-              number={declineApplications.length.toString()}
-            />
-            <ContainerBase>
-              {declineApplications.map((application, _index) => (
-                <BoxApplications
-                  key={application.id}
-                  name={application.firstname + " " + application.name}
-                />
-              ))}
-            </ContainerBase>
-          </div>
-        </div>
-      </div>
-
-      {/*Initital Modal to Start Edit-Mode*/}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box className={styles.box__modal}>
-          <h2>Bewerbung bearbeiten</h2>
-          <p>Möchtest du mit der Bearbeitung der Bewerbung von starten?</p>
-          <Button variant={"contained"} onClick={startEditing}>
-            Ja
-          </Button>
-        </Box>
-      </Modal>
-
-      {/*Modal to show up details of an application*/}
-      {applicationModal && (
-        <ModalOffCanvas setModal={setApplicationModal}>
-          <FormApplicationManager
-            applications={editApplitcation}
-            studyPrograms={getStudyProgram(editApplitcation)}
-            studyNames={studyNames}
-          />
-        </ModalOffCanvas>
+          </ModalOffCanvas>
+        )}
+      </>
+      ) : (
+        <>
+          <h2>Keine Zugriffsberechtigung!</h2>
+          <p>Logge dich ein, wenn du Mitarbeiter:in bist um diese Seite zu sehen.</p>
+        </>
       )}
     </>
   );
