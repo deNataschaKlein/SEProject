@@ -47,29 +47,30 @@ export default function FormStudyProgram(props: any) {
     if (current == undefined) {
       insertData();
     } else {
-      updateData();
+      updateData(current.id);
     }
   }
 
-  async function updateData() {
-    const currentId = current?.id;
+  async function updateData(current: number) {
+    debugger;
+    if (current) {
+      const { error } = await supabase
+        .from("study_programs")
+        .update([
+          {
+            study_name: studyName,
+            specialization,
+            active,
+            description,
+            date,
+            study_degree: degree,
+          },
+        ])
+        .eq("id", current);
 
-    const { error } = await supabase
-      .from("study_programs")
-      .update([
-        {
-          study_name: studyName,
-          specialization,
-          active,
-          description,
-          date,
-          study_degree: degree,
-        },
-      ])
-      .eq("id", currentId.toString());
-
-    if (error) {
-      alert(error);
+      if (error) {
+        console.log(error);
+      }
     }
   }
   async function insertData() {
