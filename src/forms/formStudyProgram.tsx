@@ -52,7 +52,6 @@ export default function FormStudyProgram(props: any) {
   }
 
   async function updateData() {
-    const study_name = studyName;
     const currentId = current?.id;
 
     const { error } = await supabase
@@ -67,10 +66,10 @@ export default function FormStudyProgram(props: any) {
           study_degree: degree,
         },
       ])
-      .eq("id", currentId);
+      .eq("id", currentId.toString());
 
     if (error) {
-    } else {
+      alert(error);
     }
   }
   async function insertData() {
@@ -112,8 +111,6 @@ export default function FormStudyProgram(props: any) {
       setDate(props.current.date);
     }
   }, [props]);
-
-  console.log(current);
 
   return (
     <form className={styles.col__two} onSubmit={postData}>

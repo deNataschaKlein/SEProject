@@ -71,6 +71,10 @@ h3 {
     color: var(--color-primary--100);
 }
 
+.mt-1 {
+    margin-top: var(--spacing-md);
+}
+
 button {
     padding: var(--spacing-sm)!important;
     border-radius: var(--spacing-xs)!important;
