@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, MouseEvent } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useDropzone } from "react-dropzone";
 import styles from "./UploadDocuments.module.css";
@@ -57,11 +57,15 @@ export default function UploadDocuments({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  const handleClick = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
   return (
     <div>
-      <div {...getRootProps()} className={styles.dropzone}>
+      <div {...getRootProps()} className={styles.dropzone} onClick={handleClick}>
         <input {...getInputProps()} />
-        <h3>Dokumente hochladen</h3>
+        <h3>Ein Dokument hochladen</h3>
         {isDragActive ? (
           <p>Dokument hier ablegen...</p>
         ) : (

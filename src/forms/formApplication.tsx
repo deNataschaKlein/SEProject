@@ -203,7 +203,7 @@ export default function FormApplication(props: any) {
             onChange={(e) => setCoverLetter(e.target.value)}
           />
           <label>
-          Dokumente
+          Dokument
           <UploadDocuments onUpload={setDocument_url} />
           </label>
         </label>
