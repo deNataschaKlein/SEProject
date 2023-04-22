@@ -4,7 +4,6 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styles from "@/styles/Home.module.css";
-import { ToastContainer } from "react-toastify";
 
 import React, { useState } from "react";
 import NavBar from "@/components/NavBar";
@@ -32,8 +31,6 @@ export default function App({
       supabaseClient={supabase}
       initialSession={pageProps.initialSession}
     >
-      <ToastContainer />
-
       <ThemeProvider theme={customTheme}>
         <NavBar />
         <main className={styles.content}>
