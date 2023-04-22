@@ -32,7 +32,7 @@ const Applications: NextPage = () => {
     }
 
     if (error) {
-      alert(error.message);
+      alert(error);
     }
   }
 

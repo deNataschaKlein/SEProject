@@ -76,12 +76,17 @@ button {
     border: none!important;
     background-color: var(--color-primary--100)!important;
     color: var(--color-light)!important;
+    margin-bottom: var(--spacing-sm)!important;
 }
 
 .button--primary {
     background-color: var(--color-primary--100);
     color: var(--color-light);
     margin-bottom: var(--spacing-lg);
+}
+
+.mb-1 {
+    margin-bottom: var(--spacing-md);
 }
 
 form {

@@ -32,6 +32,7 @@ export default function FormApplication(props: any) {
   const [name, setName] = useState<string | undefined>(undefined);
   const [telefone, setTelefone] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
+  const [cover_letter, setCoverLetter] = useState<string | undefined>(undefined);
   const [document_url, setDocument_url] = useState<string | undefined>(
     undefined
   );
@@ -92,6 +93,7 @@ export default function FormApplication(props: any) {
           status: 1,
           studyName: studyNameID,
           document_url: document_url,
+          cover_letter: cover_letter,
         })
         .select("id");
 
@@ -132,6 +134,9 @@ export default function FormApplication(props: any) {
       <form className={styles.col__two}>
         {/*Auswahl des Studiengangs vorausgewählt oder über den globalen Button*/}
         <div>
+          <Button onClick={() => postApplication()} variant={"contained"}>
+            Jetzt Bewerben
+          </Button>
           <label>
             Studiengang
             {selectedStudyProgram ? (
@@ -195,12 +200,19 @@ export default function FormApplication(props: any) {
             Telefonnummer
             <input type="text" onChange={(e) => setTelefone(e.target.value)} />
           </label>
-
+          <label>
+          Anschreiben
+          <textarea
+            rows={5}
+            value={cover_letter}
+            id="description"
+            onChange={(e) => setCoverLetter(e.target.value)}
+          />
+          <label>
+          Dokumente
           <UploadDocuments onUpload={setDocument_url} />
-
-          <Button onClick={() => postApplication()} variant={"contained"}>
-            Jetzt Bewerben
-          </Button>
+          </label>
+        </label>
         </div>
       </form>
       <Modal open={open}>
