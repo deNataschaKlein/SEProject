@@ -194,16 +194,17 @@ export default function FormApplication(props: any) {
             <input type="text" onChange={(e) => setTelefone(e.target.value)} />
           </label>
           <label>
-          Anschreiben
-          <textarea
-            rows={5}
-            value={cover_letter}
-            id="description"
-            onChange={(e) => setCoverLetter(e.target.value)}
-          />
+            Anschreiben
+            <textarea
+              rows={5}
+              value={cover_letter}
+              id="description"
+              onChange={(e) => setCoverLetter(e.target.value)}
+            />
+          </label>
           <label>
-          Dokument
-          <UploadDocuments onUpload={setDocument_url} />
+            Dokument
+            <UploadDocuments onUpload={setDocument_url} />
           </label>
           <Button onClick={() => postApplication()} variant={"contained"}>
             Jetzt Bewerben
