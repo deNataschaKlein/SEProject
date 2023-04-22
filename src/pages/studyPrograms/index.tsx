@@ -35,7 +35,9 @@ const StudyProgram: NextPage = () => {
     <>
       <h1>Studiengänge</h1>
       {session ? (
+      
         <Button className="button--primary mb-1 " onClick={ModalclickHandler}>
+
           Neuen Studiengang hinzufügen
         </Button>
       ) : (
