@@ -71,7 +71,6 @@ export default function UploadDocuments({
       {uploadedFile && (
         <div className={styles.uploadedFile}>
           <h4>Hochgeladene Datei:</h4>
-          <h4>Uploaded File:</h4>
           <p>{uploadedFile.name}</p>
         </div>
       )}

@@ -128,6 +128,9 @@ export default function FormApplication(props: any) {
       <form className={styles.col__two}>
         {/*Auswahl des Studiengangs vorausgewählt oder über den globalen Button*/}
         <div>
+          <Button onClick={() => postApplication()} variant={"contained"}>
+            Jetzt Bewerben
+          </Button>
           <label>
             Studiengang
             {selectedStudyProgram ? (
@@ -204,9 +207,6 @@ export default function FormApplication(props: any) {
           <UploadDocuments onUpload={setDocument_url} />
           </label>
         </label>
-          <Button onClick={() => postApplication()} variant={"contained"}>
-            Jetzt Bewerben
-          </Button>
         </div>
       </form>
       <Modal open={open}>
