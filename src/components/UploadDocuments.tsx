@@ -11,6 +11,8 @@ export default function UploadDocuments({
   const supabase = useSupabaseClient();
   const [uploading, setUploading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [notification, setNotification] = useState(false);
+  const [uploadCount, setUploadCount] = useState(0);
 
   const uploadDocument = async (file: File) => {
     try {
@@ -34,6 +36,11 @@ export default function UploadDocuments({
       }
 
       onUpload(filePath);
+      setUploadCount(uploadCount + 1);
+
+      if (uploadCount >= 1) {
+        setNotification(true);
+      }
 
       alert("Document successfully uploaded!");
       setUploadedFile(file);
@@ -72,8 +79,11 @@ export default function UploadDocuments({
           <p>Drag and Drop oder draufklicken</p>
         )}
       </div>
+      {notification && (
+        <h3 style={{ color: "var(--color-red)" }}>Ein neues Dokument wurde hochgeladen und das alte ersetzt!</h3>
+      )}
       {uploadedFile && (
-        <div className={styles.uploadedFile}>
+        <div>
           <h4>Hochgeladene Datei:</h4>
           <p>{uploadedFile.name}</p>
         </div>

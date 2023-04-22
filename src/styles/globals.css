@@ -24,6 +24,7 @@
     --color-light: rgb(255,255,255);
     --color-dark: rgb(71,71,71);
     --color-dark-40: rgb(236, 236, 236);
+    --color-red: rgb(255, 0, 0);
 
     --spacing-xxs: 2px;
     --spacing-xs: 4px;
